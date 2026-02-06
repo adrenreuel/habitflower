@@ -1,56 +1,113 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/use-theme-color";
 
-const FRIENDS = ["Alice", "Bob", "Carlos", "Dana", "Eve"];
+const FRIENDS = ["Batman", "Superman", "Wonder Woman", "Flash", "Aquaman"];
 const ACTIVITY = [
-  "Alice liked your habit",
-  "Bob completed a streak",
-  "Carlos commented on your post",
-  "Dana started a new habit",
-  "Eve sent a request",
+  "Batman liked your habit",
+  "Superman completed a streak",
+  "Wonder Woman commented on your post",
+  "Flash started a new habit",
+  "Aquaman sent a request",
 ];
+function toUsername(name: string) {
+  return name.toLowerCase().replace(/\s+/g, "");
+}
 
 export default function FriendsScreen() {
   const background = useThemeColor({}, "background");
+  const textColor = useThemeColor({}, "text");
+  const tint = useThemeColor({}, "tint");
+  const iconColor = useThemeColor({}, "icon");
+  const isLight = background === "#FEF3FF";
+  const cardBg = isLight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.06)";
 
   return (
-    <View style={[styles.container, { backgroundColor: background }]}>
-      <Text style={styles.title}>Friends</Text>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: background }]}>
+      <View style={styles.container}>
+        <View style={styles.headerRow}>
+          <Text style={[styles.title, { color: textColor }]}>Friends</Text>
+          <TouchableOpacity
+            style={[styles.addButton, { backgroundColor: tint }]}
+            activeOpacity={0.8}
+            onPress={() => Alert.alert("Add Friend", "Placeholder action")}
+          >
+            <Text style={[styles.addButtonText, { color: background }]}>
+              + Add
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.horizontalList}
-      >
-        {FRIENDS.map((name) => (
-          <View key={name} style={styles.friendCard}>
-            <View style={styles.avatar} />
-            <Text style={styles.friendName}>{name}</Text>
-            <Text style={styles.friendMeta}>5 habits</Text>
-          </View>
-        ))}
-      </ScrollView>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalList}
+        >
+          {FRIENDS.map((name) => {
+            const username = toUsername(name);
+            return (
+              <View
+                key={name}
+                style={[styles.friendCard, { backgroundColor: cardBg }]}
+              >
+                <View style={styles.avatar} />
+                <Text style={[styles.friendName, { color: textColor }]}>
+                  {username}
+                </Text>
+                <Text style={[styles.friendMeta, { color: iconColor }]}>
+                  5 habits
+                </Text>
+              </View>
+            );
+          })}
+        </ScrollView>
 
-      <Text style={[styles.sectionTitle, { marginTop: 18 }]}>Activity</Text>
+        <Text style={[styles.sectionTitle, { marginTop: 18 }]}>Activity</Text>
 
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.activityList}>
-        {ACTIVITY.map((text, idx) => (
-          <View key={idx} style={styles.activityCard}>
-            <Text style={styles.activityText}>{text}</Text>
-            <Text style={styles.activityTime}>2h ago</Text>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.activityList}
+        >
+          {ACTIVITY.map((text, idx) => {
+            const actor = FRIENDS.find((f) => text.includes(f));
+            const username = actor ? toUsername(actor) : null;
+            const display = username
+              ? text.replace(actor as string, username)
+              : text;
+            return (
+              <View
+                key={idx}
+                style={[styles.activityCard, { backgroundColor: cardBg }]}
+              >
+                <Text style={[styles.activityText, { color: textColor }]}>
+                  {display}
+                </Text>
+                <Text style={[styles.activityTime, { color: iconColor }]}>
+                  2h ago
+                </Text>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: { flex: 1 },
   container: {
     flex: 1,
     padding: 16,
   },
-  title: { fontSize: 28, fontWeight: "700", marginBottom: 12 },
+  title: { fontSize: 28, fontWeight: "700" },
   horizontalList: {
     paddingHorizontal: 4,
   },
@@ -71,8 +128,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#ddd",
     marginBottom: 12,
   },
-  friendName: { fontSize: 16, fontWeight: "600" },
-  friendMeta: { fontSize: 12, color: "#666", marginTop: 6 },
+  friendName: { fontSize: 16, fontWeight: "600", textAlign: "center" },
+  friendMeta: {
+    fontSize: 12,
+    color: "#666",
+    marginTop: 6,
+    textAlign: "center",
+  },
   sectionTitle: { fontSize: 20, fontWeight: "700" },
   activityList: { marginTop: 8 },
   activityCard: {
@@ -83,4 +145,12 @@ const styles = StyleSheet.create({
   },
   activityText: { fontSize: 14 },
   activityTime: { fontSize: 12, color: "#666", marginTop: 6 },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  addButton: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
+  addButtonText: { fontSize: 14, fontWeight: "700" },
 });
