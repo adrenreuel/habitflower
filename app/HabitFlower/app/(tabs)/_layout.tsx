@@ -28,30 +28,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => (
-            <View
-              style={{
-                width: 36,
-                height: 36,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <FontAwesome6
-                name="house"
-                size={22}
-                color={color}
-                iconStyle="solid"
-              />
-            </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="habits"
-        options={{
-          title: "Habits",
+          title: "Overview",
           tabBarIcon: ({ color }) => (
             <View
               style={{
