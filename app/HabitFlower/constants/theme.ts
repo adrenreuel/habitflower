@@ -13,6 +13,7 @@ export const Colors = {
     background: '#FEF3FF',
     // Primary tint (purple)
     tint: '#6B3F69',
+    navbar: '#6B3F69',
     // Secondary icon color (muted purple)
     icon: '#9b6b8f',
     tabIconDefault: '#9b6b8f',
@@ -23,6 +24,7 @@ export const Colors = {
     text: '#FEF3FF',
     // Dark background with purple undertone
     background: '#1f0f20',
+    navbar: '#190c1a',
     // Accent tint in dark mode (use green for emphasis)
     tint: '#4BAF17',
     icon: '#b99fc0',

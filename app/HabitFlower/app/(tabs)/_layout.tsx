@@ -13,11 +13,12 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        tabBarShowLabel: false,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarStyle: {
           backgroundColor:
-            colorScheme === "dark" ? Colors.dark.background : Colors.light.tint,
+            colorScheme === "dark" ? Colors.dark.navbar : Colors.light.navbar,
           borderTopColor: "transparent",
         },
         tabBarActiveTintColor:
@@ -39,7 +40,7 @@ export default function TabLayout() {
               }}
             >
               <FontAwesome6
-                name="circle-check"
+                name="list"
                 size={22}
                 color={color}
                 iconStyle="solid"

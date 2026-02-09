@@ -8,9 +8,13 @@ import {
   Alert,
   LayoutChangeEvent,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
+import SeedlingSvg from "../../assets/images/sprites/0.svg";
 
 type Habit = {
   title: string;
@@ -19,6 +23,13 @@ type Habit = {
   daysPerWeek?: number;
   timesPerDay?: number;
   timesByDay?: Record<string, number>;
+};
+
+type Todo = {
+  title: string;
+  datetime?: string; // ISO string
+  sublist?: string[];
+  description?: string;
 };
 
 const HABITS: Habit[] = [
@@ -47,6 +58,20 @@ const HABITS: Habit[] = [
 // Per-habit colors (used for chart and checkbox)
 const HABIT_COLORS = ["#6B3F69", "#4BAF17", "#FFB020", "#3B82F6"];
 
+const TODOS: Todo[] = [
+  {
+    title: "Finish assignment",
+    datetime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // tomorrow
+    description: "Finish the math assignment before class",
+  },
+  {
+    title: "Grocery run",
+    datetime: new Date().toISOString(),
+    sublist: ["Milk", "Eggs", "Bread"],
+    description: "Quick trip to pick up essentials for the week",
+  },
+];
+
 function randomLevels(days = 28) {
   return Array.from({ length: days }, (_, i) =>
     i % 5 === 0 ? 0 : (i % 4) + 1,
@@ -70,11 +95,14 @@ function ContributionGraph({
   tint,
   isLight,
   labelColor,
+  todayFraction,
 }: {
   levels?: number[];
   tint: string;
   isLight: boolean;
   labelColor?: string;
+  // optional fraction 0..1 to indicate today's completion (overrides today's cell opacity)
+  todayFraction?: number;
 }) {
   const ROWS = 1;
   const COLS = 7;
@@ -165,10 +193,13 @@ function ContributionGraph({
           const idx = c;
           const lvl = data[idx] ?? 0;
           const isTodayCell = c === today;
-          const opacity =
-            lvl === 0 ? (isLight ? 0.06 : 0.04) : 0.2 + lvl * 0.16;
           const bw = isTodayCell ? 1 : 0;
           const padding = isTodayCell ? Math.ceil(bw / 2) : 0;
+          let opacity = lvl === 0 ? (isLight ? 0.06 : 0.04) : 0.2 + lvl * 0.16;
+          if (isTodayCell && typeof todayFraction === "number") {
+            const f = Math.max(0, Math.min(1, todayFraction));
+            opacity = 0.2 + f * 0.8; // map fraction to visible opacity range
+          }
           return (
             <View
               key={c}
@@ -186,7 +217,7 @@ function ContributionGraph({
                   height: cellHeight,
                   borderRadius: borderRadius,
                   borderWidth: bw,
-                  borderColor: isTodayCell ? "#000000" : undefined,
+                  borderColor: isTodayCell ? tint : undefined,
                   padding,
                   alignItems: "center",
                   justifyContent: "center",
@@ -211,12 +242,24 @@ function ContributionGraph({
 }
 
 export default function HabitsScreen() {
+  const insets = useSafeAreaInsets();
   const background = useThemeColor({}, "background");
   const textColor = useThemeColor({}, "text");
   const tint = useThemeColor({}, "tint");
+  const now = new Date();
+  const weekday = now.toLocaleDateString(undefined, { weekday: "short" });
+  const month = now.toLocaleDateString(undefined, { month: "short" });
+  const day = now.getDate();
+  const dateLabel = `${weekday} ${day} ${month}`;
   const isLight = background === "#FEF3FF";
+  const cardBg = isLight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.06)";
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [counts, setCounts] = useState<Record<string, number>>({});
+  const [todosChecked, setTodosChecked] = useState<Record<string, boolean>>({});
+  const [subChecked, setSubChecked] = useState<
+    Record<string, Record<string, boolean>>
+  >({});
+  const [showCompleted, setShowCompleted] = useState(false);
 
   const toggleChecked = (title: string) => {
     setChecked((s) => ({ ...s, [title]: !s[title] }));
@@ -239,25 +282,36 @@ export default function HabitsScreen() {
     });
   };
 
+  const toggleTodo = (title: string) => {
+    setTodosChecked((s) => ({ ...s, [title]: !s[title] }));
+  };
+
+  const toggleSubItem = (todoTitle: string, item: string) => {
+    setSubChecked((s) => {
+      const cur = s[todoTitle] ?? {};
+      return { ...s, [todoTitle]: { ...cur, [item]: !cur[item] } };
+    });
+  };
+
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: background }]}>
+    <SafeAreaView
+      edges={["top", "left", "right"]}
+      style={[styles.safeArea, { backgroundColor: background }]}
+    >
       <View style={styles.container}>
         <View style={styles.headerRow}>
-          <Text style={[styles.title, { color: textColor }]}>My habits</Text>
-          <TouchableOpacity
-            style={[styles.createButton, { backgroundColor: tint }]}
-            onPress={() => Alert.alert("Create Habit", "Placeholder action")}
-            activeOpacity={0.8}
-          >
-            <Text style={[styles.createButtonText, { color: background }]}>
-              + Create
-            </Text>
-          </TouchableOpacity>
+          <Text style={[styles.dateLabel, { color: textColor }]}>
+            {" "}
+            {dateLabel}{" "}
+          </Text>
+          <Text style={[styles.title, { color: textColor }]}>
+            My HabitFlowers
+          </Text>
         </View>
 
         <ScrollView
           style={styles.scroll}
-          contentContainerStyle={styles.list}
+          contentContainerStyle={[styles.list]}
           showsVerticalScrollIndicator={false}
         >
           {HABITS.map((h, i) => {
@@ -271,13 +325,26 @@ export default function HabitsScreen() {
             const plantLevel = Math.round(plantLevelRaw * 10) / 10;
             const plantLevelLabel =
               plantLevel % 1 === 0 ? `${plantLevel}` : plantLevel.toFixed(1);
+            // compute today's fraction for coloring today's cell
+            let todayFraction: number | undefined;
+            if (h.type === "count") {
+              const cur = counts[h.title] ?? 0;
+              const target =
+                typeof h.target === "number" ? h.target : (h.timesPerDay ?? 1);
+              if (target > 0 && cur > 0) {
+                todayFraction = Math.min(1, cur / target);
+              }
+            } else {
+              if (checked[h.title]) todayFraction = 1;
+            }
+
             return (
               <View
                 key={h.title}
                 style={[
                   styles.card,
                   {
-                    backgroundColor: "#FFFFFF",
+                    backgroundColor: cardBg,
                   },
                 ]}
               >
@@ -286,21 +353,16 @@ export default function HabitsScreen() {
                   tint={habitColor}
                   isLight={isLight}
                   labelColor={textColor}
+                  todayFraction={todayFraction}
                 />
 
                 <View style={styles.cardHeader}>
                   <View style={styles.headerLeft}>
-                    <View
-                      style={[
-                        styles.iconBox,
-                        {
-                          backgroundColor: isLight
-                            ? "rgba(0,0,0,0.04)"
-                            : "rgba(255,255,255,0.06)",
-                        },
-                      ]}
-                    >
-                      <Text style={styles.iconText}>{emoji}</Text>
+                    <View style={styles.iconBox}>
+                      <SeedlingSvg
+                        width={28}
+                        height={28}
+                      />
                     </View>
                     <View>
                       <Text style={[styles.cardTitle, { color: textColor }]}>
@@ -346,36 +408,79 @@ export default function HabitsScreen() {
                       )}
                     </View>
                   </View>
-
                   {h.type === "count" ? (
                     <View style={styles.counterRow}>
-                      <TouchableOpacity
-                        style={[styles.counterBtn, { borderColor: habitColor }]}
-                        onPress={() => decCount(h.title)}
-                      >
-                        <FontAwesome6
-                          name="minus"
-                          size={14}
-                          color={habitColor}
-                          iconStyle="solid"
-                        />
-                      </TouchableOpacity>
+                      {(() => {
+                        const cur = counts[h.title] ?? 0;
+                        const max =
+                          typeof h.target === "number" ? h.target : undefined;
+                        const decDisabled = cur <= 0;
+                        const incDisabled =
+                          typeof max === "number" ? cur >= max : false;
+                        return (
+                          <>
+                            <TouchableOpacity
+                              style={[
+                                styles.counterBtn,
+                                decDisabled
+                                  ? {
+                                      borderColor: habitColor,
+                                      backgroundColor: "transparent",
+                                      borderWidth: 1,
+                                    }
+                                  : {
+                                      backgroundColor: habitColor,
+                                      borderWidth: 0,
+                                    },
+                              ]}
+                              onPress={() => decCount(h.title)}
+                              disabled={decDisabled}
+                            >
+                              <FontAwesome6
+                                name="minus"
+                                size={14}
+                                color={decDisabled ? habitColor : "#FFFFFF"}
+                                iconStyle="solid"
+                              />
+                            </TouchableOpacity>
 
-                      <Text style={[styles.counterLabel, { color: textColor }]}>
-                        {counts[h.title] ?? 0}/{h.target ?? 1}
-                      </Text>
+                            <Text
+                              style={[
+                                styles.counterLabel,
+                                { color: textColor },
+                              ]}
+                            >
+                              {" "}
+                              {cur}/{h.target ?? 1}
+                            </Text>
 
-                      <TouchableOpacity
-                        style={[styles.counterBtn, { borderColor: habitColor }]}
-                        onPress={() => incCount(h.title, h.target)}
-                      >
-                        <FontAwesome6
-                          name="plus"
-                          size={14}
-                          color={habitColor}
-                          iconStyle="solid"
-                        />
-                      </TouchableOpacity>
+                            <TouchableOpacity
+                              style={[
+                                styles.counterBtn,
+                                incDisabled
+                                  ? {
+                                      borderColor: habitColor,
+                                      backgroundColor: "transparent",
+                                      borderWidth: 1,
+                                    }
+                                  : {
+                                      backgroundColor: habitColor,
+                                      borderWidth: 0,
+                                    },
+                              ]}
+                              onPress={() => incCount(h.title, h.target)}
+                              disabled={incDisabled}
+                            >
+                              <FontAwesome6
+                                name="plus"
+                                size={14}
+                                color={incDisabled ? habitColor : "#FFFFFF"}
+                                iconStyle="solid"
+                              />
+                            </TouchableOpacity>
+                          </>
+                        );
+                      })()}
                     </View>
                   ) : (
                     <TouchableOpacity
@@ -404,7 +509,237 @@ export default function HabitsScreen() {
               </View>
             );
           })}
+
+          <View style={{ height: 8 }} />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 8,
+            }}
+          >
+            <Text style={[styles.title, { color: textColor, fontSize: 20 }]}>
+              To-dos
+            </Text>
+            <TouchableOpacity
+              onPress={() => setShowCompleted((s) => !s)}
+              activeOpacity={0.8}
+              style={{
+                paddingHorizontal: 8,
+                paddingVertical: 6,
+                borderRadius: 8,
+              }}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <FontAwesome6
+                  name={showCompleted ? "clock" : "circle-check"}
+                  size={12}
+                  color={tint}
+                  iconStyle="solid"
+                  style={{ marginRight: 6 }}
+                />
+                <Text style={{ color: tint }}>
+                  {showCompleted ? "Show pending" : "Show completed"}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {(() => {
+            const pending = TODOS.filter((t) => !todosChecked[t.title]);
+            const completed = TODOS.filter((t) => !!todosChecked[t.title]);
+            const listToShow = showCompleted ? completed : pending;
+
+            if (listToShow.length === 0) {
+              const msg = showCompleted
+                ? "No completed to-dos"
+                : "No pending to-dos";
+              return (
+                <View style={[styles.card, { backgroundColor: cardBg }]}>
+                  <View style={styles.cardHeader}>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <View
+                        style={[
+                          styles.iconBox,
+                          { backgroundColor: "rgba(0,0,0,0.02)" },
+                        ]}
+                      >
+                        <FontAwesome6
+                          name="circle-info"
+                          size={18}
+                          color={tint}
+                          iconStyle="solid"
+                        />
+                      </View>
+                      <View style={{ marginLeft: 8 }}>
+                        <Text style={[styles.cardTitle, { color: textColor }]}>
+                          {msg}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              );
+            }
+
+            return listToShow.map((t) => {
+              const done = !!todosChecked[t.title];
+              return (
+                <View
+                  key={t.title}
+                  style={[styles.card, { backgroundColor: cardBg }]}
+                >
+                  <View style={styles.cardHeader}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        flex: 1,
+                      }}
+                    >
+                      <View
+                        style={[
+                          styles.iconBox,
+                          { backgroundColor: "rgba(0,0,0,0.04)" },
+                        ]}
+                      >
+                        <FontAwesome6
+                          name="clipboard"
+                          size={18}
+                          color={tint}
+                          iconStyle="solid"
+                        />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={[styles.cardTitle, { color: textColor }]}>
+                          {" "}
+                          {t.title}{" "}
+                        </Text>
+                        {t.datetime && (
+                          <Text
+                            style={[
+                              styles.cardSubtitleSmall,
+                              { color: textColor },
+                            ]}
+                          >
+                            {new Date(t.datetime).toLocaleString()}
+                          </Text>
+                        )}
+                        {t.description && (
+                          <Text
+                            style={[
+                              styles.cardSubtitleSmall,
+                              { color: textColor, marginTop: 4 },
+                            ]}
+                          >
+                            {t.description}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+
+                    <TouchableOpacity
+                      style={[
+                        styles.checkbox,
+                        done
+                          ? { backgroundColor: tint }
+                          : { borderColor: tint, borderWidth: 1 },
+                      ]}
+                      onPress={() => toggleTodo(t.title)}
+                      activeOpacity={0.8}
+                    >
+                      <Text
+                        style={[
+                          styles.checkboxText,
+                          done ? { color: "#FFFFFF" } : { color: tint },
+                        ]}
+                      >
+                        {done ? "✓" : ""}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  {t.sublist && (
+                    <View style={{ marginTop: 8 }}>
+                      {t.sublist.map((it) => {
+                        const checkedItem = subChecked[t.title]?.[it];
+                        return (
+                          <View
+                            key={it}
+                            style={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                              marginBottom: 8,
+                            }}
+                          >
+                            <TouchableOpacity
+                              style={[
+                                styles.checkbox,
+                                checkedItem
+                                  ? { backgroundColor: tint }
+                                  : { borderColor: tint, borderWidth: 1 },
+                                { marginRight: 12 },
+                              ]}
+                              onPress={() => toggleSubItem(t.title, it)}
+                              activeOpacity={0.8}
+                            >
+                              <Text
+                                style={[
+                                  styles.checkboxText,
+                                  checkedItem
+                                    ? { color: "#FFFFFF", fontSize: 16 }
+                                    : { color: tint, fontSize: 16 },
+                                ]}
+                              >
+                                {checkedItem ? "✓" : ""}
+                              </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                              onPress={() => toggleSubItem(t.title, it)}
+                              activeOpacity={0.7}
+                            >
+                              <Text style={{ color: textColor, fontSize: 15 }}>
+                                {it}
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        );
+                      })}
+                    </View>
+                  )}
+                </View>
+              );
+            });
+          })()}
         </ScrollView>
+
+        <TouchableOpacity
+          style={[
+            styles.fab,
+            {
+              backgroundColor: tint,
+              paddingHorizontal: 14,
+              bottom: insets.bottom,
+            },
+          ]}
+          onPress={() => Alert.alert("Create Habit", "Placeholder action")}
+          activeOpacity={0.85}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <FontAwesome6
+              name="plus"
+              size={18}
+              color={background}
+              iconStyle="solid"
+              style={{ marginRight: 8 }}
+            />
+            <Text style={{ color: background, fontWeight: "700" }}>Create</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -412,17 +747,18 @@ export default function HabitsScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
-  container: { flex: 1, padding: 16 },
+  container: { flex: 1, padding: 16, paddingBottom: 0, marginBottom: 0 },
   headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
     marginBottom: 12,
   },
   title: { fontSize: 28, fontWeight: "700" },
+  dateLabel: { fontSize: 14, fontWeight: "600", opacity: 0.9, marginBottom: 4 },
   createButton: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
   createButtonText: { fontSize: 14, fontWeight: "700" },
-  list: { paddingBottom: 40 },
+  list: { paddingBottom: 12 },
   card: { borderRadius: 12, padding: 12, marginBottom: 12 },
   cardHeader: {
     flexDirection: "row",
@@ -455,7 +791,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginRight: 12,
   },
-  iconText: { fontSize: 20 },
+  iconText: { fontSize: 30 },
   checkbox: {
     width: 32,
     height: 32,
@@ -480,4 +816,19 @@ const styles = StyleSheet.create({
   counterLabel: { fontSize: 14, fontWeight: "700" },
   cardSubtitleSmall: { fontSize: 12, opacity: 0.85, marginTop: 2 },
   levelLabel: { fontSize: 12, opacity: 0.9, marginTop: 4, fontWeight: "600" },
+  fab: {
+    position: "absolute",
+    right: 16,
+    minWidth: 56,
+    height: 56,
+    borderRadius: 28,
+    paddingHorizontal: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 4,
+  },
 });

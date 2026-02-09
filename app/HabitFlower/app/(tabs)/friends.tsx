@@ -30,7 +30,10 @@ export default function FriendsScreen() {
   const cardBg = isLight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.06)";
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: background }]}>
+    <SafeAreaView
+      edges={["top", "left", "right"]}
+      style={[styles.safeArea, { backgroundColor: background }]}
+    >
       <View style={styles.container}>
         <View style={styles.headerRow}>
           <Text style={[styles.title, { color: textColor }]}>Friends</Text>
@@ -69,8 +72,9 @@ export default function FriendsScreen() {
           })}
         </ScrollView>
 
-        <Text style={[styles.sectionTitle, { marginTop: 18 }]}>Activity</Text>
-
+        <Text style={[styles.title, { color: textColor, fontSize: 20 }]}>
+          Activity
+        </Text>
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={styles.activityList}
@@ -103,19 +107,13 @@ export default function FriendsScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
-  container: {
-    flex: 1,
-    padding: 16,
-  },
+  container: { flex: 1, padding: 16, paddingBottom: 0, marginBottom: 0 },
   title: { fontSize: 28, fontWeight: "700" },
-  horizontalList: {
-    paddingHorizontal: 4,
-  },
+  horizontalList: { paddingHorizontal: 4 },
   friendCard: {
     width: 140,
     height: 160,
     borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.6)",
     marginRight: 12,
     padding: 12,
     alignItems: "center",
@@ -128,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ddd",
     marginBottom: 12,
   },
-  friendName: { fontSize: 16, fontWeight: "600", textAlign: "center" },
+  friendName: { fontSize: 16, fontWeight: "700", textAlign: "center" },
   friendMeta: {
     fontSize: 12,
     color: "#666",
@@ -137,14 +135,9 @@ const styles = StyleSheet.create({
   },
   sectionTitle: { fontSize: 20, fontWeight: "700" },
   activityList: { marginTop: 8 },
-  activityCard: {
-    padding: 12,
-    borderRadius: 10,
-    backgroundColor: "rgba(255,255,255,0.5)",
-    marginBottom: 10,
-  },
+  activityCard: { padding: 12, borderRadius: 12, marginBottom: 12 },
   activityText: { fontSize: 14 },
-  activityTime: { fontSize: 12, color: "#666", marginTop: 6 },
+  activityTime: { fontSize: 12, marginTop: 6 },
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
