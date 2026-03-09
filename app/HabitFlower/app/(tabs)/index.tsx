@@ -18,23 +18,33 @@ import SeedlingSvg from "../../assets/images/sprites/0.svg";
 
 type Habit = {
   title: string;
-  type?: "count";
+  type?: "count" | "checklist";
   target?: number;
   daysPerWeek?: number;
   timesPerDay?: number;
   timesByDay?: Record<string, number>;
+  tasksByDay?: Record<string, string[]>; // per-day checklist tasks
 };
 
-type Todo = {
-  title: string;
-  datetime?: string; // ISO string
-  sublist?: string[];
-  description?: string;
-};
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const HABITS: Habit[] = [
   // simple checkbox habit
   { title: "Hit the gym" },
+
+  // checklist habit: different workouts per day
+  {
+    title: "Gym workout",
+    type: "checklist",
+    daysPerWeek: 5,
+    tasksByDay: {
+      Mon: ["Bench press", "Incline dumbbell", "Tricep dips"],
+      Tue: ["Squats", "Lunges", "Calf raises"],
+      Wed: ["Pull-ups", "Barbell rows", "Bicep curls"],
+      Thu: ["Shoulder press", "Lateral raises", "Face pulls"],
+      Fri: ["Deadlifts", "Hip thrusts", "Leg curls"],
+    },
+  },
 
   // count-based habit: uniform times per day (example: 3x/day, every day)
   {
@@ -57,20 +67,6 @@ const HABITS: Habit[] = [
 
 // Per-habit colors (used for chart and checkbox)
 const HABIT_COLORS = ["#6B3F69", "#4BAF17", "#FFB020", "#3B82F6"];
-
-const TODOS: Todo[] = [
-  {
-    title: "Finish assignment",
-    datetime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // tomorrow
-    description: "Finish the math assignment before class",
-  },
-  {
-    title: "Grocery run",
-    datetime: new Date().toISOString(),
-    sublist: ["Milk", "Eggs", "Bread"],
-    description: "Quick trip to pick up essentials for the week",
-  },
-];
 
 function randomLevels(days = 28) {
   return Array.from({ length: days }, (_, i) =>
@@ -193,12 +189,32 @@ function ContributionGraph({
           const idx = c;
           const lvl = data[idx] ?? 0;
           const isTodayCell = c === today;
-          const bw = isTodayCell ? 1 : 0;
-          const padding = isTodayCell ? Math.ceil(bw / 2) : 0;
-          let opacity = lvl === 0 ? (isLight ? 0.06 : 0.04) : 0.2 + lvl * 0.16;
-          if (isTodayCell && typeof todayFraction === "number") {
-            const f = Math.max(0, Math.min(1, todayFraction));
-            opacity = 0.2 + f * 0.8; // map fraction to visible opacity range
+          let bw = 0;
+          let padding = 0;
+          let opacity = 0;
+
+          if (isTodayCell) {
+            const hasTodayInfo = typeof todayFraction === "number";
+            const f = hasTodayInfo
+              ? Math.max(0, Math.min(1, todayFraction as number))
+              : 0;
+
+            // Always show an outline for today's cell; fill only when fraction > 0
+            bw = 1;
+            if (hasTodayInfo && f > 0) {
+              // Brighten today's cell proportionally to today's fraction
+              opacity = 0.2 + f * 0.8;
+            } else {
+              // No data for today or explicit 0 → no fill (transparent)
+              opacity = 0;
+            }
+
+            padding = Math.ceil(bw / 2);
+          } else {
+            // Historical cells continue to use the provided level data
+            opacity = lvl === 0 ? (isLight ? 0.06 : 0.04) : 0.2 + lvl * 0.16;
+            bw = 0;
+            padding = 0;
           }
           return (
             <View
@@ -217,7 +233,7 @@ function ContributionGraph({
                   height: cellHeight,
                   borderRadius: borderRadius,
                   borderWidth: bw,
-                  borderColor: isTodayCell ? tint : undefined,
+                  borderColor: bw > 0 ? tint : undefined,
                   padding,
                   alignItems: "center",
                   justifyContent: "center",
@@ -255,11 +271,16 @@ export default function HabitsScreen() {
   const cardBg = isLight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.06)";
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [counts, setCounts] = useState<Record<string, number>>({});
-  const [todosChecked, setTodosChecked] = useState<Record<string, boolean>>({});
-  const [subChecked, setSubChecked] = useState<
+  const [taskChecked, setTaskChecked] = useState<
     Record<string, Record<string, boolean>>
   >({});
-  const [showCompleted, setShowCompleted] = useState(false);
+
+  const toggleTask = (habitTitle: string, task: string) => {
+    setTaskChecked((s) => {
+      const cur = s[habitTitle] ?? {};
+      return { ...s, [habitTitle]: { ...cur, [task]: !cur[task] } };
+    });
+  };
 
   const toggleChecked = (title: string) => {
     setChecked((s) => ({ ...s, [title]: !s[title] }));
@@ -282,17 +303,6 @@ export default function HabitsScreen() {
     });
   };
 
-  const toggleTodo = (title: string) => {
-    setTodosChecked((s) => ({ ...s, [title]: !s[title] }));
-  };
-
-  const toggleSubItem = (todoTitle: string, item: string) => {
-    setSubChecked((s) => {
-      const cur = s[todoTitle] ?? {};
-      return { ...s, [todoTitle]: { ...cur, [item]: !cur[item] } };
-    });
-  };
-
   return (
     <SafeAreaView
       edges={["top", "left", "right"]}
@@ -304,14 +314,15 @@ export default function HabitsScreen() {
             {" "}
             {dateLabel}{" "}
           </Text>
-          <Text style={[styles.title, { color: textColor }]}>
-            My HabitFlowers
-          </Text>
+          <Text style={[styles.title, { color: textColor }]}>My Habits</Text>
         </View>
 
         <ScrollView
           style={styles.scroll}
-          contentContainerStyle={[styles.list]}
+          contentContainerStyle={[
+            styles.list,
+            { paddingBottom: insets.bottom + 96 },
+          ]}
           showsVerticalScrollIndicator={false}
         >
           {HABITS.map((h, i) => {
@@ -326,6 +337,7 @@ export default function HabitsScreen() {
             const plantLevelLabel =
               plantLevel % 1 === 0 ? `${plantLevel}` : plantLevel.toFixed(1);
             // compute today's fraction for coloring today's cell
+            const todayDayName = DAY_NAMES[new Date().getDay()];
             let todayFraction: number | undefined;
             if (h.type === "count") {
               const cur = counts[h.title] ?? 0;
@@ -334,9 +346,25 @@ export default function HabitsScreen() {
               if (target > 0 && cur > 0) {
                 todayFraction = Math.min(1, cur / target);
               }
+            } else if (h.type === "checklist") {
+              const todayTasks = h.tasksByDay?.[todayDayName] ?? [];
+              if (todayTasks.length > 0) {
+                const checkedCount = todayTasks.filter(
+                  (t) => !!taskChecked[h.title]?.[t],
+                ).length;
+                if (checkedCount > 0) {
+                  todayFraction = checkedCount / todayTasks.length;
+                }
+              }
             } else {
               if (checked[h.title]) todayFraction = 1;
             }
+
+            // Resolve today's tasks for checklist habits
+            const todayTasks =
+              h.type === "checklist"
+                ? (h.tasksByDay?.[todayDayName] ?? [])
+                : [];
 
             return (
               <View
@@ -399,6 +427,12 @@ export default function HabitsScreen() {
                             </Text>
                           )}
                         </>
+                      ) : h.type === "checklist" ? (
+                        <Text
+                          style={[styles.cardSubtitle, { color: textColor }]}
+                        >
+                          {h.daysPerWeek ?? 0} days / week
+                        </Text>
                       ) : (
                         <Text
                           style={[styles.cardSubtitle, { color: textColor }]}
@@ -482,6 +516,17 @@ export default function HabitsScreen() {
                         );
                       })()}
                     </View>
+                  ) : h.type === "checklist" ? (
+                    <Text
+                      style={[
+                        styles.counterLabel,
+                        { color: textColor, opacity: 0.7 },
+                      ]}
+                    >
+                      {todayTasks.length > 0
+                        ? `${todayTasks.filter((t) => !!taskChecked[h.title]?.[t]).length}/${todayTasks.length}`
+                        : "Rest day"}
+                    </Text>
                   ) : (
                     <TouchableOpacity
                       style={[
@@ -506,215 +551,79 @@ export default function HabitsScreen() {
                     </TouchableOpacity>
                   )}
                 </View>
+
+                {/* Checklist tasks for today */}
+                {h.type === "checklist" && todayTasks.length > 0 && (
+                  <View style={{ marginTop: 4 }}>
+                    {todayTasks.map((task) => {
+                      const isChecked = !!taskChecked[h.title]?.[task];
+                      return (
+                        <View
+                          key={task}
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            marginBottom: 8,
+                          }}
+                        >
+                          <TouchableOpacity
+                            style={[
+                              styles.checkbox,
+                              isChecked
+                                ? { backgroundColor: habitColor }
+                                : { borderColor: habitColor, borderWidth: 1 },
+                              { marginRight: 12 },
+                            ]}
+                            onPress={() => toggleTask(h.title, task)}
+                            activeOpacity={0.8}
+                          >
+                            <Text
+                              style={[
+                                styles.checkboxText,
+                                isChecked
+                                  ? { color: "#FFFFFF" }
+                                  : { color: habitColor },
+                              ]}
+                            >
+                              {isChecked ? "✓" : ""}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => toggleTask(h.title, task)}
+                            activeOpacity={0.7}
+                          >
+                            <Text
+                              style={{
+                                color: textColor,
+                                fontSize: 15,
+                                textDecorationLine: isChecked
+                                  ? "line-through"
+                                  : "none",
+                                opacity: isChecked ? 0.5 : 1,
+                              }}
+                            >
+                              {task}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    })}
+                  </View>
+                )}
+
+                {h.type === "checklist" && todayTasks.length === 0 && (
+                  <Text
+                    style={[
+                      styles.cardSubtitleSmall,
+                      { color: textColor, marginTop: 4, fontStyle: "italic" },
+                    ]}
+                  >
+                    No tasks scheduled for today
+                  </Text>
+                )}
               </View>
             );
           })}
-
-          <View style={{ height: 8 }} />
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: 8,
-            }}
-          >
-            <Text style={[styles.title, { color: textColor, fontSize: 20 }]}>
-              To-dos
-            </Text>
-            <TouchableOpacity
-              onPress={() => setShowCompleted((s) => !s)}
-              activeOpacity={0.8}
-              style={{
-                paddingHorizontal: 8,
-                paddingVertical: 6,
-                borderRadius: 8,
-              }}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <FontAwesome6
-                  name={showCompleted ? "clock" : "circle-check"}
-                  size={12}
-                  color={tint}
-                  iconStyle="solid"
-                  style={{ marginRight: 6 }}
-                />
-                <Text style={{ color: tint }}>
-                  {showCompleted ? "Show pending" : "Show completed"}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          {(() => {
-            const pending = TODOS.filter((t) => !todosChecked[t.title]);
-            const completed = TODOS.filter((t) => !!todosChecked[t.title]);
-            const listToShow = showCompleted ? completed : pending;
-
-            if (listToShow.length === 0) {
-              const msg = showCompleted
-                ? "No completed to-dos"
-                : "No pending to-dos";
-              return (
-                <View style={[styles.card, { backgroundColor: cardBg }]}>
-                  <View style={styles.cardHeader}>
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <View
-                        style={[
-                          styles.iconBox,
-                          { backgroundColor: "rgba(0,0,0,0.02)" },
-                        ]}
-                      >
-                        <FontAwesome6
-                          name="circle-info"
-                          size={18}
-                          color={tint}
-                          iconStyle="solid"
-                        />
-                      </View>
-                      <View style={{ marginLeft: 8 }}>
-                        <Text style={[styles.cardTitle, { color: textColor }]}>
-                          {msg}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              );
-            }
-
-            return listToShow.map((t) => {
-              const done = !!todosChecked[t.title];
-              return (
-                <View
-                  key={t.title}
-                  style={[styles.card, { backgroundColor: cardBg }]}
-                >
-                  <View style={styles.cardHeader}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        flex: 1,
-                      }}
-                    >
-                      <View
-                        style={[
-                          styles.iconBox,
-                          { backgroundColor: "rgba(0,0,0,0.04)" },
-                        ]}
-                      >
-                        <FontAwesome6
-                          name="clipboard"
-                          size={18}
-                          color={tint}
-                          iconStyle="solid"
-                        />
-                      </View>
-                      <View style={{ flex: 1 }}>
-                        <Text style={[styles.cardTitle, { color: textColor }]}>
-                          {" "}
-                          {t.title}{" "}
-                        </Text>
-                        {t.datetime && (
-                          <Text
-                            style={[
-                              styles.cardSubtitleSmall,
-                              { color: textColor },
-                            ]}
-                          >
-                            {new Date(t.datetime).toLocaleString()}
-                          </Text>
-                        )}
-                        {t.description && (
-                          <Text
-                            style={[
-                              styles.cardSubtitleSmall,
-                              { color: textColor, marginTop: 4 },
-                            ]}
-                          >
-                            {t.description}
-                          </Text>
-                        )}
-                      </View>
-                    </View>
-
-                    <TouchableOpacity
-                      style={[
-                        styles.checkbox,
-                        done
-                          ? { backgroundColor: tint }
-                          : { borderColor: tint, borderWidth: 1 },
-                      ]}
-                      onPress={() => toggleTodo(t.title)}
-                      activeOpacity={0.8}
-                    >
-                      <Text
-                        style={[
-                          styles.checkboxText,
-                          done ? { color: "#FFFFFF" } : { color: tint },
-                        ]}
-                      >
-                        {done ? "✓" : ""}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  {t.sublist && (
-                    <View style={{ marginTop: 8 }}>
-                      {t.sublist.map((it) => {
-                        const checkedItem = subChecked[t.title]?.[it];
-                        return (
-                          <View
-                            key={it}
-                            style={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                              marginBottom: 8,
-                            }}
-                          >
-                            <TouchableOpacity
-                              style={[
-                                styles.checkbox,
-                                checkedItem
-                                  ? { backgroundColor: tint }
-                                  : { borderColor: tint, borderWidth: 1 },
-                                { marginRight: 12 },
-                              ]}
-                              onPress={() => toggleSubItem(t.title, it)}
-                              activeOpacity={0.8}
-                            >
-                              <Text
-                                style={[
-                                  styles.checkboxText,
-                                  checkedItem
-                                    ? { color: "#FFFFFF", fontSize: 16 }
-                                    : { color: tint, fontSize: 16 },
-                                ]}
-                              >
-                                {checkedItem ? "✓" : ""}
-                              </Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                              onPress={() => toggleSubItem(t.title, it)}
-                              activeOpacity={0.7}
-                            >
-                              <Text style={{ color: textColor, fontSize: 15 }}>
-                                {it}
-                              </Text>
-                            </TouchableOpacity>
-                          </View>
-                        );
-                      })}
-                    </View>
-                  )}
-                </View>
-              );
-            });
-          })()}
         </ScrollView>
 
         <TouchableOpacity
@@ -737,7 +646,9 @@ export default function HabitsScreen() {
               iconStyle="solid"
               style={{ marginRight: 8 }}
             />
-            <Text style={{ color: background, fontWeight: "700" }}>Create</Text>
+            <Text style={{ color: background, fontWeight: "700" }}>
+              New Habit
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -763,6 +674,7 @@ const styles = StyleSheet.create({
   cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 8,
     marginBottom: 8,
   },

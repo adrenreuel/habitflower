@@ -50,6 +50,29 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="todos"
+        options={{
+          title: "Todos",
+          tabBarIcon: ({ color }) => (
+            <View
+              style={{
+                width: 36,
+                height: 36,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FontAwesome6
+                name="clipboard"
+                size={22}
+                color={color}
+                iconStyle="solid"
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="friends"
         options={{
           title: "Friends",
