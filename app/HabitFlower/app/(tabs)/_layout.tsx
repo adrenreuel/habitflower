@@ -40,6 +40,29 @@ export default function TabLayout() {
               }}
             >
               <FontAwesome6
+                name="repeat"
+                size={22}
+                color={color}
+                iconStyle="solid"
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="tasks"
+        options={{
+          title: "Tasks",
+          tabBarIcon: ({ color }) => (
+            <View
+              style={{
+                width: 36,
+                height: 36,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FontAwesome6
                 name="list"
                 size={22}
                 color={color}
@@ -50,9 +73,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="todos"
+        name="circle"
         options={{
-          title: "Todos",
+          title: "My Circle",
           tabBarIcon: ({ color }) => (
             <View
               style={{
@@ -63,30 +86,7 @@ export default function TabLayout() {
               }}
             >
               <FontAwesome6
-                name="clipboard"
-                size={22}
-                color={color}
-                iconStyle="solid"
-              />
-            </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="friends"
-        options={{
-          title: "Friends",
-          tabBarIcon: ({ color }) => (
-            <View
-              style={{
-                width: 36,
-                height: 36,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <FontAwesome6
-                name="people-group"
+                name="circle"
                 size={22}
                 color={color}
                 iconStyle="solid"

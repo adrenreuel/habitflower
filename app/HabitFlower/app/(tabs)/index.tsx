@@ -274,6 +274,7 @@ export default function HabitsScreen() {
   const [taskChecked, setTaskChecked] = useState<
     Record<string, Record<string, boolean>>
   >({});
+  const [showUpcoming, setShowUpcoming] = useState(false);
 
   const toggleTask = (habitTitle: string, task: string) => {
     setTaskChecked((s) => {
@@ -325,7 +326,77 @@ export default function HabitsScreen() {
           ]}
           showsVerticalScrollIndicator={false}
         >
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 8,
+              marginBottom: 16,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => setShowUpcoming(false)}
+              activeOpacity={0.8}
+              style={[
+                styles.tabButton,
+                !showUpcoming
+                  ? { backgroundColor: tint, borderColor: tint }
+                  : {
+                      backgroundColor: "transparent",
+                      borderColor: "rgba(0,0,0,0.2)",
+                    },
+              ]}
+            >
+              <FontAwesome6
+                name="calendar-day"
+                size={12}
+                color={!showUpcoming ? "white" : textColor}
+                iconStyle="solid"
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                style={{
+                  color: !showUpcoming ? "white" : textColor,
+                  fontWeight: !showUpcoming ? "700" : "600",
+                }}
+              >
+                Today
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setShowUpcoming(true)}
+              activeOpacity={0.8}
+              style={[
+                styles.tabButton,
+                showUpcoming
+                  ? { backgroundColor: tint, borderColor: tint }
+                  : {
+                      backgroundColor: "transparent",
+                      borderColor: "rgba(0,0,0,0.2)",
+                    },
+              ]}
+            >
+              <FontAwesome6
+                name="calendar"
+                size={12}
+                color={showUpcoming ? "white" : textColor}
+                iconStyle="solid"
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                style={{
+                  color: showUpcoming ? "white" : textColor,
+                  fontWeight: showUpcoming ? "700" : "600",
+                }}
+              >
+                Upcoming
+              </Text>
+            </TouchableOpacity>
+          </View>
           {HABITS.map((h, i) => {
+            // Simple filter: Today shows habits with tasks for today or all habits
+            // Upcoming shows the same (can be enhanced with actual scheduling logic)
+            // For now, just show all habits in both views
             const emoji = emojiForTitle(h.title);
             const habitColor = HABIT_COLORS[i % HABIT_COLORS.length];
             const levels = randomLevels();
@@ -728,6 +799,16 @@ const styles = StyleSheet.create({
   counterLabel: { fontSize: 14, fontWeight: "700" },
   cardSubtitleSmall: { fontSize: 12, opacity: 0.85, marginTop: 2 },
   levelLabel: { fontSize: 12, opacity: 0.9, marginTop: 4, fontWeight: "600" },
+  tabButton: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
   fab: {
     position: "absolute",
     right: 16,
