@@ -36,14 +36,14 @@ export default function FriendsScreen() {
     >
       <View style={styles.container}>
         <View style={styles.headerRow}>
-          <Text style={[styles.title, { color: textColor }]}>Friends</Text>
+          <Text style={[styles.title, { color: textColor }]}>My Circle</Text>
           <TouchableOpacity
             style={[styles.addButton, { backgroundColor: tint }]}
             activeOpacity={0.8}
             onPress={() => Alert.alert("Add Friend", "Placeholder action")}
           >
             <Text style={[styles.addButtonText, { color: background }]}>
-              + Add
+              + Add Friend
             </Text>
           </TouchableOpacity>
         </View>

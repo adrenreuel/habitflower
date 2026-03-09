@@ -14,6 +14,7 @@ import {
 } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
+import { useRouter } from "expo-router";
 
 type Todo = {
   title: string;
@@ -38,6 +39,7 @@ const TODOS: Todo[] = [
 
 export default function TodosScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const background = useThemeColor({}, "background");
   const textColor = useThemeColor({}, "text");
   const tint = useThemeColor({}, "tint");
@@ -157,7 +159,7 @@ export default function TodosScreen() {
             {" "}
             {dateLabel}{" "}
           </Text>
-          <Text style={[styles.title, { color: textColor }]}>My To-dos</Text>
+          <Text style={[styles.title, { color: textColor }]}>My Tasks</Text>
         </View>
 
         <ScrollView
@@ -243,8 +245,8 @@ export default function TodosScreen() {
 
             if (listToShow.length === 0) {
               const msg = showCompleted
-                ? "No completed to-dos"
-                : "No pending to-dos";
+                ? "No completed tasks"
+                : "No pending tasks";
               return (
                 <View style={styles.emptyStateContainer}>
                   <FontAwesome6
@@ -432,7 +434,7 @@ export default function TodosScreen() {
               bottom: insets.bottom,
             },
           ]}
-          onPress={() => Alert.alert("Create To-do", "Placeholder action")}
+          onPress={() => router.push("/create-task")}
           activeOpacity={0.85}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -444,7 +446,7 @@ export default function TodosScreen() {
               style={{ marginRight: 8 }}
             />
             <Text style={{ color: background, fontWeight: "700" }}>
-              New To-do
+              New Task
             </Text>
           </View>
         </TouchableOpacity>
