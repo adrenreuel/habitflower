@@ -16,70 +16,18 @@ import { useThemeColor } from "@/hooks/use-theme-color";
 import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
 import SeedlingSvg from "../../assets/images/sprites/0.svg";
 
-type Habit = {
-  title: string;
-  type?: "count" | "checklist";
-  target?: number;
-  daysPerWeek?: number;
-  timesPerDay?: number;
-  timesByDay?: Record<string, number>;
-  tasksByDay?: Record<string, string[]>; // per-day checklist tasks
-};
+import { useAppStore } from "@/store/app-store";
+import {
+  checklistItems,
+  countTarget,
+  dateKey,
+  dayName,
+  daysCompleted,
+  entryFraction,
+  weekDates,
+} from "@/lib/habits";
 
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-const HABITS: Habit[] = [
-  // simple checkbox habit
-  { title: "Hit the gym" },
-
-  // checklist habit: different workouts per day
-  {
-    title: "Gym workout",
-    type: "checklist",
-    daysPerWeek: 5,
-    tasksByDay: {
-      Mon: ["Bench press", "Incline dumbbell", "Tricep dips"],
-      Tue: ["Squats", "Lunges", "Calf raises"],
-      Wed: ["Pull-ups", "Barbell rows", "Bicep curls"],
-      Thu: ["Shoulder press", "Lateral raises", "Face pulls"],
-      Fri: ["Deadlifts", "Hip thrusts", "Leg curls"],
-    },
-  },
-
-  // count-based habit: uniform times per day (example: 3x/day, every day)
-  {
-    title: "Push-ups",
-    type: "count",
-    target: 3,
-    daysPerWeek: 7,
-    timesPerDay: 3,
-  },
-
-  // count-based habit: different counts for specific days
-  {
-    title: "Practice scales",
-    type: "count",
-    target: 3,
-    daysPerWeek: 5,
-    timesByDay: { Mon: 2, Wed: 3, Fri: 1 },
-  },
-];
-
-// Per-habit colors (used for chart and checkbox)
-const HABIT_COLORS = ["#6B3F69", "#4BAF17", "#FFB020", "#3B82F6"];
-
-function randomLevels(days = 28) {
-  return Array.from({ length: days }, (_, i) =>
-    i % 5 === 0 ? 0 : (i % 4) + 1,
-  );
-}
-
-function emojiForTitle(title: string) {
-  const t = title.toLowerCase();
-  return "🌱";
-}
-
-function formatTimesByDay(map?: Record<string, number>) {
+function formatTimesByDay(map?: Record<string, number | undefined>) {
   if (!map) return null;
   return Object.entries(map)
     .map(([k, v]) => `${k}: ${v}x`)
@@ -87,26 +35,18 @@ function formatTimesByDay(map?: Record<string, number>) {
 }
 
 function ContributionGraph({
-  levels,
+  fractions,
   tint,
   isLight,
   labelColor,
-  todayFraction,
 }: {
-  levels?: number[];
+  /** 7 completion fractions (0..1), Sun..Sat of the current week */
+  fractions: number[];
   tint: string;
   isLight: boolean;
   labelColor?: string;
-  // optional fraction 0..1 to indicate today's completion (overrides today's cell opacity)
-  todayFraction?: number;
 }) {
-  const ROWS = 1;
   const COLS = 7;
-  const total = ROWS * COLS;
-  const data =
-    levels && levels.length >= total
-      ? levels.slice(0, total)
-      : randomLevels(total);
 
   const [cellWidth, setCellWidth] = useState(0);
   const gap = 8;
@@ -186,35 +126,19 @@ function ContributionGraph({
 
       <View style={styles.graphRow}>
         {Array.from({ length: COLS }).map((_, c) => {
-          const idx = c;
-          const lvl = data[idx] ?? 0;
+          const f = Math.max(0, Math.min(1, fractions[c] ?? 0));
           const isTodayCell = c === today;
           let bw = 0;
           let padding = 0;
           let opacity = 0;
 
           if (isTodayCell) {
-            const hasTodayInfo = typeof todayFraction === "number";
-            const f = hasTodayInfo
-              ? Math.max(0, Math.min(1, todayFraction as number))
-              : 0;
-
-            // Always show an outline for today's cell; fill only when fraction > 0
+            // Always outline today's cell; fill only when there's progress
             bw = 1;
-            if (hasTodayInfo && f > 0) {
-              // Brighten today's cell proportionally to today's fraction
-              opacity = 0.2 + f * 0.8;
-            } else {
-              // No data for today or explicit 0 → no fill (transparent)
-              opacity = 0;
-            }
-
             padding = Math.ceil(bw / 2);
+            opacity = f > 0 ? 0.2 + f * 0.8 : 0;
           } else {
-            // Historical cells continue to use the provided level data
-            opacity = lvl === 0 ? (isLight ? 0.06 : 0.04) : 0.2 + lvl * 0.16;
-            bw = 0;
-            padding = 0;
+            opacity = f > 0 ? 0.2 + f * 0.8 : isLight ? 0.06 : 0.04;
           }
           return (
             <View
@@ -269,39 +193,35 @@ export default function HabitsScreen() {
   const dateLabel = `${weekday} ${day} ${month}`;
   const isLight = background === "#FEF3FF";
   const cardBg = isLight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.06)";
-  const [checked, setChecked] = useState<Record<string, boolean>>({});
-  const [counts, setCounts] = useState<Record<string, number>>({});
-  const [taskChecked, setTaskChecked] = useState<
-    Record<string, Record<string, boolean>>
-  >({});
   const [showUpcoming, setShowUpcoming] = useState(false);
+  const { data, setHabitEntry } = useAppStore();
+  const todayKey = dateKey(now);
+  const todayDayName = dayName(now);
+  const week = weekDates(now);
 
-  const toggleTask = (habitTitle: string, task: string) => {
-    setTaskChecked((s) => {
-      const cur = s[habitTitle] ?? {};
-      return { ...s, [habitTitle]: { ...cur, [task]: !cur[task] } };
-    });
+  const toggleTask = (habitId: string, task: string) => {
+    setHabitEntry(habitId, todayKey, (e) => ({
+      ...e,
+      tasks: { ...e.tasks, [task]: !e.tasks?.[task] },
+    }));
   };
 
-  const toggleChecked = (title: string) => {
-    setChecked((s) => ({ ...s, [title]: !s[title] }));
+  const toggleChecked = (habitId: string) => {
+    setHabitEntry(habitId, todayKey, (e) => ({ ...e, done: !e.done }));
   };
 
-  const incCount = (title: string, target?: number) => {
-    setCounts((s) => {
-      const cur = s[title] ?? 0;
-      const next =
-        typeof target === "number" ? Math.min(cur + 1, target) : cur + 1;
-      return { ...s, [title]: next };
-    });
+  const incCount = (habitId: string, target: number) => {
+    setHabitEntry(habitId, todayKey, (e) => ({
+      ...e,
+      count: Math.min((e.count ?? 0) + 1, target),
+    }));
   };
 
-  const decCount = (title: string) => {
-    setCounts((s) => {
-      const cur = s[title] ?? 0;
-      const next = Math.max(0, cur - 1);
-      return { ...s, [title]: next };
-    });
+  const decCount = (habitId: string) => {
+    setHabitEntry(habitId, todayKey, (e) => ({
+      ...e,
+      count: Math.max(0, (e.count ?? 0) - 1),
+    }));
   };
 
   return (
@@ -393,53 +313,25 @@ export default function HabitsScreen() {
               </Text>
             </TouchableOpacity>
           </View>
-          {HABITS.map((h, i) => {
-            // Simple filter: Today shows habits with tasks for today or all habits
-            // Upcoming shows the same (can be enhanced with actual scheduling logic)
-            // For now, just show all habits in both views
-            const emoji = emojiForTitle(h.title);
-            const habitColor = HABIT_COLORS[i % HABIT_COLORS.length];
-            const levels = randomLevels();
-            const plantLevelRaw = levels.reduce((sum, lvl) => {
-              const denom = h.target ?? h.timesPerDay ?? 1;
-              return sum + Math.min(1, lvl / denom);
-            }, 0);
-            const plantLevel = Math.round(plantLevelRaw * 10) / 10;
+          {data.habits.map((h) => {
+            // Today and Upcoming currently show all habits (scheduling TBD)
+            const habitColor = h.color;
+            const entries = data.habitLog[h.id];
+            const todayEntry = entries?.[todayKey] ?? {};
+            const fractions = week.map((d) =>
+              entryFraction(h, entries?.[dateKey(d)], dayName(d)),
+            );
+            const plantLevel = daysCompleted(h, entries);
             const plantLevelLabel =
               plantLevel % 1 === 0 ? `${plantLevel}` : plantLevel.toFixed(1);
-            // compute today's fraction for coloring today's cell
-            const todayDayName = DAY_NAMES[new Date().getDay()];
-            let todayFraction: number | undefined;
-            if (h.type === "count") {
-              const cur = counts[h.title] ?? 0;
-              const target =
-                typeof h.target === "number" ? h.target : (h.timesPerDay ?? 1);
-              if (target > 0 && cur > 0) {
-                todayFraction = Math.min(1, cur / target);
-              }
-            } else if (h.type === "checklist") {
-              const todayTasks = h.tasksByDay?.[todayDayName] ?? [];
-              if (todayTasks.length > 0) {
-                const checkedCount = todayTasks.filter(
-                  (t) => !!taskChecked[h.title]?.[t],
-                ).length;
-                if (checkedCount > 0) {
-                  todayFraction = checkedCount / todayTasks.length;
-                }
-              }
-            } else {
-              if (checked[h.title]) todayFraction = 1;
-            }
-
-            // Resolve today's tasks for checklist habits
+            const todayTarget = countTarget(h, todayDayName);
             const todayTasks =
-              h.type === "checklist"
-                ? (h.tasksByDay?.[todayDayName] ?? [])
-                : [];
+              h.type === "checklist" ? checklistItems(h, todayDayName) : [];
+            const isTaskChecked = (t: string) => !!todayEntry.tasks?.[t];
 
             return (
               <View
-                key={h.title}
+                key={h.id}
                 style={[
                   styles.card,
                   {
@@ -448,11 +340,10 @@ export default function HabitsScreen() {
                 ]}
               >
                 <ContributionGraph
-                  levels={levels}
+                  fractions={fractions}
                   tint={habitColor}
                   isLight={isLight}
                   labelColor={textColor}
-                  todayFraction={todayFraction}
                 />
 
                 <View style={styles.cardHeader}>
@@ -493,7 +384,7 @@ export default function HabitsScreen() {
                                 { color: textColor },
                               ]}
                             >
-                              {(h.timesPerDay ?? h.target) +
+                              {(h.target ?? 1) +
                                 "x / day (all days)"}
                             </Text>
                           )}
@@ -508,7 +399,7 @@ export default function HabitsScreen() {
                         <Text
                           style={[styles.cardSubtitle, { color: textColor }]}
                         >
-                          3 days / week
+                          {h.daysPerWeek ?? 7} days / week
                         </Text>
                       )}
                     </View>
@@ -516,9 +407,8 @@ export default function HabitsScreen() {
                   {h.type === "count" ? (
                     <View style={styles.counterRow}>
                       {(() => {
-                        const cur = counts[h.title] ?? 0;
-                        const max =
-                          typeof h.target === "number" ? h.target : undefined;
+                        const cur = todayEntry.count ?? 0;
+                        const max = todayTarget;
                         const decDisabled = cur <= 0;
                         const incDisabled =
                           typeof max === "number" ? cur >= max : false;
@@ -538,7 +428,7 @@ export default function HabitsScreen() {
                                       borderWidth: 0,
                                     },
                               ]}
-                              onPress={() => decCount(h.title)}
+                              onPress={() => decCount(h.id)}
                               disabled={decDisabled}
                             >
                               <FontAwesome6
@@ -556,7 +446,7 @@ export default function HabitsScreen() {
                               ]}
                             >
                               {" "}
-                              {cur}/{h.target ?? 1}
+                              {cur}/{todayTarget}
                             </Text>
 
                             <TouchableOpacity
@@ -573,7 +463,7 @@ export default function HabitsScreen() {
                                       borderWidth: 0,
                                     },
                               ]}
-                              onPress={() => incCount(h.title, h.target)}
+                              onPress={() => incCount(h.id, todayTarget)}
                               disabled={incDisabled}
                             >
                               <FontAwesome6
@@ -595,29 +485,29 @@ export default function HabitsScreen() {
                       ]}
                     >
                       {todayTasks.length > 0
-                        ? `${todayTasks.filter((t) => !!taskChecked[h.title]?.[t]).length}/${todayTasks.length}`
+                        ? `${todayTasks.filter(isTaskChecked).length}/${todayTasks.length}`
                         : "Rest day"}
                     </Text>
                   ) : (
                     <TouchableOpacity
                       style={[
                         styles.checkbox,
-                        checked[h.title]
+                        todayEntry.done
                           ? { backgroundColor: habitColor }
                           : { borderColor: habitColor, borderWidth: 1 },
                       ]}
-                      onPress={() => toggleChecked(h.title)}
+                      onPress={() => toggleChecked(h.id)}
                       activeOpacity={0.8}
                     >
                       <Text
                         style={[
                           styles.checkboxText,
-                          checked[h.title]
+                          todayEntry.done
                             ? { color: "#FFFFFF" }
                             : { color: habitColor },
                         ]}
                       >
-                        {checked[h.title] ? "✓" : ""}
+                        {todayEntry.done ? "✓" : ""}
                       </Text>
                     </TouchableOpacity>
                   )}
@@ -627,7 +517,7 @@ export default function HabitsScreen() {
                 {h.type === "checklist" && todayTasks.length > 0 && (
                   <View style={{ marginTop: 4 }}>
                     {todayTasks.map((task) => {
-                      const isChecked = !!taskChecked[h.title]?.[task];
+                      const isChecked = isTaskChecked(task);
                       return (
                         <View
                           key={task}
@@ -645,7 +535,7 @@ export default function HabitsScreen() {
                                 : { borderColor: habitColor, borderWidth: 1 },
                               { marginRight: 12 },
                             ]}
-                            onPress={() => toggleTask(h.title, task)}
+                            onPress={() => toggleTask(h.id, task)}
                             activeOpacity={0.8}
                           >
                             <Text
@@ -660,7 +550,7 @@ export default function HabitsScreen() {
                             </Text>
                           </TouchableOpacity>
                           <TouchableOpacity
-                            onPress={() => toggleTask(h.title, task)}
+                            onPress={() => toggleTask(h.id, task)}
                             activeOpacity={0.7}
                           >
                             <Text

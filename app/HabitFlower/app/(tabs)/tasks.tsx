@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,26 +16,9 @@ import { useThemeColor } from "@/hooks/use-theme-color";
 import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
 import { useRouter } from "expo-router";
 
-type Todo = {
-  title: string;
-  datetime?: string; // ISO string
-  sublist?: string[];
-  description?: string;
-};
+import { useAppStore } from "@/store/app-store";
 
-const TODOS: Todo[] = [
-  {
-    title: "Finish assignment",
-    datetime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // tomorrow
-    description: "Finish the math assignment before class",
-  },
-  {
-    title: "Grocery run",
-    datetime: new Date().toISOString(),
-    sublist: ["Milk", "Eggs", "Bread"],
-    description: "Quick trip to pick up essentials for the week",
-  },
-];
+const COMPLETE_DELAY_MS = 1300;
 
 export default function TodosScreen() {
   const insets = useSafeAreaInsets();
@@ -45,101 +28,59 @@ export default function TodosScreen() {
   const tint = useThemeColor({}, "tint");
   const isLight = background === "#FEF3FF";
   const cardBg = isLight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.06)";
-  const [todosChecked, setTodosChecked] = useState<Record<string, boolean>>({});
-  const [subChecked, setSubChecked] = useState<
-    Record<string, Record<string, boolean>>
-  >({});
+  const { data, setTaskDone, toggleSubtask } = useAppStore();
   const [showCompleted, setShowCompleted] = useState(false);
-  const [hiddenTodos, setHiddenTodos] = useState<Set<string>>(new Set());
-  const [timeoutIds, setTimeoutIds] = useState<
-    Record<string, ReturnType<typeof setTimeout>>
-  >({});
-  const [blinkAnimations, setBlinkAnimations] = useState<
-    Record<string, Animated.Value>
-  >({});
+  // Tasks ticked but still blinking before they move to Completed
+  const [completing, setCompleting] = useState<Record<string, boolean>>({});
+  const timeouts = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  const blinkAnimations = useRef<Record<string, Animated.Value>>({});
 
-  const toggleTodo = (title: string) => {
-    setTodosChecked((s) => {
-      const newState = { ...s, [title]: !s[title] };
+  useEffect(() => {
+    const pending = timeouts.current;
+    return () => Object.values(pending).forEach(clearTimeout);
+  }, []);
 
-      if (newState[title]) {
-        // Marking as complete - start blink animation
-        const animValue = new Animated.Value(1);
+  const blinkValue = (id: string) => {
+    if (!blinkAnimations.current[id]) {
+      blinkAnimations.current[id] = new Animated.Value(1);
+    }
+    return blinkAnimations.current[id];
+  };
 
-        Animated.sequence([
-          Animated.timing(animValue, {
-            toValue: 0.3,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 1,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 0.3,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 1,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 0.3,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 1,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-        ]).start();
-
-        setBlinkAnimations((prev) => ({ ...prev, [title]: animValue }));
-
-        // Set timeout to hide after blinking completes (1.2 seconds for animation + 100ms delay)
-        const id = setTimeout(() => {
-          setHiddenTodos((prev) => new Set(prev).add(title));
-        }, 1300);
-        setTimeoutIds((prev) => ({ ...prev, [title]: id }));
-      } else {
-        // Marking as pending - stop animation and reset opacity
-        const animValue = blinkAnimations[title];
-        if (animValue) {
-          animValue.stopAnimation(() => {
-            animValue.setValue(1);
-          });
-        }
-
-        // Clear timeout so it doesn't hide
-        if (timeoutIds[title]) {
-          clearTimeout(timeoutIds[title]);
-          setTimeoutIds((prev) => {
-            const copy = { ...prev };
-            delete copy[title];
-            return copy;
-          });
-        }
-        setHiddenTodos((prev) => {
-          const copy = new Set(prev);
-          copy.delete(title);
-          return copy;
-        });
-      }
-
-      return newState;
+  const stopCompleting = (id: string) => {
+    clearTimeout(timeouts.current[id]);
+    delete timeouts.current[id];
+    blinkValue(id).stopAnimation(() => blinkValue(id).setValue(1));
+    setCompleting((c) => {
+      const { [id]: _removed, ...rest } = c;
+      return rest;
     });
   };
 
-  const toggleSubItem = (todoTitle: string, item: string) => {
-    setSubChecked((s) => {
-      const cur = s[todoTitle] ?? {};
-      return { ...s, [todoTitle]: { ...cur, [item]: !cur[item] } };
-    });
+  const toggleTodo = (id: string, done: boolean) => {
+    if (done) {
+      // From Completed back to Pending
+      setTaskDone(id, false);
+      return;
+    }
+    if (completing[id]) {
+      // Un-ticked during the blink: cancel
+      stopCompleting(id);
+      return;
+    }
+    setCompleting((c) => ({ ...c, [id]: true }));
+    const anim = blinkValue(id);
+    const step = (toValue: number) =>
+      Animated.timing(anim, { toValue, duration: 150, useNativeDriver: false });
+    Animated.sequence([step(0.3), step(1), step(0.3), step(1), step(0.3), step(1)]).start();
+    timeouts.current[id] = setTimeout(() => {
+      setTaskDone(id, true);
+      delete timeouts.current[id];
+      setCompleting((c) => {
+        const { [id]: _removed, ...rest } = c;
+        return rest;
+      });
+    }, COMPLETE_DELAY_MS);
   };
 
   const now = new Date();
@@ -239,8 +180,8 @@ export default function TodosScreen() {
           </View>
 
           {(() => {
-            const pending = TODOS.filter((t) => !hiddenTodos.has(t.title));
-            const completed = TODOS.filter((t) => !!todosChecked[t.title]);
+            const pending = data.tasks.filter((t) => !t.done);
+            const completed = data.tasks.filter((t) => t.done);
             const listToShow = showCompleted ? completed : pending;
 
             if (listToShow.length === 0) {
@@ -271,11 +212,11 @@ export default function TodosScreen() {
             }
 
             return listToShow.map((t) => {
-              const done = !!todosChecked[t.title];
-              const opacityValue = blinkAnimations[t.title] || 1;
+              const checked = t.done || !!completing[t.id];
+              const opacityValue = blinkAnimations.current[t.id] ?? 1;
               return (
                 <Animated.View
-                  key={t.title}
+                  key={t.id}
                   style={[
                     styles.card,
                     { backgroundColor: cardBg, opacity: opacityValue },
@@ -308,7 +249,7 @@ export default function TodosScreen() {
                             styles.cardTitle,
                             {
                               color: textColor,
-                              textDecorationLine: done
+                              textDecorationLine: checked
                                 ? "line-through"
                                 : "none",
                             },
@@ -343,31 +284,31 @@ export default function TodosScreen() {
                     <TouchableOpacity
                       style={[
                         styles.checkbox,
-                        done
+                        checked
                           ? { backgroundColor: tint }
                           : { borderColor: tint, borderWidth: 1 },
                       ]}
-                      onPress={() => toggleTodo(t.title)}
+                      onPress={() => toggleTodo(t.id, t.done)}
                       activeOpacity={0.8}
                     >
                       <Text
                         style={[
                           styles.checkboxText,
-                          done ? { color: "#FFFFFF" } : { color: tint },
+                          checked ? { color: "#FFFFFF" } : { color: tint },
                         ]}
                       >
-                        {done ? "✓" : ""}
+                        {checked ? "✓" : ""}
                       </Text>
                     </TouchableOpacity>
                   </View>
 
-                  {t.sublist && (
+                  {t.subtasks.length > 0 && (
                     <View style={{ marginTop: 8 }}>
-                      {t.sublist.map((it) => {
-                        const checkedItem = subChecked[t.title]?.[it];
+                      {t.subtasks.map((it) => {
+                        const checkedItem = it.done;
                         return (
                           <View
-                            key={it}
+                            key={it.id}
                             style={{
                               flexDirection: "row",
                               alignItems: "center",
@@ -382,7 +323,7 @@ export default function TodosScreen() {
                                   : { borderColor: tint, borderWidth: 1 },
                                 { marginRight: 12 },
                               ]}
-                              onPress={() => toggleSubItem(t.title, it)}
+                              onPress={() => toggleSubtask(t.id, it.id)}
                               activeOpacity={0.8}
                             >
                               <Text
@@ -398,7 +339,7 @@ export default function TodosScreen() {
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                              onPress={() => toggleSubItem(t.title, it)}
+                              onPress={() => toggleSubtask(t.id, it.id)}
                               activeOpacity={0.7}
                             >
                               <Text
@@ -411,7 +352,7 @@ export default function TodosScreen() {
                                   opacity: checkedItem ? 0.5 : 1,
                                 }}
                               >
-                                {it}
+                                {it.text}
                               </Text>
                             </TouchableOpacity>
                           </View>

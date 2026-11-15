@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Flower states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+</style>
+</helmet>
+<div style="width: 760px; height: 300px; box-sizing: border-box; padding: 28px; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 18px">
+  <p style="margin: 0; font-size: 18px; font-weight: 800">Flower states</p>
+  <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; flex: 1">
+    <sc-for list="{{states}}" as="s" hint-placeholder-count="5">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; padding: 12px 8px; border-radius: 18px; background: #2A1C2F">
+        <dc-import name="Flower" kind="lavender" stage="{{s.stage}}" health="{{s.health}}" size="96" hint-size="96px,96px"></dc-import>
+        <p style="margin: 0; font-size: 15px; font-weight: 800; color: {{s.color}}">{{s.label}}</p>
+        <p style="margin: 0; font-size: 12px; font-weight: 500; color: #B9A8C0; text-align: center; line-height: 1.35">{{s.rule}}</p>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":760,"height":300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      states: [
+        { stage: 'seed', health: 'ok', label: 'Sprout', rule: 'Just planted. Missing a day dries it up', color: '#F6EEF8' },
+        { stage: 'bud', health: 'ok', label: 'Bud', rule: 'After 1 check-in', color: '#F6EEF8' },
+        { stage: 'bloom', health: 'ok', label: 'Bloom', rule: 'After 2. The number counts days in bloom', color: '#F6EEF8' },
+        { stage: 'bloom', health: 'wilt', label: 'Wilting', rule: 'Missed 1 day. Count pauses until you check in', color: '#FFB894' },
+        { stage: 'bloom', health: 'dormant', label: 'Dried up', rule: 'Missed 2 in a row. Count resets, comes back as a bud', color: '#FF7B7B' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

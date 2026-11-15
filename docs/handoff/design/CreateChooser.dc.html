@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add new</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.hf-tile{transition:transform 120ms ease}
+.hf-tile:active{transform:scale(0.97)}
+.hf-tile:focus-visible,.hf-tab:focus-visible{outline:2px solid #74D447;outline-offset:3px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #120814; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden">
+
+  <div aria-hidden="true" style="position: absolute; top: 62px; left: 20px; right: 20px; display: flex; flex-direction: column; gap: 14px; opacity: 0.3">
+    <div style="width: 120px; height: 14px; border-radius: 7px; background: #3D2D43"></div>
+    <div style="width: 200px; height: 30px; border-radius: 10px; background: #3D2D43"></div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 10px">
+      <div style="height: 160px; border-radius: 20px; background: #2A1C2F"></div>
+      <div style="height: 160px; border-radius: 20px; background: #2A1C2F"></div>
+    </div>
+  </div>
+
+  <section role="dialog" aria-label="Add new" style="position: relative; margin: 0 12px 36px 12px; padding: 20px 16px 16px 16px; border-radius: 30px; background: #241628; display: flex; flex-direction: column; gap: 14px">
+    <h1 style="margin: 0 4px; font-size: 20px; font-weight: 800">Add new</h1>
+
+    <div style="display: grid; grid-template-columns: 1.1fr 1fr; grid-template-rows: 132px 132px; gap: 10px">
+
+      <a class="hf-tile" href="NewHabit.dc.html" style="grid-row: span 2; border-radius: 22px; background: rgba(116,212,71,0.12); padding: 14px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden">
+        <div aria-hidden="true" style="display: flex; align-items: flex-end; justify-content: center; gap: 0; margin-top: 8px">
+          <dc-import name="Flower" kind="sunflower" stage="seed" size="46" hint-size="46px,46px"></dc-import>
+          <dc-import name="Flower" kind="sunflower" stage="bud" size="62" hint-size="62px,62px"></dc-import>
+          <dc-import name="Flower" kind="sunflower" stage="bloom" size="84" hint-size="84px,84px"></dc-import>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 20px; font-weight: 800">Habit</span>
+          <span style="font-size: 13px; font-weight: 600; color: #B8EE98">Grow a HabitFlower</span>
+        </div>
+      </a>
+
+      <a class="hf-tile" href="NewTask.dc.html" style="border-radius: 22px; background: rgba(122,167,255,0.12); padding: 14px; display: flex; flex-direction: column; justify-content: space-between">
+        <div aria-hidden="true" style="display: flex; flex-direction: column; gap: 6px">
+          <div style="display: flex; align-items: center; gap: 7px">
+            <span style="width: 16px; height: 16px; border-radius: 6px; background: #7AA7FF; display: flex; align-items: center; justify-content: center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0F1E3A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+            <span style="height: 6px; width: 54px; border-radius: 3px; background: rgba(122,167,255,0.35)"></span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 7px">
+            <span style="width: 16px; height: 16px; border-radius: 6px; background: rgba(122,167,255,0.25)"></span>
+            <span style="height: 6px; width: 70px; border-radius: 3px; background: rgba(122,167,255,0.35)"></span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <span style="font-size: 17px; font-weight: 800">Task</span>
+          <span style="font-size: 12.5px; font-weight: 600; color: #A9C6FF">Once or on repeat</span>
+        </div>
+      </a>
+
+      <a class="hf-tile" href="AddFriend.dc.html" style="border-radius: 22px; background: rgba(242,143,184,0.12); padding: 14px; display: flex; flex-direction: column; justify-content: space-between">
+        <div aria-hidden="true" style="display: flex; padding-left: 6px">
+          <span style="width: 30px; height: 30px; margin-left: -6px; border-radius: 15px; background: #FFC93C; color: #3A2600; box-shadow: 0 0 0 2px #2E1D33; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800">MC</span>
+          <span style="width: 30px; height: 30px; margin-left: -6px; border-radius: 15px; background: #A98BEA; color: #1F1023; box-shadow: 0 0 0 2px #2E1D33; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800">SP</span>
+          <span style="width: 30px; height: 30px; margin-left: -6px; border-radius: 15px; background: #F28FB8; color: #2A0E1A; box-shadow: 0 0 0 2px #2E1D33; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <span style="font-size: 17px; font-weight: 800">Friend</span>
+          <span style="font-size: 12.5px; font-weight: 600; color: #F7B6CF">Cheer each other on</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <nav aria-label="Main" style="height: 84px; box-sizing: border-box; padding: 8px 12px 26px 12px; background: #180B1B; border-top: 1px solid #33243A; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+    <button class="hf-tab" aria-current="page" style="border: none; background: none; color: #74D447; display: flex; flex-direction: column; align-items: center; gap: 3px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-8"></path><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5z"></path><path d="M12 15c0-2.5-1.8-4.5-4.5-4.5 0 2.5 1.8 4.5 4.5 4.5z"></path><circle cx="12" cy="6" r="3"></circle></svg>
+      Habits
+    </button>
+    <a class="hf-tab" href="Tasks.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"></rect><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg><span aria-label="3 tasks need attention, 1 overdue" style="position: absolute; top: -5px; right: -9px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #FF9E6B; color: #2A1206; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #180B1B">3</span></span>
+      Tasks
+    </a>
+    <a class="hf-tab" href="Main.dc.html" aria-label="Close" style="display: flex; align-items: flex-start; justify-content: center">
+      <span style="width: 56px; height: 56px; margin-top: -22px; border-radius: 28px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #180B1B">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </span>
+    </a>
+    <a class="hf-tab" href="Friends.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3.5"></circle><circle cx="17" cy="10" r="2.5"></circle><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"></path><path d="M15.5 14.2c2.8 0 5 1.8 5 4.8"></path></svg>
+      Friends
+    </a>
+    <a class="hf-tab" href="Notifications.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 21h4"></path></svg><span aria-label="3 new" style="position: absolute; top: -5px; right: -9px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #FF9E6B; color: #2A1206; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #180B1B">3</span></span>
+      Activity
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

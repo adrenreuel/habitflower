@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Widget: large HabitFlowers</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+</style>
+</helmet>
+<div style="width: 364px; height: 382px; box-sizing: border-box; padding: 16px 16px 20px 16px; background: #241628; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 6px; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: baseline">
+    <p style="margin: 0; font-size: 16px; font-weight: 800">My HabitFlowers</p>
+    <p style="margin: 0; font-size: 13px; font-weight: 700; color: #C9B9CF; display: flex; align-items: center; gap: 4px">5 left today</p>
+  </div>
+  <div style="flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 6px 8px; margin-top: 6px">
+    <sc-for list="{{habits}}" as="h" hint-placeholder-count="6">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px">
+        <div style="position: relative; width: 78px; height: 78px">
+          <dc-import name="Flower" kind="{{h.kind}}" stage="{{h.stage}}" health="{{h.health}}" size="78" hint-size="78px,78px"></dc-import>
+          <sc-if value="{{h.hasCount}}" hint-placeholder-val="{{false}}"><span style="{{h.countStyle}}">{{h.count}}</span></sc-if>
+          <span style="{{h.badgeStyle}}">
+            <sc-if value="{{h.isDue}}" hint-placeholder-val="{{true}}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#74D447" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l7 7 7-7"></path></svg></sc-if>
+            <sc-if value="{{h.isDone}}" hint-placeholder-val="{{false}}">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#142008" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+            </sc-if>
+            <sc-if value="{{h.isRest}}" hint-placeholder-val="{{false}}">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#E4D7E9" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+            </sc-if>
+            <sc-if value="{{h.isLater}}" hint-placeholder-val="{{false}}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#E4D7E9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5V12l3 2"></path></svg></sc-if>
+          </span>
+        </div>
+        <p style="margin: 0; font-size: 11.5px; font-weight: 600; color: {{h.statusColor}}">{{h.label}}</p>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":364,"height":382}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var data = [
+      { name: 'Push-ups', kind: 'marigold', stage: 'bloom', count: 4, status: 'due', label: '1 of 3' },
+      { name: 'Scales', kind: 'tulip', stage: 'bud', status: 'due', label: '2 of 3' },
+      { name: 'Gym', kind: 'lavender', stage: 'bloom', count: 12, status: 'later', label: 'Opens 6 PM' },
+      { name: 'Read', kind: 'daisy', stage: 'bud', health: 'dormant', status: 'due', label: 'Dried up' },
+      { name: 'Water', kind: 'sunflower', stage: 'bloom', count: 21, status: 'due', label: '5 of 8' },
+      { name: 'Walk', kind: 'rose', stage: 'bloom', health: 'wilt', count: 3, status: 'due', label: 'Wilting' }
+    ];
+    var badgeBase = 'position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #241628;';
+    var habits = data.map(function (h) {
+      var bg = h.status === 'due' ? '#241628' : (h.status === 'done' ? '#74D447' : '#4A3950');
+      return {
+        name: h.name, kind: h.kind, stage: h.stage, health: h.health || 'ok', hasCount: !!h.count, count: String(h.count || ''), countStyle: 'position: absolute; right: -4px; bottom: 2px; min-width: 22px; height: 20px; padding: 0 5px; box-sizing: border-box; border-radius: 10px; background: #3D2D43; box-shadow: 0 0 0 2px #241628; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center;' + (h.health === 'wilt' ? ' color: #FFB894;' : ' color: #F6EEF8;'), label: h.label,
+        isDue: h.status === 'due', isDone: h.status === 'done', isRest: h.status === 'rest', isLater: h.status === 'later',
+        badgeStyle: badgeBase + 'background: ' + bg + ';' + (h.status === 'due' ? ' top: -10px; right: auto; left: 50%; transform: translateX(-50%); width: auto; height: auto; background: none; box-shadow: none;' : ''),
+        statusColor: h.health === 'wilt' ? '#FFB894' : h.health === 'dormant' ? '#FF7B7B' : (h.status === 'done' ? '#9BE36F' : (h.status === 'due' ? '#C9B9CF' : '#8C7992'))
+      };
+    });
+    return { habits: habits };
+  }
+}
+</script>
+</body>
+</html>

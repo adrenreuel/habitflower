@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Habit detail: Steps (Apple Health)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
+.hf-step:active{transform:scale(0.96)}
+.hf-step:focus-visible,.hf-back:focus-visible,.hf-row:focus-visible{outline:2px solid #FFB7C9;outline-offset:2px}
+.hf-step:disabled{opacity:0.35;cursor:default}
+</style>
+</helmet>
+<div style="width: 390px; height: 1264px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px; padding: 58px 20px 40px 20px">
+
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <a class="hf-back" href="Main.dc.html" style="display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+      Habits
+    </a>
+    <a href="EditHabit.dc.html" style="height: 44px; padding: 0 16px; border-radius: 22px; border: none; background: #2A1C2F; color: #F6EEF8; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path><path d="M13.5 6.5l4 4"></path></svg>Edit</a>
+  </div>
+
+  <section style="display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+    <div style="position: relative; width: 132px; height: 132px; border-radius: 40px; background: rgba(255,183,201,0.12); display: flex; align-items: center; justify-content: center">
+      <dc-import name="Flower" kind="blossom" stage="bloom" size="104" hint-size="104px,104px"></dc-import>
+    </div>
+    <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.4px">Walk 10k steps</h1>
+    <p style="margin: 0; font-size: 15px; font-weight: 500; color: #B9A8C0">10,000 steps a day</p>
+    <span style="height: 28px; padding: 0 12px; margin-top: 4px; border-radius: 14px; background: rgba(255,183,201,0.16); color: #FFD6E1; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.2 2.2-5.3 3.6-7.1.4 1.8 1.4 2.9 2.4 3.2-.3-2.9.9-5.6 3-7.4.2 2.6 1.4 4.1 2.6 5.6 1.1 1.4 1.4 2.6 1.4 4.1C18.5 17.9 15.9 21 12 21z"></path></svg>In bloom for 4 days</span>
+  </section>
+
+  <section aria-label="Today" style="background: #2A1C2F; border-radius: 24px; padding: 20px 20px 18px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px">
+    <div style="align-self: stretch; display: flex; align-items: center; justify-content: space-between">
+      <p style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Today</p>
+      <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: #A895AE">
+        <span aria-hidden="true" style="width: 18px; height: 18px; border-radius: 5px; background: #FFFFFF; display: inline-flex; align-items: center; justify-content: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="#FF2D55"><path d="M12 20.5s-8-4.9-8-10.9A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 8 3c0 6-8 10.9-8 10.9z"></path></svg></span>
+        Synced 2 min ago
+      </span>
+    </div>
+    <div style="position: relative; width: 188px; height: 188px">
+      <svg width="188" height="188" viewBox="0 0 188 188" aria-hidden="true" style="position: absolute; inset: 0; transform: rotate(-90deg)">
+        <circle cx="94" cy="94" r="82" fill="none" stroke="#3D2D43" stroke-width="14"></circle>
+        <circle cx="94" cy="94" r="82" fill="none" stroke="#FFB7C9" stroke-width="14" stroke-linecap="round" stroke-dasharray="515.22" stroke-dashoffset="{{ringOffset}}"></circle>
+      </svg>
+      <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px" aria-live="polite">
+        <p style="margin: 0; font-size: 38px; font-weight: 800; line-height: 1; letter-spacing: -0.5px">{{valueLabel}}</p>
+        <p style="margin: 0; font-size: 14px; font-weight: 600; color: #B9A8C0">of 10,000 steps</p>
+      </div>
+    </div>
+    <p style="margin: 0; font-size: 14.5px; font-weight: 600; color: {{statusColor}}">{{status}}</p>
+  </section>
+
+  <section aria-label="This week" style="display: flex; flex-direction: column; gap: 10px">
+    <h2 style="margin: 0; font-size: 18px; font-weight: 700">This week</h2>
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+      <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+          <span style="font-size: 12px; font-weight: 600; color: #B9A8C0">{{d.dow}}</span>
+          <span style="{{d.style}}">{{d.num}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section aria-label="Stats" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+    <div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+      <p style="margin: 0; font-size: 24px; font-weight: 800">9<span style="font-size: 15px; font-weight: 700; color: #C9B9CF"> days</span></p>
+      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Best streak</p>
+    </div>
+    <div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+      <p style="margin: 0; font-size: 24px; font-weight: 800">11/13</p>
+      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Days in Nov</p>
+    </div>
+  </section>
+
+  <section aria-label="November history" style="background: #2A1C2F; border-radius: 24px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">November</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+      <sc-for list="{{dows}}" as="w" hint-placeholder-count="7">
+        <span style="text-align: center; font-size: 11px; font-weight: 600; color: #A895AE">{{w}}</span>
+      </sc-for>
+      <sc-for list="{{month}}" as="c" hint-placeholder-count="30">
+        <span style="{{c.style}}">{{c.num}}</span>
+      </sc-for>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; padding-top: 2px; font-size: 12px; font-weight: 600; color: #B9A8C0">
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #FFB7C9"></span>Done</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: rgba(255,183,201,0.4)"></span>Partly</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: rgba(255,158,107,0.45)"></span>Missed</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(135deg, rgba(122,167,255,0.26) 0 4px, rgba(122,167,255,0.10) 4px 8px);"></span>Paused</span>
+      </div>
+  </section>
+
+  <section style="background: #2A1C2F; border-radius: 20px; display: flex; flex-direction: column">
+    <button class="hf-row" style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 18px; border: none; background: none; color: #F6EEF8; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 1px solid #3D2D43">
+      <span>Reminders</span><span style="color: #B9A8C0; font-weight: 500">8 AM, 1 PM, 7 PM</span>
+    </button>
+    <button class="hf-row" style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 18px; border: none; background: none; color: #F6EEF8; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">
+      <span>Shared with</span><span style="color: #B9A8C0; font-weight: 500">Friends</span>
+    </button>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"reached":{"type":"enum","options":["no","yes"],"default":"no"},"$preview":{"width":390,"height":1264}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  renderVals() {
+    var self = this;
+    var reached = (this.props.reached || 'no') === 'yes';
+    var steps = reached ? 10482 : 6240;
+    var goal = 3;
+    var count = reached ? 3 : 1;
+    var C = 427.26;
+    var amber = '#FFB7C9';
+    var part = 'rgba(255,183,201,0.4)';
+    var cellBase = 'height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; box-sizing: border-box;';
+    function cell(s) {
+      if (s === 'done') return cellBase + 'background: ' + amber + '; color: #1F1023;';
+      if (s === 'part') return cellBase + 'background: ' + part + '; color: #F6EEF8;';
+      if (s === 'miss') return cellBase + 'background: rgba(255,158,107,0.24); color: #FFB894;';
+      if (s === 'pause') return cellBase + 'background: repeating-linear-gradient(135deg, rgba(122,167,255,0.26) 0 4px, rgba(122,167,255,0.10) 4px 8px); color: #A9C6FF;';
+      if (s === 'today') return cellBase + 'background: ' + (count >= goal ? amber : part) + '; color: ' + (count >= goal ? '#1F1023' : '#F6EEF8') + '; box-shadow: 0 0 0 2px #2A1C2F, 0 0 0 4px ' + amber + ';';
+      return cellBase + 'background: #3A2A40; color: #7D6A83;';
+    }
+    var weekCell = 'width: 40px; height: 40px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; box-sizing: border-box;';
+    function wk(s) {
+      if (s === 'done') return weekCell + 'background: ' + amber + '; color: #1F1023;';
+      if (s === 'miss') return weekCell + 'background: rgba(255,158,107,0.24); color: #FFB894;';
+      if (s === 'today') return weekCell + 'background: ' + (count >= goal ? amber : part) + '; color: ' + (count >= goal ? '#1F1023' : '#F6EEF8') + '; box-shadow: 0 0 0 2px #1F1023, 0 0 0 4px ' + amber + ';';
+      return weekCell + 'background: #2A1C2F; color: #7D6A83;';
+    }
+    var wStates = ['done','done','miss','done','done','done','today'];
+    var dowsShort = ['S','M','T','W','T','F','S'];
+    var week = wStates.map(function (s, i) { return { dow: dowsShort[i], num: String(8 + i), style: wk(s) }; });
+    var hist = ['done','done','done','part','pause','pause','pause','done','done','miss','done','done','done'];
+    var month = [];
+    for (var d = 1; d <= 30; d++) {
+      var s = d <= 13 ? hist[d - 1] : (d === 14 ? 'today' : 'future');
+      month.push({ num: String(d), style: cell(s) });
+    }
+    var status = reached ? 'Checked in automatically' : (10000 - steps).toLocaleString('en-US') + ' to go. Checks in by itself.';
+    return {
+      valueLabel: steps.toLocaleString('en-US'),
+      ringOffset: String(515.22 * (1 - Math.min(1, steps / 10000))),
+      status: status,
+      statusColor: reached ? amber : '#B9A8C0',
+      week: week,
+      dows: dowsShort,
+      month: month
+    };
+  }
+}
+</script>
+</body>
+</html>

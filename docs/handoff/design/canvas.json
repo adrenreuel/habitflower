@@ -1,0 +1,550 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "AddFriend.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Add a friend",
+      "w": 390,
+      "x": 1410,
+      "y": 6698
+    },
+    "Archived.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Paused habits",
+      "w": 390,
+      "x": 5170,
+      "y": 1484
+    },
+    "CreateChooser.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Add new sheet",
+      "w": 390,
+      "x": 0,
+      "y": 3534
+    },
+    "Detail.dc.html": {
+      "h": 1264,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Habit: counter",
+      "w": 390,
+      "x": 470,
+      "y": 1484
+    },
+    "EditHabit.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Edit habit",
+      "w": 390,
+      "x": 4700,
+      "y": 1484
+    },
+    "Flower.dc.html": {
+      "h": 96,
+      "title": "Flower drawing (used by every screen, keep)",
+      "w": 96,
+      "x": 720,
+      "y": 14718
+    },
+    "FlowerStates.dc.html": {
+      "h": 300,
+      "title": "Flower states",
+      "w": 760,
+      "x": 720,
+      "y": 14338
+    },
+    "Friends.dc.html": {
+      "h": 1470,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Friends",
+      "w": 390,
+      "x": 0,
+      "y": 6698
+    },
+    "GymDetail.dc.html": {
+      "h": 1344,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Habit: photo check-in, window open",
+      "w": 390,
+      "x": 2820,
+      "y": 1484
+    },
+    "HabitsEmpty.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Habits: empty",
+      "w": 390,
+      "x": 0,
+      "y": 11832
+    },
+    "Main.dc.html": {
+      "h": 1380,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Home",
+      "w": 390,
+      "x": 0,
+      "y": 1484
+    },
+    "NewHabit.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "New habit",
+      "w": 390,
+      "x": 470,
+      "y": 3534
+    },
+    "NewTask.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "New task",
+      "w": 390,
+      "x": 940,
+      "y": 3534
+    },
+    "Tasks.dc.html": {
+      "h": 1040,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Tasks",
+      "w": 390,
+      "x": 0,
+      "y": 5018
+    },
+    "TasksEmpty.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Tasks: empty",
+      "w": 390,
+      "x": 470,
+      "y": 11832
+    },
+    "WidgetLarge.dc.html": {
+      "h": 382,
+      "radius": 22,
+      "title": "Widget: large",
+      "w": 364,
+      "x": 694,
+      "y": 13316
+    },
+    "WidgetMedium.dc.html": {
+      "h": 170,
+      "radius": 22,
+      "title": "Widget: medium",
+      "w": 364,
+      "x": 250,
+      "y": 13316
+    },
+    "WidgetSmall.dc.html": {
+      "h": 170,
+      "radius": 22,
+      "title": "Widget: small",
+      "w": 170,
+      "x": 0,
+      "y": 13316
+    },
+    "ReviveDetail.dc.html": {
+      "x": 4230,
+      "y": 1484,
+      "w": 390,
+      "h": 1284,
+      "title": "Habit: dried up, revive",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "ManageFriends.dc.html": {
+      "x": 2350,
+      "y": 6698,
+      "w": 390,
+      "h": 844,
+      "title": "Manage friends",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "FriendsEmpty.dc.html": {
+      "x": 940,
+      "y": 11832,
+      "w": 390,
+      "h": 844,
+      "title": "Friends: empty",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "GymClosed.dc.html": {
+      "x": 3290,
+      "y": 1484,
+      "w": 390,
+      "h": 1344,
+      "title": "Habit: window not open yet",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "PushupsWindows.dc.html": {
+      "x": 940,
+      "y": 1484,
+      "w": 390,
+      "h": 1364,
+      "title": "Habit: two check-in windows",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "FriendFlowers.dc.html": {
+      "x": 470,
+      "y": 6698,
+      "w": 390,
+      "h": 990,
+      "title": "Friend\u2019s HabitFlowers",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "FlowerSheet.dc.html": {
+      "x": 0,
+      "y": 14338,
+      "w": 640,
+      "h": 1380,
+      "title": "All flowers"
+    },
+    "Settings.dc.html": {
+      "x": 0,
+      "y": 10292,
+      "w": 390,
+      "h": 844,
+      "title": "Settings",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "Account.dc.html": {
+      "x": 470,
+      "y": 10292,
+      "w": 390,
+      "h": 844,
+      "title": "Account",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "ListDetail.dc.html": {
+      "x": 1410,
+      "y": 1484,
+      "w": 390,
+      "h": 1294,
+      "title": "Habit: list check-in",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "GroupDetail.dc.html": {
+      "x": 2350,
+      "y": 1484,
+      "w": 390,
+      "h": 1410,
+      "title": "Habit: grow together",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "Welcome.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Welcome",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "NotifPrompt.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Notifications prompt",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "FriendsGate.dc.html": {
+      "x": 1880,
+      "y": 6698,
+      "w": 390,
+      "h": 844,
+      "title": "Friends: back up first",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "HealthDetail.dc.html": {
+      "x": 1880,
+      "y": 1484,
+      "w": 390,
+      "h": 1264,
+      "title": "Habit: Apple Health",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "Camera.dc.html": {
+      "x": 3760,
+      "y": 1484,
+      "w": 390,
+      "h": 844,
+      "title": "Camera: photo check-in",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "TaskDetail.dc.html": {
+      "x": 470,
+      "y": 5018,
+      "w": 390,
+      "h": 844,
+      "title": "Task detail",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "EditTask.dc.html": {
+      "x": 940,
+      "y": 5018,
+      "w": 390,
+      "h": 844,
+      "title": "Edit task",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "Notifications.dc.html": {
+      "x": 0,
+      "y": 8808,
+      "w": 390,
+      "h": 844,
+      "title": "Activity (notifications)",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "NotifSettings.dc.html": {
+      "x": 1410,
+      "y": 10292,
+      "w": 390,
+      "h": 900,
+      "title": "Notification settings",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "ChangeUsername.dc.html": {
+      "x": 940,
+      "y": 10292,
+      "w": 390,
+      "h": 844,
+      "title": "Change username",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "WidgetsHelp.dc.html": {
+      "x": 1880,
+      "y": 10292,
+      "w": 390,
+      "h": 844,
+      "title": "Widgets help",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "HelpFeedback.dc.html": {
+      "x": 2350,
+      "y": 10292,
+      "w": 390,
+      "h": 844,
+      "title": "Help and feedback",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "ActivityEmpty.dc.html": {
+      "x": 1410,
+      "y": 11832,
+      "w": 390,
+      "h": 844,
+      "title": "Activity: empty",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "SharedTask.dc.html": {
+      "x": 940,
+      "y": 6698,
+      "w": 390,
+      "h": 844,
+      "title": "Shared task: friend view",
+      "is_interactive": true,
+      "radius": 44
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-11-14T16:12:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "noteOrder": [
+    "onboard_title",
+    "onboard_rules",
+    "habits_title",
+    "create_title",
+    "create_rules",
+    "tasks_title",
+    "friends_title",
+    "activity_title",
+    "settings_title",
+    "empty_title",
+    "widgets_title",
+    "widget_rules",
+    "flowers_title"
+  ],
+  "notes": {
+    "habits_title": {
+      "x": 0,
+      "y": 1224,
+      "text": "2. Habits: home, habit pages by check-in type, edit, pause",
+      "kind": "title1",
+      "maxW": 5560
+    },
+    "create_title": {
+      "x": 0,
+      "y": 3274,
+      "text": "3. Create: the + sheet, new habit, new task",
+      "kind": "title1",
+      "maxW": 1730
+    },
+    "create_rules": {
+      "fill": "green",
+      "size": 24,
+      "text": "Center + behaviour\n\n- Same sheet on every tab: habit, task, friend\n- The option for the tab you came from goes first (from Tasks: Add a task on top; from Friends: Friend on top)\n- Long-press + skips the sheet and opens that tab's form directly\n- Friends screen loses its own + Add Friend button",
+      "w": 320,
+      "x": 1410,
+      "y": 3534
+    },
+    "tasks_title": {
+      "x": 0,
+      "y": 4758,
+      "text": "4. Tasks: list, detail, edit",
+      "kind": "title1",
+      "maxW": 1330
+    },
+    "friends_title": {
+      "x": 0,
+      "y": 6438,
+      "text": "5. Friends: HabitFlowers, updates, adding and managing friends",
+      "kind": "title1",
+      "maxW": 2740
+    },
+    "empty_title": {
+      "x": 0,
+      "y": 11572,
+      "text": "8. Empty states",
+      "kind": "title1",
+      "maxW": 1800
+    },
+    "widgets_title": {
+      "x": 0,
+      "y": 13056,
+      "text": "9. iOS widget: My HabitFlowers",
+      "kind": "title1",
+      "maxW": 1458
+    },
+    "widget_rules": {
+      "fill": "blue",
+      "size": 24,
+      "text": "Widget states\n\n- Green chevron above the flower: due today\n- Green check: done today\n- Moon: rest day\n- Flower shows its growth stage (sprout, bud, bloom)\n- Faded and drooping: wilting or dried up\n- Tap a flower: opens that habit\n- Tap elsewhere: opens Habits",
+      "w": 320,
+      "x": 1138,
+      "y": 13316
+    },
+    "flowers_title": {
+      "x": 0,
+      "y": 14078,
+      "text": "10. Flowers: stages and states",
+      "kind": "title1",
+      "maxW": 1480
+    },
+    "settings_title": {
+      "x": 0,
+      "y": 10032,
+      "text": "7. Settings: account, notifications, help",
+      "kind": "title1",
+      "maxW": 2740
+    },
+    "onboard_title": {
+      "x": 0,
+      "y": -260,
+      "text": "1. First launch: welcome, notifications",
+      "kind": "title1",
+      "maxW": 1260
+    },
+    "onboard_rules": {
+      "fill": "green",
+      "size": 24,
+      "text": "Accounts\n\n- First launch creates an anonymous account, no sign-in\n- Welcome, plant first habit, then notifications\n- Ask to back up after the first bloom and in Account\n- Friends and grow together need a username and Apple or Google first\n- Unlinked accounts are lost if the app is deleted",
+      "w": 320,
+      "x": 940,
+      "y": 0
+    },
+    "activity_title": {
+      "kind": "title1",
+      "x": 0,
+      "y": 8548,
+      "text": "6. Activity: notifications",
+      "maxW": 600
+    }
+  },
+  "order": [
+    "Welcome.dc.html",
+    "NotifPrompt.dc.html",
+    "Main.dc.html",
+    "Detail.dc.html",
+    "PushupsWindows.dc.html",
+    "ListDetail.dc.html",
+    "HealthDetail.dc.html",
+    "GroupDetail.dc.html",
+    "GymDetail.dc.html",
+    "GymClosed.dc.html",
+    "Camera.dc.html",
+    "ReviveDetail.dc.html",
+    "EditHabit.dc.html",
+    "Archived.dc.html",
+    "CreateChooser.dc.html",
+    "NewHabit.dc.html",
+    "NewTask.dc.html",
+    "Tasks.dc.html",
+    "TaskDetail.dc.html",
+    "EditTask.dc.html",
+    "Friends.dc.html",
+    "FriendFlowers.dc.html",
+    "SharedTask.dc.html",
+    "AddFriend.dc.html",
+    "FriendsGate.dc.html",
+    "ManageFriends.dc.html",
+    "Notifications.dc.html",
+    "Settings.dc.html",
+    "Account.dc.html",
+    "ChangeUsername.dc.html",
+    "NotifSettings.dc.html",
+    "WidgetsHelp.dc.html",
+    "HelpFeedback.dc.html",
+    "HabitsEmpty.dc.html",
+    "TasksEmpty.dc.html",
+    "FriendsEmpty.dc.html",
+    "ActivityEmpty.dc.html",
+    "WidgetSmall.dc.html",
+    "WidgetMedium.dc.html",
+    "WidgetLarge.dc.html",
+    "FlowerSheet.dc.html",
+    "FlowerStates.dc.html",
+    "Flower.dc.html"
+  ],
+  "pages": [],
+  "title": "Habitflower: Home grid + habit detail"
+}

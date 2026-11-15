@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Change username</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+input::placeholder,textarea::placeholder{color:#8C7992}
+.hf-b:focus-visible,.hf-row:focus-visible,.hf-back:focus-visible{outline:2px solid #74D447;outline-offset:-2px}
+.hf-row{transition:background .15s}.hf-row:hover{background:#33243A}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; gap: 16px; padding: 58px 20px 30px 20px">
+  <a class="hf-back" href="Account.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    Account
+  </a>
+  <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Username</h1>
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <div style="position: relative">
+      <span aria-hidden="true" style="position: absolute; left: 16px; top: 16px; font-size: 18px; font-weight: 700; color: #8C7992">@</span>
+      <label for="un" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Username</label>
+      <input class="hf-b" id="un" value="{{value}}" style="width: 100%; height: 56px; box-sizing: border-box; padding: 0 48px 0 38px; border-radius: 16px; border: none; background: #2A1C2F; color: #F6EEF8; font: inherit; font-size: 18px; font-weight: 700">
+      <span style="{{iconStyle}}"><sc-if value="{{ok}}" hint-placeholder-val="{{true}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if><sc-if value="{{taken}}" hint-placeholder-val="{{false}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></sc-if></span>
+    </div>
+    <p aria-live="polite" style="margin: 0 4px; font-size: 14px; font-weight: 600; color: {{msgColor}}">{{msg}}</p>
+  </div>
+  <p style="margin: 0 4px; font-size: 13.5px; font-weight: 500; line-height: 1.45; color: #8C7992">Friends find you by this. You can change it once every 30 days.</p>
+  <a class="hf-b" href="Account.dc.html" style="{{saveStyle}}">Save</a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"type":"enum","options":["available","taken"],"default":"taken"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { picked: null }; }
+  renderVals() {
+    var self = this;
+    var taken = (this.props.state || 'available') === 'taken' && !this.state.picked;
+    var value = this.state.picked || (taken ? 'reuel' : 'reuel.grows');
+    return {
+      value: value, ok: !taken, taken: taken,
+      msg: taken ? '@reuel is taken' : '@' + value + ' is available',
+      msgColor: taken ? '#FF7B7B' : '#9BDB78',
+      iconStyle: 'position: absolute; right: 14px; top: 16px; width: 24px; height: 24px; border-radius: 12px; display: flex; align-items: center; justify-content: center;' + (taken ? ' background: rgba(255,123,123,0.2); color: #FF9B9B;' : ' background: rgba(116,212,71,0.22); color: #B8EE98;'),
+      saveStyle: 'margin-top: auto; height: 54px; border-radius: 27px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800;' + (taken ? ' background: #3A2A40; color: #6E5C75; pointer-events: none;' : ' background: #74D447; color: #142008;')
+    };
+  }
+}
+</script>
+</body>
+</html>

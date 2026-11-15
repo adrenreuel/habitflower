@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Manage friends</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
+.hf-b:focus-visible,.hf-back:focus-visible{outline:2px solid #74D447;outline-offset:2px}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 18px; padding: 58px 20px 34px 20px; overflow: hidden">
+
+  <a class="hf-back" href="Friends.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    Friends
+  </a>
+
+  <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.4px">Your friends</h1>
+
+  <a class="hf-b" href="AddFriend.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 16px; border-radius: 18px; background: #2A1C2F; color: #B8EE98; font-size: 15px; font-weight: 700">
+    <span style="width: 34px; height: 34px; border-radius: 17px; background: rgba(116,212,71,0.18); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3.5"></circle><path d="M2.5 19.5c0-3.4 2.9-5.8 6.5-5.8s6.5 2.4 6.5 5.8"></path><path d="M19 8v6M16 11h6"></path></svg></span>
+    Add a friend
+  </a>
+
+  <section aria-label="Close friends" style="display: flex; flex-direction: column; gap: 8px">
+    <div style="display: flex; align-items: baseline; gap: 8px">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #FFD24A">Close friends</h2>
+      <span style="font-size: 13px; font-weight: 600; color: #8C7992">{{closeCount}}</span>
+    </div>
+    <div style="border-radius: 18px; background: #2A1C2F; display: flex; flex-direction: column">
+      <sc-for list="{{closeItems}}" as="f" hint-placeholder-count="3">
+        <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px 8px 8px 14px; box-sizing: border-box; border-bottom: 1px solid #3D2D43">
+          <span style="{{f.avatarStyle}}">{{f.initials}}</span>
+          <div style="flex: 1; min-width: 0">
+            <p style="margin: 0; font-size: 15px; font-weight: 700">{{f.name}}</p>
+          </div>
+          <button class="hf-b" onClick="{{f.more}}" aria-haspopup="dialog" aria-label="{{f.moreAria}}" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 22px; border: none; background: none; color: #A895AE; display: flex; align-items: center; justify-content: center; cursor: pointer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="18.5" cy="12" r="1.8"></circle></svg>
+          </button>
+        </div>
+      </sc-for>
+      <sc-if value="{{noClose}}" hint-placeholder-val="{{false}}">
+        <p style="margin: 0; padding: 16px; font-size: 14px; font-weight: 500; color: #B9A8C0; border-bottom: 1px solid #3D2D43">No close friends yet</p>
+      </sc-if>
+      <button class="hf-b" onClick="{{openSheet}}" aria-haspopup="dialog" style="display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px; border: none; background: none; color: #FFD24A; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"></path></svg>
+        Manage close friends
+      </button>
+    </div>
+  </section>
+
+  <sc-if value="{{hasOthers}}" hint-placeholder-val="{{true}}">
+    <section aria-label="Friends" style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: baseline; gap: 8px">
+        <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #C9B9CF">Friends</h2>
+        <span style="font-size: 13px; font-weight: 600; color: #8C7992">{{otherCount}}</span>
+      </div>
+      <div style="border-radius: 18px; background: #2A1C2F; display: flex; flex-direction: column">
+        <sc-for list="{{otherItems}}" as="f" hint-placeholder-count="2">
+          <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px 8px 8px 14px; box-sizing: border-box; border-bottom: {{f.divider}}">
+            <span style="{{f.avatarStyle}}">{{f.initials}}</span>
+            <div style="flex: 1; min-width: 0">
+              <p style="margin: 0; font-size: 15px; font-weight: 700">{{f.name}}</p>
+            </div>
+            <button class="hf-b" onClick="{{f.more}}" aria-haspopup="dialog" aria-label="{{f.moreAria}}" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 22px; border: none; background: none; color: #A895AE; display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="18.5" cy="12" r="1.8"></circle></svg>
+            </button>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeSheet}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="Close friends" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">Close friends</h2>
+          <p style="margin: 0; font-size: 14px; font-weight: 500; color: #B9A8C0">Share check-in photos with just these people.</p>
+        </div>
+        <div style="border-radius: 18px; background: #2A1C2F; display: flex; flex-direction: column">
+          <sc-for list="{{sheetItems}}" as="f" hint-placeholder-count="5">
+            <button class="hf-b" role="checkbox" aria-checked="{{f.checkedAttr}}" onClick="{{f.toggle}}" style="display: flex; align-items: center; gap: 12px; min-height: 58px; padding: 0 16px; border: none; border-bottom: {{f.divider}}; background: none; color: #F6EEF8; font: inherit; text-align: left; cursor: pointer">
+              <span style="{{f.avatarStyle}}">{{f.initials}}</span>
+              <span style="flex: 1; font-size: 15px; font-weight: 600">{{f.name}}</span>
+              <span style="{{f.boxStyle}}">
+                <sc-if value="{{f.checked}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2A1F00" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+        <button class="hf-b" onClick="{{closeSheet}}" style="height: 52px; border-radius: 26px; border: none; background: #F6EEF8; color: #1F1023; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Done</button>
+      </section>
+    </div>
+  </sc-if>
+  <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 6; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeMenu}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="{{menuTitle}}" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 4px 2px 0 2px">
+          <span style="{{menuAvatar}}">{{menuInitial}}</span>
+          <h2 style="margin: 0; font-size: 20px; font-weight: 800">{{menuTitle}}</h2>
+        </div>
+        <sc-if value="{{menuMain}}" hint-placeholder-val="{{true}}">
+          <div style="border-radius: 18px; background: #2A1C2F; display: flex; flex-direction: column; overflow: hidden">
+            <button class="hf-b" onClick="{{removeFriend}}" style="display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; border: none; border-bottom: 1px solid #3D2D43; background: none; color: #F6EEF8; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3.5"></circle><path d="M2.5 19.5c0-3.4 2.9-5.8 6.5-5.8s6.5 2.4 6.5 5.8M16 11h6"></path></svg>
+              Remove friend
+            </button>
+            <button class="hf-b" onClick="{{report}}" style="display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; border: none; border-bottom: 1px solid #3D2D43; background: none; color: #F6EEF8; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"></path></svg>
+              {{reportLabel}}
+            </button>
+            <button class="hf-b" onClick="{{askBlock}}" style="display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; border: none; background: none; color: #FF7B7B; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M6 6l12 12"></path></svg>
+              Block
+            </button>
+          </div>
+        </sc-if>
+        <sc-if value="{{menuBlock}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; padding: 0 2px; font-size: 14.5px; font-weight: 500; line-height: 1.45; color: #B9A8C0">They won't be able to find you, add you or see your HabitFlowers. We won't tell them.</p>
+          <button class="hf-b" onClick="{{confirmBlock}}" style="height: 52px; border-radius: 26px; border: none; background: #FF7B7B; color: #2A0808; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Block</button>
+          <button class="hf-b" onClick="{{closeMenu}}" style="height: 52px; border-radius: 26px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Cancel</button>
+        </sc-if>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { close: { maya: true, sam: true, priya: true }, sheet: false, menu: null, step: 'main', gone: {}, reported: {} };
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state;
+    var people = [
+      ['maya', '@mayac', '@mayac', 'M', '#FFC93C', '#3A2600'],
+      ['sam', '@sampatel', '@sampatel', 'S', '#A98BEA', '#1F1023'],
+      ['priya', '@priya.n', '@priya.n', 'P', '#FF9F1C', '#2A1206'],
+      ['alex', '@alexk', '@alexk', 'A', '#7AA7FF', '#0F1E3A'],
+      ['jordan', '@jordanlee', '@jordanlee', 'J', '#4FD1C5', '#0F2A27']
+    ];
+    function av(f, size) { return 'width: ' + size + 'px; height: ' + size + 'px; flex-shrink: 0; border-radius: ' + (size / 2) + 'px; background: ' + f[4] + '; color: ' + f[5] + '; display: flex; align-items: center; justify-content: center; font-size: ' + Math.round(size * 0.36) + 'px; font-weight: 800;'; }
+    function row(f, i, list) {
+      return { name: f[1], handle: f[2], initials: f[3], avatarStyle: av(f, 42), moreAria: 'More options for ' + f[1], more: function () { self.setState({ menu: f[0], step: 'main' }); }, divider: i < list.length - 1 ? '1px solid #3D2D43' : 'none' };
+    }
+    var live = people.filter(function (f) { return !st.gone[f[0]]; });
+    var closeList = live.filter(function (f) { return st.close[f[0]]; });
+    var others = live.filter(function (f) { return !st.close[f[0]]; });
+    var m = null; people.forEach(function (f) { if (f[0] === st.menu) m = f; });
+    function drop() { var g = Object.assign({}, self.state.gone); g[self.state.menu] = true; self.setState({ gone: g, menu: null }); }
+    return {
+      closeItems: closeList.map(row), closeCount: String(closeList.length), noClose: closeList.length === 0,
+      otherItems: others.map(row), otherCount: String(others.length), hasOthers: others.length > 0,
+      menuOpen: !!m, menuMain: st.step === 'main', menuBlock: st.step === 'block',
+      menuTitle: m ? (st.step === 'block' ? 'Block ' + m[1] + '?' : m[1]) : '',
+      menuInitial: m ? m[3] : '', menuAvatar: m ? av(m, 40) : '',
+      reportLabel: m && st.reported[m[0]] ? 'Reported' : 'Report',
+      closeMenu: function () { self.setState({ menu: null }); },
+      removeFriend: drop,
+      report: function () { var r = Object.assign({}, self.state.reported); r[self.state.menu] = true; self.setState({ reported: r }); },
+      askBlock: function () { self.setState({ step: 'block' }); },
+      confirmBlock: drop,
+      sheetOpen: st.sheet,
+      openSheet: function () { self.setState({ sheet: true }); },
+      closeSheet: function () { self.setState({ sheet: false }); },
+      sheetItems: live.map(function (f, i) {
+        var on = !!st.close[f[0]];
+        return {
+          name: f[1], initials: f[3], avatarStyle: av(f, 36), checked: on, checkedAttr: on ? 'true' : 'false',
+          divider: i < live.length - 1 ? '1px solid #3D2D43' : 'none',
+          boxStyle: 'width: 26px; height: 26px; flex-shrink: 0; border-radius: 9px; display: flex; align-items: center; justify-content: center;' + (on ? ' background: #FFD24A;' : ' background: #463550;'),
+          toggle: function () { var c = Object.assign({}, self.state.close); c[f[0]] = !c[f[0]]; self.setState({ close: c }); }
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

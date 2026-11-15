@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My Habits: empty</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.hf-b:focus-visible,.hf-tab:focus-visible,.hf-icon-btn:focus-visible{outline:2px solid #74D447;outline-offset:2px}
+.hf-sug{transition:background .15s}.hf-sug:hover{background:#33243A}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="padding: 62px 20px 0 20px; display: flex; align-items: flex-end; justify-content: space-between">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <p style="margin: 0; font-size: 14px; font-weight: 600; color: #B9A8C0">Saturday, 14 Nov</p>
+      <h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px">My HabitFlowers</h1>
+    </div>
+    <a class="hf-b" href="Settings.dc.html" aria-label="Settings and account" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 22px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 800">R</a>
+  </header>
+  <main style="flex: 1; display: flex; flex-direction: column; gap: 22px; padding: 20px 20px 20px 20px">
+    <section style="border-radius: 28px; background: #2A1C2F; padding: 14px 14px 16px 14px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+      <div aria-hidden="true" style="width: 100%; height: 132px; border-radius: 20px; background: rgba(116,212,71,0.10); display: flex; align-items: flex-end; justify-content: center; gap: 4px; padding-bottom: 6px; box-sizing: border-box">
+        <dc-import name="Flower" kind="sunflower" stage="seed" size="76" hint-size="76px,76px"></dc-import>
+        <dc-import name="Flower" kind="sunflower" stage="bud" size="96" hint-size="96px,96px"></dc-import>
+        <dc-import name="Flower" kind="sunflower" stage="bloom" size="112" hint-size="112px,112px"></dc-import>
+      </div>
+      <h2 style="margin: 0; font-size: 21px; font-weight: 800">Plant your first HabitFlower</h2>
+      <a class="hf-b" href="NewHabit.dc.html" style="height: 50px; width: 100%; border-radius: 25px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; font-weight: 800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Plant now</a>
+    </section>
+    <section aria-label="Suggestions" style="display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Suggestions</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{ideas}}" as="i" hint-placeholder-count="4">
+          <a class="hf-sug" href="NewHabit.dc.html" aria-label="{{i.aria}}" style="border-radius: 22px; background: #2A1C2F; padding: 8px 8px 10px 8px; display: flex; flex-direction: column; gap: 8px">
+            <span aria-hidden="true" style="{{i.tileStyle}}">
+              <dc-import name="Flower" kind="{{i.kind}}" stage="{{i.stage}}" size="64" hint-size="64px,64px"></dc-import>
+            </span>
+            <span style="display: flex; align-items: center; gap: 8px; padding: 2px 6px">
+              <span style="flex: 1; min-width: 0; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{i.name}}</span>
+            </span>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+  </main>
+  <nav aria-label="Main" style="height: 84px; box-sizing: border-box; padding: 8px 12px 26px 12px; background: #180B1B; border-top: 1px solid #33243A; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+    <button class="hf-tab" aria-current="page" style="border: none; background: none; color: #74D447; display: flex; flex-direction: column; align-items: center; gap: 3px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-8"></path><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5z"></path><path d="M12 15c0-2.5-1.8-4.5-4.5-4.5 0 2.5 1.8 4.5 4.5 4.5z"></path><circle cx="12" cy="6" r="3"></circle></svg>
+      Habits
+    </button>
+    <a class="hf-tab" href="Tasks.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"></rect><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg></span>
+      Tasks
+    </a>
+    <a class="hf-tab" href="CreateChooser.dc.html" aria-label="Add a habit or task" style="display: flex; align-items: flex-start; justify-content: center">
+      <span style="width: 56px; height: 56px; margin-top: -22px; border-radius: 28px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #180B1B">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+      </span>
+    </a>
+    <a class="hf-tab" href="Friends.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3.5"></circle><circle cx="17" cy="10" r="2.5"></circle><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"></path><path d="M15.5 14.2c2.8 0 5 1.8 5 4.8"></path></svg>
+      Friends
+    </a>
+    <a class="hf-tab" href="Notifications.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 21h4"></path></svg><span aria-label="3 new" style="position: absolute; top: -5px; right: -9px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #FF9E6B; color: #2A1206; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #180B1B">3</span></span>
+      Activity
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var ideas = [
+      ['Hit the gym', 'lavender', '169,139,234'],
+      ['Morning walk', 'sunflower', '255,201,60'],
+      ['Drink water', 'blossom', '255,183,201'],
+      ['Check mail', 'daisy', '247,242,234']
+    ];
+    return {
+      ideas: ideas.map(function (i) {
+        return { name: i[0], kind: i[1], stage: 'bloom', aria: 'Plant ' + i[0],
+          tileStyle: 'height: 76px; border-radius: 16px; background: rgba(' + i[2] + ',0.12); display: flex; align-items: flex-end; justify-content: center; overflow: hidden;' };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

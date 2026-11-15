@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Friends: empty</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.hf-b:focus-visible,.hf-tab:focus-visible,.hf-icon-btn:focus-visible{outline:2px solid #74D447;outline-offset:2px}
+.hf-sug{transition:background .15s}.hf-sug:hover{background:#33243A}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="padding: 62px 20px 0 20px">
+    <h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px">Friends</h1>
+  </header>
+  <main style="flex: 1; display: flex; flex-direction: column; gap: 22px; padding: 20px 20px 20px 20px">
+    <section style="border-radius: 28px; background: #2A1C2F; padding: 14px 14px 16px 14px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+      <div aria-hidden="true" style="position: relative; width: 100%; height: 172px; border-radius: 20px; background: rgba(242,143,184,0.10); display: flex; align-items: center; justify-content: center">
+        <sc-for list="{{cards}}" as="c" hint-placeholder-count="2">
+          <span style="{{c.style}}">
+            <span style="display: flex; align-items: center; gap: 6px">
+              <span style="{{c.avatar}}">{{c.letter}}</span>
+              <span style="font-size: 11px; font-weight: 800">{{c.name}}</span>
+            </span>
+            <span style="flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); align-items: end; justify-items: center">
+              <sc-for list="{{c.flowers}}" as="f" hint-placeholder-count="6">
+                <dc-import name="Flower" kind="{{f.kind}}" stage="{{f.stage}}" size="30" hint-size="30px,30px"></dc-import>
+              </sc-for>
+            </span>
+          </span>
+        </sc-for>
+      </div>
+      <h2 style="margin: 0; font-size: 21px; font-weight: 800">Grow together</h2>
+      <a class="hf-b" href="AddFriend.dc.html" style="height: 50px; width: 100%; border-radius: 25px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; font-weight: 800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3.5"></circle><path d="M2.5 19.5c0-3.4 2.9-5.8 6.5-5.8s6.5 2.4 6.5 5.8"></path><path d="M19 8v6M16 11h6"></path></svg>Add a friend</a>
+    </section>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <a class="hf-sug" href="AddFriend.dc.html" style="border-radius: 22px; background: #2A1C2F; padding: 14px; display: flex; align-items: center; gap: 12px">
+            <span aria-hidden="true" style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; background: #3A2A40; color: #E4D7E9; display: flex; align-items: center; justify-content: center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M7 12h10"></path></svg></span>
+            <span style="font-size: 15px; font-weight: 700">Scan code</span>
+          </a>
+          <a class="hf-sug" href="AddFriend.dc.html" style="border-radius: 22px; background: #2A1C2F; padding: 14px; display: flex; align-items: center; gap: 12px">
+            <span aria-hidden="true" style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; background: rgba(116,212,71,0.22); color: #B8EE98; display: flex; align-items: center; justify-content: center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"></path><path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg></span>
+            <span style="font-size: 15px; font-weight: 700">Invite</span>
+          </a>
+    </div>
+  </main>
+  <nav aria-label="Main" style="height: 84px; flex-shrink: 0; box-sizing: border-box; padding: 8px 12px 26px 12px; background: #180B1B; border-top: 1px solid #33243A; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+    <a class="hf-tab" href="Main.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-8"></path><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5z"></path><path d="M12 15c0-2.5-1.8-4.5-4.5-4.5 0 2.5 1.8 4.5 4.5 4.5z"></path><circle cx="12" cy="6" r="3"></circle></svg>
+      Habits
+    </a>
+    <a class="hf-tab" href="Tasks.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"></rect><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg><span aria-label="3 tasks need attention, 1 overdue" style="position: absolute; top: -5px; right: -9px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #FF9E6B; color: #2A1206; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #180B1B">3</span></span>
+      Tasks
+    </a>
+    <a class="hf-tab" href="CreateChooser.dc.html" aria-label="Add a habit, task or friend" style="display: flex; align-items: flex-start; justify-content: center">
+      <span style="width: 56px; height: 56px; margin-top: -22px; border-radius: 28px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #180B1B">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+      </span>
+    </a>
+    <a class="hf-tab" href="Friends.dc.html" aria-current="page" style="color: #74D447; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 700">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3.5"></circle><circle cx="17" cy="10" r="2.5"></circle><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"></path><path d="M15.5 14.2c2.8 0 5 1.8 5 4.8"></path></svg>
+      Friends
+    </a>
+    <a class="hf-tab" href="Notifications.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 21h4"></path></svg><span aria-label="3 new" style="position: absolute; top: -5px; right: -9px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #FF9E6B; color: #2A1206; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #180B1B">3</span></span>
+      Activity
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var cards = [
+      { name: '@mayac', letter: 'M', bg: '#F28FB8', fg: '#2A0E1A', rot: -7, x: -52, y: 4, f: [['tulip','bloom'],['rose','bloom'],['lavender','bloom'],['daisy','bloom'],['marigold','bud'],['blossom','seed']] },
+      { name: '@sampatel', letter: 'S', bg: '#7AA7FF', fg: '#0F1E3A', rot: 6, x: 52, y: -4, f: [['sunflower','bloom'],['marigold','bloom'],['spider','bloom'],['daisy','bud'],['lavender','bud'],['tulip','seed']] }
+    ];
+    return {
+      cards: cards.map(function (c) {
+        return { name: c.name, letter: c.letter,
+          style: 'position: absolute; left: 50%; top: 50%; width: 128px; height: 128px; margin: -64px 0 0 -64px; box-sizing: border-box; padding: 9px 8px 6px 8px; border-radius: 20px; background: #3A2A40; box-shadow: 0 10px 24px rgba(10,4,12,0.45); display: flex; flex-direction: column; gap: 2px; transform: translate(' + c.x + 'px,' + c.y + 'px) rotate(' + c.rot + 'deg);',
+          avatar: 'width: 20px; height: 20px; border-radius: 10px; background: ' + c.bg + '; color: ' + c.fg + '; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800;',
+          flowers: c.f.map(function (f) { return { kind: f[0], stage: f[1] }; }) };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

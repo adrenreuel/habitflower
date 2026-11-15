@@ -10,6 +10,7 @@ import { View } from "react-native";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Colors } from "@/constants/theme";
+import { AppStoreProvider } from "@/store/app-store";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -19,6 +20,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
+    <AppStoreProvider>
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <View
         style={{
@@ -39,5 +41,6 @@ export default function RootLayout() {
         <StatusBar style="auto" />
       </View>
     </ThemeProvider>
+    </AppStoreProvider>
   );
 }

@@ -17,9 +17,11 @@ import {
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
 import { useRouter } from "expo-router";
+import { useAppStore } from "@/store/app-store";
 
 export default function CreateTaskScreen() {
   const router = useRouter();
+  const { addTask } = useAppStore();
   const insets = useSafeAreaInsets();
   const background = useThemeColor({}, "background");
   const textColor = useThemeColor({}, "text");
@@ -67,8 +69,7 @@ export default function CreateTaskScreen() {
       subtasks: validSubtasks.length > 0 ? validSubtasks : undefined,
     };
 
-    // Store the task (you'll want to integrate with your backend/state management)
-    console.log("New task:", newTodo);
+    addTask(newTodo);
 
     // Navigate back
     router.back();

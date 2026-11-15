@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Notification settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.hf-b:focus-visible,.hf-row:focus-visible,.hf-back:focus-visible{outline:2px solid #74D447;outline-offset:-2px}
+.hf-row{transition:background .15s}.hf-row:hover{background:#33243A}
+</style>
+</helmet>
+<div style="width: 390px; height: 900px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 14px; padding: 58px 20px 30px 20px; overflow: hidden">
+  <a class="hf-back" href="Settings.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    Settings
+  </a>
+  <h1 style="margin: 0 0 4px 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Notifications</h1>
+  <sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+    <section aria-label="{{g.title}}" style="display: flex; flex-direction: column; gap: 8px">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">{{g.title}}</h2>
+      <div style="border-radius: 22px; background: #2A1C2F; display: flex; flex-direction: column; overflow: hidden">
+        <sc-for list="{{g.rows}}" as="r" hint-placeholder-count="4">
+          <button class="hf-row" role="switch" aria-checked="{{r.attr}}" onClick="{{r.toggle}}" style="{{r.rowStyle}}">
+            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; text-align: left">
+              <span style="font-size: 15.5px; font-weight: 600">{{r.label}}</span>
+              <sc-if value="{{r.hasSub}}" hint-placeholder-val="{{false}}"><span style="font-size: 12.5px; font-weight: 500; color: #A895AE">{{r.sub}}</span></sc-if>
+            </span>
+            <span aria-hidden="true" style="{{r.track}}"><span style="{{r.knob}}"></span></span>
+          </button>
+        </sc-for>
+        <sc-if value="{{g.isQuiet}}" hint-placeholder-val="{{false}}">
+          <sc-if value="{{quietOn}}" hint-placeholder-val="{{true}}">
+            <button class="hf-row" style="width: 100%; min-height: 50px; border: none; border-top: 1px solid #3D2D43; background: transparent; color: inherit; font: inherit; display: flex; align-items: center; gap: 12px; padding: 0 14px 0 16px; cursor: pointer">
+              <span style="flex: 1; text-align: left; font-size: 15.5px; font-weight: 600">From</span>
+              <span style="font-size: 14.5px; font-weight: 600; color: #A895AE">10:00 PM to 7:00 AM</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E5C75" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+            </button>
+          </sc-if>
+        </sc-if>
+      </div>
+    </section>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { reminders: true, closing: true, wilt: true, bloom: true, nudges: true, reactions: true, social: true, posts: false, quiet: true };
+  }
+  renderVals() {
+    var self = this, st = this.state;
+    var groups = [
+      ['Your habits', [['reminders', 'Reminders', 'At the times you set'], ['closing', 'Window closing', '30 min before it ends'], ['wilt', 'Wilting', 'When a flower starts to droop'], ['bloom', 'Milestones', 'Blooms and bloom streaks']]],
+      ['Friends', [['nudges', 'Nudges', ''], ['reactions', 'Reactions', ''], ['social', 'Requests and invites', ''], ['posts', 'Friend posts', 'Check-ins from friends']]]
+    ];
+    return {
+      quietOn: st.quiet,
+      groups: groups.map(function (g) {
+        return { title: g[0], isQuiet: g[0] === 'Quiet hours', rows: g[1].map(function (r, i) {
+          var on = !!st[r[0]];
+          return { label: r[1], sub: r[2], hasSub: !!r[2], attr: on ? 'true' : 'false',
+            rowStyle: 'width: 100%; min-height: ' + (r[2] ? 60 : 52) + 'px; border: none; border-bottom: ' + (i < g[1].length - 1 ? '1px solid #3D2D43' : 'none') + '; background: transparent; color: inherit; font: inherit; display: flex; align-items: center; gap: 12px; padding: 0 14px 0 16px; cursor: pointer;',
+            track: 'width: 50px; height: 30px; flex-shrink: 0; border-radius: 15px; padding: 3px; box-sizing: border-box; display: flex; background: ' + (on ? '#74D447' : '#4A3A50') + '; justify-content: ' + (on ? 'flex-end' : 'flex-start') + ';',
+            knob: 'width: 24px; height: 24px; border-radius: 12px; background: ' + (on ? '#142008' : '#E4D7E9') + ';',
+            toggle: function () { var s = {}; s[r[0]] = !self.state[r[0]]; self.setState(s); } };
+        }) };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

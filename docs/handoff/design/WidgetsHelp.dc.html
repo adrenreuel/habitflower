@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Widgets</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+input::placeholder,textarea::placeholder{color:#8C7992}
+.hf-b:focus-visible,.hf-row:focus-visible,.hf-back:focus-visible{outline:2px solid #74D447;outline-offset:-2px}
+.hf-row{transition:background .15s}.hf-row:hover{background:#33243A}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; gap: 16px; padding: 58px 20px 30px 20px">
+  <a class="hf-back" href="Settings.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    Settings
+  </a>
+  <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Widgets</h1>
+  <div aria-hidden="true" style="align-self: center; flex-shrink: 0; width: 364px; height: 170px; margin: 6px 0; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 28px rgba(0,0,0,0.35)">
+    <dc-import name="WidgetMedium" hint-size="364px,170px"></dc-import>
+  </div>
+  <div style="border-radius: 22px; background: #2A1C2F; display: flex; flex-direction: column; overflow: hidden"><div style="display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 16px; border-bottom: 1px solid #3D2D43"><span style="width: 30px; height: 30px; flex-shrink: 0; border-radius: 15px; background: rgba(116,212,71,0.22); color: #B8EE98; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800">1</span><span style="font-size: 15.5px; font-weight: 600">Touch and hold your Home Screen</span></div><div style="display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 16px; border-bottom: 1px solid #3D2D43"><span style="width: 30px; height: 30px; flex-shrink: 0; border-radius: 15px; background: rgba(116,212,71,0.22); color: #B8EE98; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800">2</span><span style="font-size: 15.5px; font-weight: 600">Tap Edit, then Add Widget</span></div><div style="display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 16px; border-bottom: none"><span style="width: 30px; height: 30px; flex-shrink: 0; border-radius: 15px; background: rgba(116,212,71,0.22); color: #B8EE98; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800">3</span><span style="font-size: 15.5px; font-weight: 600">Search HabitFlower and pick a size</span></div></div>
+  <p style="margin: 0 4px; font-size: 13.5px; font-weight: 500; line-height: 1.45; color: #8C7992">Tap a flower on the widget to open that habit.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>All flowers sheet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+</style>
+</helmet>
+<div style="width: 640px; height: 1380px; box-sizing: border-box; padding: 32px; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 24px">
+  <div style="display: flex; flex-direction: column; gap: 6px">
+    <h1 style="margin: 0; font-size: 26px; font-weight: 800">All flowers</h1>
+    <p style="margin: 0; font-size: 14px; font-weight: 500; color: #B9A8C0">Every flower starts as the same sprout and dries up the same way. Only bud, bloom and wilting differ.</p>
+  </div>
+
+  <section aria-label="Shared by every flower" style="display: flex; flex-direction: column; gap: 10px">
+    <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Shared by every flower</h2>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <div style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 20px; background: #2A1C2F">
+        <dc-import name="Flower" kind="sunflower" stage="seed" size="88" hint-size="88px,88px"></dc-import>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <p style="margin: 0; font-size: 17px; font-weight: 800">Sprout</p>
+          <p style="margin: 0; font-size: 13px; font-weight: 500; color: #B9A8C0">Just planted</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 20px; background: #2A1C2F">
+        <dc-import name="Flower" kind="sunflower" stage="bloom" health="dormant" size="88" hint-size="88px,88px"></dc-import>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <p style="margin: 0; font-size: 17px; font-weight: 800; color: #FF7B7B">Dried up</p>
+          <p style="margin: 0; font-size: 13px; font-weight: 500; color: #B9A8C0">Missed 2 in a row</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Unique to each flower" style="display: flex; flex-direction: column; gap: 10px">
+    <div style="display: grid; grid-template-columns: 140px repeat(3, minmax(0, 1fr)); gap: 12px; align-items: end">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Each flower</h2>
+      <span style="text-align: center; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Bud</span>
+      <span style="text-align: center; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Bloom</span>
+      <span style="text-align: center; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #FFB894">Wilting</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <sc-for list="{{flowers}}" as="f" hint-placeholder-count="8">
+        <div style="display: grid; grid-template-columns: 140px repeat(3, minmax(0, 1fr)); gap: 12px; align-items: center; padding: 8px 14px; border-radius: 18px; background: #2A1C2F">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <span style="width: 12px; height: 12px; border-radius: 6px; background: {{f.color}}; flex-shrink: 0"></span>
+            <span style="font-size: 16px; font-weight: 700">{{f.name}}</span>
+          </div>
+          <div style="display: flex; justify-content: center"><dc-import name="Flower" kind="{{f.kind}}" stage="bud" size="96" hint-size="96px,96px"></dc-import></div>
+          <div style="display: flex; justify-content: center"><dc-import name="Flower" kind="{{f.kind}}" stage="bloom" size="96" hint-size="96px,96px"></dc-import></div>
+          <div style="display: flex; justify-content: center"><dc-import name="Flower" kind="{{f.kind}}" stage="bloom" health="wilt" size="96" hint-size="96px,96px"></dc-import></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":640,"height":1380}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      flowers: [
+        { kind: 'sunflower', name: 'Sunflower', color: '#FFC93C' },
+        { kind: 'daisy', name: 'Daisy', color: '#F7F2EA' },
+        { kind: 'tulip', name: 'Tulip', color: '#FF6B8A' },
+        { kind: 'rose', name: 'Rose', color: '#E8455A' },
+        { kind: 'spider', name: 'Spider lily', color: '#FF5A4E' },
+        { kind: 'lavender', name: 'Lavender', color: '#A98BEA' },
+        { kind: 'blossom', name: 'Blossom', color: '#FFB7C9' },
+        { kind: 'marigold', name: 'Marigold', color: '#FF9F1C' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

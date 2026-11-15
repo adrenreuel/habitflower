@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Help and feedback</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+input::placeholder,textarea::placeholder{color:#8C7992}
+.hf-b:focus-visible,.hf-row:focus-visible,.hf-back:focus-visible{outline:2px solid #74D447;outline-offset:-2px}
+.hf-row{transition:background .15s}.hf-row:hover{background:#33243A}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; gap: 16px; padding: 58px 20px 30px 20px">
+  <a class="hf-back" href="Settings.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    Settings
+  </a>
+  <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">Help</h1>
+  <div style="border-radius: 22px; background: #2A1C2F; display: flex; flex-direction: column; overflow: hidden">
+    <sc-for list="{{faqs}}" as="q" hint-placeholder-count="4">
+      <div style="border-bottom: {{q.divider}}">
+        <button class="hf-row" onClick="{{q.toggle}}" aria-expanded="{{q.attr}}" style="width: 100%; min-height: 54px; border: none; background: transparent; color: inherit; font: inherit; display: flex; align-items: center; gap: 12px; padding: 0 14px 0 16px; text-align: left; cursor: pointer">
+          <span style="flex: 1; font-size: 15px; font-weight: 700">{{q.q}}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8C7992" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="{{q.chev}}"><path d="M7 10l5 5 5-5"></path></svg>
+        </button>
+        <sc-if value="{{q.open}}" hint-placeholder-val="{{false}}"><p style="margin: 0; padding: 0 16px 14px 16px; font-size: 14px; font-weight: 500; line-height: 1.45; color: #B9A8C0">{{q.a}}</p></sc-if>
+      </div>
+    </sc-for>
+  </div>
+  <section aria-label="Send feedback" style="display: flex; flex-direction: column; gap: 10px">
+    <h2 style="margin: 0; font-size: 18px; font-weight: 700">Send feedback</h2>
+    <label for="fb" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Your feedback</label>
+    <textarea class="hf-b" id="fb" placeholder="An idea, a bug, anything" style="height: 110px; box-sizing: border-box; padding: 14px 16px; border-radius: 16px; border: none; background: #2A1C2F; color: #F6EEF8; font: inherit; font-size: 15px; resize: none"></textarea>
+    <button class="hf-b" onClick="{{send}}" style="{{sendStyle}}">{{sendLabel}}</button>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { open: 0, sent: false }; }
+  renderVals() {
+    var self = this, st = this.state;
+    var F = [
+      ['Why is my flower drooping?', 'It wilts after one missed day. Check in next time and it perks back up.'],
+      ['What does dried up mean?', 'Two missed days in a row. Check in to bring it back as a bud.'],
+      ['Who can see my habits?', 'Only the friends you pick in each habit\u2019s Sharing settings.'],
+      ['How do I back up?', 'Go to Settings, then Account, and continue with Apple or Google.']
+    ];
+    return {
+      faqs: F.map(function (f, i) { var o = st.open === i; return { q: f[0], a: f[1], open: o, attr: o ? 'true' : 'false', chev: o ? 'transform: rotate(180deg);' : '', divider: i < F.length - 1 ? '1px solid #3D2D43' : 'none', toggle: function () { self.setState({ open: self.state.open === i ? -1 : i }); } }; }),
+      sendLabel: st.sent ? 'Sent. Thank you!' : 'Send',
+      send: function () { self.setState({ sent: true }); },
+      sendStyle: 'height: 52px; border-radius: 26px; border: none; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer;' + (st.sent ? ' background: rgba(116,212,71,0.18); color: #B8EE98;' : ' background: #74D447; color: #142008;')
+    };
+  }
+}
+</script>
+</body>
+</html>
