@@ -25,7 +25,7 @@ export function BloomCount({ count, wilting, ring = colors.card }: { count: numb
 
 export function FlowerTile({ view, size = 52 }: { view: Pick<HabitView, 'habit' | 'flower'>; size?: number }) {
   const { habit, flower } = view;
-  const showCount = flower.stage === 'bloom' && flower.health !== 'dormant' && flower.bloomDays > 0;
+  const showCount = flower.stage === 'bloom' && flower.health !== 'dormant' && flower.bloomDays > 1; // no number on the bloom day itself
   return (
     <View style={[styles.tile, { width: size, height: size, backgroundColor: tint(flowerColors[habit.flowerKind], 0.14) }]}>
       <Flower kind={habit.flowerKind} stage={flower.stage} health={flower.health} size={Math.round(size * 0.85)} />

@@ -49,7 +49,7 @@ npm run typecheck
 
 ## Flower rules (in `src/domain/flower.ts` + `schedule.ts`, tested)
 
-- sprout -> bud -> bloom, one stage per completed scheduled day. The day it blooms counts as bloom day 1 but the habit page chip says "Just bloomed"; the next day is "In bloom for 2 days".
+- sprout -> bud -> bloom, one stage per completed scheduled day. The day it blooms counts as bloom day 1 but the habit page chip says "Just bloomed"; the next day is "In bloom for 2 days". Home cards and the widget show no number until day 2.
 - 1 missed scheduled day: bud and bloom **wilt** (bloom count pauses). A **sprout has no wilting**: 1 miss dries it up.
 - 2 misses in a row: **dried up** (bloom count resets). Revive: dried-up bud/bloom comes back as a bud, a dried-up sprout as a sprout.
 - A recovery check-in (from wilting or dried up) only restores. Nothing extra that day.

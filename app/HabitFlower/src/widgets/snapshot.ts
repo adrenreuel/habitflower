@@ -53,7 +53,8 @@ export function buildSnapshot(s: AppStore, now = new Date()): WidgetSnapshot {
       kind: v.habit.flowerKind,
       stage: v.flower.stage,
       health: v.flower.health,
-      count: v.flower.stage === 'bloom' && v.flower.health !== 'dormant' ? v.flower.bloomDays : 0,
+      // No number on the bloom day itself ("Just bloomed"); it starts at 2.
+      count: v.flower.stage === 'bloom' && v.flower.health !== 'dormant' && v.flower.bloomDays > 1 ? v.flower.bloomDays : 0,
       status,
       label,
       tone,
