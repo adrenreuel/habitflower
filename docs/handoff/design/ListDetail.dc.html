@@ -10,16 +10,20 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
 <style>
+@keyframes hfSway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
 @keyframes hfPop{0%{transform:scale(.55);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}@keyframes hfSpark{0%{transform:scale(.2);opacity:0}40%{opacity:1}100%{transform:scale(1.3);opacity:0}}@keyframes hfUp{0%{transform:translateY(14px);opacity:0}100%{transform:none;opacity:1}}
 body{margin:0;background:#1A0E1E}
 a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
 .hf-step:active{transform:scale(0.96)}
 .hf-step:focus-visible,.hf-back:focus-visible,.hf-row:focus-visible{outline:2px solid #FF6B8A;outline-offset:2px}
 .hf-step:disabled{opacity:0.35;cursor:default}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
 </style>
 </helmet>
-<div style="position: relative; width: 390px; height: 1294px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px; padding: 58px 20px 40px 20px">
+<div style="position: relative; width: 390px; height: 1182px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, linear-gradient(180deg, rgba(255,107,138,0.24) 0px, rgba(255,107,138,0.09) 240px, rgba(255,107,138,0) 420px), #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px; padding: 58px 20px 40px 20px">
 
   <div style="display: flex; justify-content: space-between; align-items: center">
     <a class="hf-back" href="Main.dc.html" style="display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
@@ -30,8 +34,10 @@ a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
   </div>
 
   <section style="display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
-    <div style="position: relative; width: 132px; height: 132px; border-radius: 40px; background: rgba(255,107,138,0.12); display: flex; align-items: center; justify-content: center">
-      <dc-import name="Flower" kind="tulip" stage="bloom" size="104" hint-size="104px,104px"></dc-import>
+    <div style="position: relative; width: 170px; height: 164px; display: flex; align-items: flex-end; justify-content: center">
+      <span aria-hidden="true" style="position: absolute; left: 50%; bottom: 4px; width: 120px; height: 18px; margin-left: -60px; border-radius: 50%; background: rgba(0,0,0,0.35); filter: blur(6px)"></span>
+      <span aria-hidden="true" style="position: absolute; left: 50%; bottom: 5px; width: 66px; height: 19px; margin-left: -33px; border-radius: 50%; background: #6B4436"></span>
+      <span style="position: relative; display: flex; transform-origin: 50% 92%; animation: hfSway 4.5s ease-in-out infinite; "><dc-import name="Flower" soil="off" kind="tulip" stage="bloom" size="156" hint-size="156px,156px"></dc-import></span>
     </div>
     <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.4px">Workout</h1>
     <p style="margin: 0; font-size: 15px; font-weight: 500; color: #B9A8C0">Every day</p>
@@ -56,8 +62,11 @@ a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
     </div>
   </section>
 
-  <section aria-label="This week" style="display: flex; flex-direction: column; gap: 10px">
-    <h2 style="margin: 0; font-size: 18px; font-weight: 700">This week</h2>
+  <div class="hf-row" role="button" tabindex="0" onClick="{{openHistory}}" aria-haspopup="dialog" aria-label="This week. See history" style="background: #2A1C2F; border-radius: 24px; padding: 16px 16px 14px 16px; display: flex; flex-direction: column; gap: 14px; cursor: pointer">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <span style="font-size: 18px; font-weight: 700">This week</span>
+      <span style="display: inline-flex; align-items: center; gap: 2px; font-size: 13.5px; font-weight: 700; color: #B9A8C0">History<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></span>
+    </div>
     <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
       <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
         <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
@@ -66,38 +75,9 @@ a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
         </div>
       </sc-for>
     </div>
-  </section>
-
-  <section aria-label="Stats" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
-    <div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
-      <p style="margin: 0; font-size: 24px; font-weight: 800">9<span style="font-size: 15px; font-weight: 700; color: #C9B9CF"> days</span></p>
-      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Best streak</p>
-    </div>
-    <div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
-      <p style="margin: 0; font-size: 24px; font-weight: 800">11/13</p>
-      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Days in Nov</p>
-    </div>
-  </section>
-
-  <section aria-label="November history" style="background: #2A1C2F; border-radius: 24px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
-    <div style="display: flex; justify-content: space-between; align-items: center">
-      <h2 style="margin: 0; font-size: 18px; font-weight: 700">November</h2>
-    </div>
-    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
-      <sc-for list="{{dows}}" as="w" hint-placeholder-count="7">
-        <span style="text-align: center; font-size: 11px; font-weight: 600; color: #A895AE">{{w}}</span>
-      </sc-for>
-      <sc-for list="{{month}}" as="c" hint-placeholder-count="30">
-        <span style="{{c.style}}">{{c.num}}</span>
-      </sc-for>
-    </div>
-    <div style="display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; padding-top: 2px; font-size: 12px; font-weight: 600; color: #B9A8C0">
-        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #FF6B8A"></span>Done</span>
-        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: rgba(255,107,138,0.4)"></span>Partly</span>
-        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: rgba(255,158,107,0.45)"></span>Missed</span>
-        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(135deg, rgba(122,167,255,0.26) 0 4px, rgba(122,167,255,0.10) 4px 8px);"></span>Paused</span>
-      </div>
-  </section>
+    <div style="height: 1px; background: #3D2D43"></div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr))"><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 22px; font-weight: 800">9<span style="font-size: 15px; font-weight: 700; color: #C9B9CF"> days</span></span><span style="font-size: 12px; font-weight: 600; color: #B9A8C0">Best streak</span></div><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 22px; font-weight: 800">11/13</span><span style="font-size: 12px; font-weight: 600; color: #B9A8C0">Days in Nov</span></div></div>
+  </div>
 
   <section style="background: #2A1C2F; border-radius: 20px; display: flex; flex-direction: column">
     <button class="hf-row" style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 18px; border: none; background: none; color: #F6EEF8; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 1px solid #3D2D43">
@@ -118,13 +98,52 @@ a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
       <button onClick="{{dismiss}}" style="margin-top: 8px; width: 100%; height: 54px; border-radius: 27px; border: none; background: #FF6B8A; color: #2A0A14; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer; animation: hfUp .4s .4s both">Nice</button>
     </div>
   </sc-if>
+  <sc-if value="{{historyOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 9; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeHistory}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="History" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 16px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">History</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+      <p style="margin: 0; font-size: 24px; font-weight: 800">9<span style="font-size: 15px; font-weight: 700; color: #C9B9CF"> days</span></p>
+      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Best streak</p>
+    </div><div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+      <p style="margin: 0; font-size: 24px; font-weight: 800">11/13</p>
+      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Days in Nov</p>
+    </div><div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 22px; font-weight: 800">88<span style="font-size: 14px; font-weight: 700; color: #C9B9CF">%</span></p><p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Completion</p></div><div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 22px; font-weight: 800">29<span style="font-size: 14px; font-weight: 700; color: #C9B9CF"></span></p><p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Total check-ins</p></div>
+        </div>
+        <div style="background: #2A1C2F; border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <button aria-label="Previous month" style="width: 36px; height: 36px; border-radius: 18px; border: none; background: #3A2A40; color: #E4D7E9; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+            <span style="font-size: 16px; font-weight: 700">November 2026</span>
+            <button aria-label="Next month" disabled="{{true}}" style="width: 36px; height: 36px; border-radius: 18px; border: none; background: #3A2A40; color: #6E5C75; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+          </div>
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+      <sc-for list="{{dows}}" as="w" hint-placeholder-count="7">
+        <span style="text-align: center; font-size: 11px; font-weight: 600; color: #A895AE">{{w}}</span>
+      </sc-for>
+      <sc-for list="{{month}}" as="c" hint-placeholder-count="30">
+        <span style="{{c.style}}">{{c.num}}</span>
+      </sc-for>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; padding-top: 2px; font-size: 12px; font-weight: 600; color: #B9A8C0">
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #FF6B8A"></span>Done</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: rgba(255,107,138,0.4)"></span>Partly</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: rgba(255,158,107,0.45)"></span>Missed</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(135deg, rgba(122,167,255,0.26) 0 4px, rgba(122,167,255,0.10) 4px 8px);"></span>Paused</span>
+      </div>
+        </div>
+      </section>
+    </div>
+  </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1240}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1182},"history":{"type":"enum","options":["closed","open"],"default":"closed"}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { done: { 0: true, 1: true }, cel: false };
+    this.state = { history: null, done: { 0: true, 1: true }, cel: false };
   }
   renderVals() {
     var self = this;
@@ -148,7 +167,7 @@ class Component extends DCLogic {
       if (s === 'done') return weekCell + 'background: ' + amber + '; color: #1F1023;';
       if (s === 'miss') return weekCell + 'background: rgba(255,158,107,0.24); color: #FFB894;';
       if (s === 'today') return weekCell + 'background: ' + (count >= goal ? amber : part) + '; color: ' + (count >= goal ? '#1F1023' : '#F6EEF8') + '; box-shadow: 0 0 0 2px #1F1023, 0 0 0 4px ' + amber + ';';
-      return weekCell + 'background: #2A1C2F; color: #7D6A83;';
+      return weekCell + 'background: #3A2A40; color: #8C7992;';
     }
     var wStates = ['done','done','miss','done','done','done','today'];
     var dowsShort = ['S','M','T','W','T','F','S'];
@@ -173,6 +192,8 @@ class Component extends DCLogic {
           labelStyle: 'flex: 1; font-size: 16px; font-weight: 600;' + (on ? ' color: #8C7992; text-decoration: line-through;' : ''),
           toggle: function () { var d = Object.assign({}, self.state.done); d[i] = !d[i]; var all = labels.every(function (_, j) { return d[j]; }); self.setState({ done: d, cel: all && !self.state.done[i] }); } };
       }),
+      historyOpen: self.state.history === null ? (self.props.history || 'closed') === 'open' : self.state.history,
+      openHistory: function () { self.setState({ history: true }); }, closeHistory: function () { self.setState({ history: false }); },
       week: week,
       dows: dowsShort,
       month: month

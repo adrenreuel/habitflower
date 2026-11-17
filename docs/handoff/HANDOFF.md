@@ -4,6 +4,8 @@ This is the source of truth for building Habitflower. It replaces the older conc
 
 Design references live in `design/` (one `.dc.html` file per screen). They are HTML mockups written in a small custom template language (`{{holes}}`, `<sc-for>`, `<sc-if>`, `<dc-import>`, and a `class Component` with `renderVals()` holding sample data and interactions). Treat them as the visual and behavioural spec: read them for exact colours, sizes, spacing, copy and states. Do not port that template syntax; rebuild the screens natively.
 
+**Latest changes:** see `UPDATES-2026-11-16.md`. Where it differs from this file, the updates file wins.
+
 ---
 
 ## 1. Product in one paragraph
@@ -16,7 +18,8 @@ Habitflower is a habit and task app where every habit grows a flower. Check in a
 - Widgets: WidgetKit via `@bacons/apple-targets`, sharing data through an App Group.
 - Apple Health: `@kingstinct/react-native-healthkit`.
 - Camera: in-app capture only (no photo library picker for check-ins). `expo-camera` or `react-native-vision-camera`.
-- Backend: Supabase or Firebase. Must support anonymous auth that can later be linked to Sign in with Apple and Google without losing data.
+- Backend: a small custom API on AWS EC2 (t4g.small): Node + TypeScript with Hono, Postgres, Docker Compose, Caddy for HTTPS. Anonymous accounts issued by the server on first launch; Sign in with Apple and Google linked by verifying their identity tokens and attaching them to the same account. S3 with presigned uploads for check-in photos (v1.1). Expo push service for remote notifications.
+- v1 is local-first (SQLite); the backend is only needed from Account backup onward. The app talks to it through one API client module with URLs in env config.
 - Push notifications: Expo Notifications (local for reminders; remote for social).
 - Offline first for solo features: check-ins and tasks work offline and sync later.
 
@@ -96,7 +99,7 @@ Tabs (bottom bar, 5 slots): **Habits**, **Tasks**, **+** (centre, raised), **Fri
 
 ## 5. Design system
 
-**Typeface:** Plus Jakarta Sans (400 to 800). Page titles 30 to 32px/800. Section headings on pages 18px/700 sentence case. Small labels in forms, grouped lists and card labels 13px/800 uppercase, letter-spacing 0.6px.
+**Typefaces:** Young Serif (Google Fonts, single weight 400, letter-spacing -0.3px) for display text only: page titles, the habit name on habit pages, celebration headlines, Welcome and notification prompt headlines, camera "Checked in" and empty-state titles. Plus Jakarta Sans (400 to 800) for everything else. Page titles 30 to 32px. Section headings on pages 18px/700 sentence case. Small labels in forms, grouped lists and card labels 13px/800 uppercase, letter-spacing 0.6px.
 
 **Colours**
 | Token | Value | Use |
@@ -147,7 +150,7 @@ Tabs (bottom bar, 5 slots): **Habits**, **Tasks**, **+** (centre, raised), **Fri
 - Days that never count against a flower: unscheduled (rest) days, paused habits, Away mode days.
 - A partially completed day (e.g. 2 of 3, or 3 of 4 list items) counts as a miss.
 - **New day starts at** 12, 2 or 4 AM (Settings). Check-ins before that time count for the previous day.
-- Flower drawing: see `design/Flower.dc.html` (props `kind`, `stage` seed/bud/bloom, `health` ok/wilt/dormant, `size`). The soil stays level in every state; wilting is a dedicated drooping drawing, not a rotation.
+- Flower drawing: see `design/Flower.dc.html` (props `kind`, `stage` seed/bud/bloom, `health` ok/wilt/dormant, `size`, `soil` on/off). The soil stays level in every state; wilting is a dedicated drooping drawing, not a rotation.
 
 **Check-in celebration:** when a check-in completes the day or grows a stage, show a full-screen moment (flower pops in with sparkles, short line, one button). Group habits show "You're checked in. 2 of 3 done. It grows when @x checks in." with a Nudge button.
 
@@ -225,7 +228,7 @@ Personal and social notifications in New / Earlier: nudges (with Check in), wind
 
 ## 11. Accounts and onboarding
 
-- First launch silently creates an anonymous account. Flow: Welcome ("Grow your habits into flowers", Get started, "I already have an account") → New habit → notifications prompt → Home.
+- First launch silently creates an anonymous account. Flow: Welcome ("Grow your habits into flowers", "Check in regularly to help them bloom.", Get started, "I already have an account"; illustration is one sunflower as sprout, bud, bloom at 72/92/112px, centred in a 300×220 tile) → New habit → notifications prompt → Home.
 - Backup: link Apple or Google from Account ("Back up your HabitFlowers", "Not backed up" until linked). Prompt to back up after the first bloom. Unlinked accounts are lost if the app is deleted.
 - Social features require a username plus a linked account first (FriendsGate sheet).
 - Username: changeable once every 30 days, shows available/taken, Save disabled while taken.

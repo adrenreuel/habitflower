@@ -15,7 +15,7 @@ body{margin:0}
 <div style="width: {{px}}; height: {{px}}; display: flex; align-items: center; justify-content: center">
   <sc-if value="{{isWiltSeed}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58C32 51 32.5 46.5 35 43.5" stroke="#86A862" stroke-width="3" stroke-linecap="round" fill="none"></path>
       <ellipse cx="31.5" cy="47.5" rx="7.5" ry="3.4" transform="rotate(-62 31.5 47.5)" fill="#86A862"></ellipse>
       <ellipse cx="38.5" cy="47.5" rx="7.5" ry="3.4" transform="rotate(62 38.5 47.5)" fill="#9DB97A"></ellipse>
@@ -23,7 +23,7 @@ body{margin:0}
   </sc-if>
   <sc-if value="{{isWiltBud}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58C32 46 32 35 36 28C39 23 44 22 46 26" stroke="#86A862" stroke-width="3" stroke-linecap="round" fill="none"></path>
       <ellipse cx="28.5" cy="49" rx="7" ry="3" transform="rotate(-58 28.5 49)" fill="#86A862"></ellipse>
       <ellipse cx="36" cy="46" rx="7" ry="3" transform="rotate(58 36 46)" fill="#9DB97A"></ellipse>
@@ -33,7 +33,7 @@ body{margin:0}
   </sc-if>
   <sc-if value="{{isWiltBloom}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58C32 46 32 34 36 27C39 22 44 21 46 25" stroke="#86A862" stroke-width="3" stroke-linecap="round" fill="none"></path>
       <ellipse cx="28.5" cy="49" rx="7" ry="3" transform="rotate(-58 28.5 49)" fill="#86A862"></ellipse>
       <ellipse cx="36" cy="46" rx="7" ry="3" transform="rotate(58 36 46)" fill="#9DB97A"></ellipse>
@@ -47,7 +47,7 @@ body{margin:0}
   </sc-if>
   <sc-if value="{{isDormant}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V41" stroke="#8A6A48" stroke-width="3" stroke-linecap="round"></path>
       <ellipse cx="25.5" cy="40.5" rx="8" ry="3.8" transform="rotate(-18 25.5 40.5)" fill="#8A6A48"></ellipse>
       <ellipse cx="38.5" cy="40.5" rx="8" ry="3.8" transform="rotate(18 38.5 40.5)" fill="#A07E58"></ellipse>
@@ -55,7 +55,7 @@ body{margin:0}
   </sc-if>
   <sc-if value="{{isSeed}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V40" stroke="#74D447" stroke-width="3" stroke-linecap="round"></path>
       <ellipse cx="25" cy="38" rx="8" ry="4" transform="rotate(-28 25 38)" fill="#74D447"></ellipse>
       <ellipse cx="39" cy="38" rx="8" ry="4" transform="rotate(28 39 38)" fill="#9BE36F"></ellipse>
@@ -63,7 +63,7 @@ body{margin:0}
   </sc-if>
   <sc-if value="{{isBud}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V24" stroke="#74D447" stroke-width="3" stroke-linecap="round"></path>
       <ellipse cx="25" cy="46" rx="7" ry="3.5" transform="rotate(-28 25 46)" fill="#74D447"></ellipse>
       <ellipse cx="39" cy="40" rx="7" ry="3.5" transform="rotate(28 39 40)" fill="#9BE36F"></ellipse>
@@ -73,7 +73,7 @@ body{margin:0}
   </sc-if>
   <sc-if value="{{isSunflower}}" hint-placeholder-val="{{true}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V30" stroke="#74D447" stroke-width="3" stroke-linecap="round"></path>
       <ellipse cx="25" cy="46" rx="7" ry="3.5" transform="rotate(-30 25 46)" fill="#74D447"></ellipse>
       <ellipse cx="39" cy="42" rx="7" ry="3.5" transform="rotate(30 39 42)" fill="#9BE36F"></ellipse>
@@ -98,7 +98,7 @@ body{margin:0}
 
   <sc-if value="{{isDaisy}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V30" stroke="#74D447" stroke-width="3" stroke-linecap="round"></path>
       <ellipse cx="25" cy="46" rx="7" ry="3" transform="rotate(-30 25 46)" fill="#74D447"></ellipse>
       <ellipse cx="39" cy="42" rx="7" ry="3" transform="rotate(30 39 42)" fill="#9BE36F"></ellipse>
@@ -120,7 +120,7 @@ body{margin:0}
 
   <sc-if value="{{isTulip}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V28" stroke="#74D447" stroke-width="3" stroke-linecap="round"></path>
       <path d="M32 56C24 50 21 42 22 34C27 38 31 46 32 56Z" fill="#74D447"></path>
       <path d="M32 56C40 50 43 42 42 34C37 38 33 46 32 56Z" fill="#9BE36F"></path>
@@ -131,7 +131,7 @@ body{margin:0}
 
   <sc-if value="{{isRose}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V30" stroke="#5FAE38" stroke-width="3" stroke-linecap="round"></path>
       <path d="M32 46l-3 -1.5M32 40l3 -1.5" stroke="#5FAE38" stroke-width="2" stroke-linecap="round"></path>
       <ellipse cx="24" cy="44" rx="7" ry="3.5" transform="rotate(-25 24 44)" fill="#5FAE38"></ellipse>
@@ -144,7 +144,7 @@ body{margin:0}
 
   <sc-if value="{{isSpider}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V28" stroke="#74D447" stroke-width="3" stroke-linecap="round"></path>
       <g fill="none" stroke="#FF5A4E" stroke-width="3" stroke-linecap="round">
         <path d="M32 24C28 18 24 16 20 18"></path>
@@ -167,7 +167,7 @@ body{margin:0}
 
   <sc-if value="{{isLavender}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V12M32 58C30 48 26 36 22 20M32 58C34 48 38 36 42 20" stroke="#74D447" stroke-width="2.4" stroke-linecap="round" fill="none"></path>
       <g fill="#A98BEA">
         <ellipse cx="32" cy="8" rx="2.4" ry="3.2"></ellipse><ellipse cx="29.8" cy="12.5" rx="2.4" ry="3"></ellipse><ellipse cx="34.2" cy="12.5" rx="2.4" ry="3"></ellipse><ellipse cx="29.8" cy="17.5" rx="2.4" ry="3"></ellipse><ellipse cx="34.2" cy="17.5" rx="2.4" ry="3"></ellipse><ellipse cx="32" cy="22" rx="2.4" ry="3"></ellipse>
@@ -179,7 +179,7 @@ body{margin:0}
 
   <sc-if value="{{isBlossom}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V30" stroke="#8A5A3C" stroke-width="3" stroke-linecap="round"></path>
       <path d="M32 44L40 38" stroke="#8A5A3C" stroke-width="2.2" stroke-linecap="round"></path>
       <circle cx="42" cy="36.5" r="3" fill="#FFC9D6"></circle>
@@ -197,7 +197,7 @@ body{margin:0}
 
   <sc-if value="{{isMarigold}}" hint-placeholder-val="{{false}}">
     <svg width="{{px}}" height="{{px}}" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="#6B4436"></ellipse>
+      <ellipse cx="32" cy="58" rx="13" ry="3.5" fill="{{soilFill}}"></ellipse>
       <path d="M32 58V30" stroke="#74D447" stroke-width="3" stroke-linecap="round"></path>
       <ellipse cx="25" cy="46" rx="7" ry="3" transform="rotate(-30 25 46)" fill="#74D447"></ellipse>
       <ellipse cx="39" cy="42" rx="7" ry="3" transform="rotate(30 39 42)" fill="#9BE36F"></ellipse>
@@ -212,7 +212,7 @@ body{margin:0}
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"kind":{"editor":"enum","options":["sunflower","daisy","tulip","rose","spider","lavender","blossom","marigold"],"default":"sunflower"},"size":{"editor":"int","default":96,"min":24,"max":240},"stage":{"editor":"enum","options":["seed","bud","bloom"],"default":"bloom"},"health":{"editor":"enum","options":["ok","wilt","dormant"],"default":"ok"},"$preview":{"width":96,"height":96}}'>
+<script type="text/x-dc" data-dc-script data-props='{"kind":{"editor":"enum","options":["sunflower","daisy","tulip","rose","spider","lavender","blossom","marigold"],"default":"sunflower"},"size":{"editor":"int","default":96,"min":24,"max":240},"stage":{"editor":"enum","options":["seed","bud","bloom"],"default":"bloom"},"health":{"editor":"enum","options":["ok","wilt","dormant"],"default":"ok"},"soil":{"editor":"enum","options":["on","off"],"default":"on"},"$preview":{"width":96,"height":96}}'>
 class Component extends DCLogic {
   renderVals() {
     var k = this.props.kind ?? 'sunflower';
@@ -231,6 +231,7 @@ class Component extends DCLogic {
     b = b && ok;
     var colors = { sunflower: '#FFC93C', daisy: '#F7F2EA', tulip: '#FF6B8A', rose: '#E8455A', spider: '#FF5A4E', lavender: '#A98BEA', blossom: '#FFB7C9', marigold: '#FF9F1C' };
     return {
+      soilFill: (this.props.soil ?? 'on') === 'off' ? 'none' : '#6B4436',
       isWiltSeed: health === 'wilt' && stage === 'seed', isWiltBud: health === 'wilt' && stage === 'bud', isWiltBloom: health === 'wilt' && stage === 'bloom',
       isDormant: health === 'dormant',
       faded: mix(colors[k] || '#A98BEA', '#9A8A92', 0.4),

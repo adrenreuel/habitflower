@@ -10,20 +10,23 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:#1A0E1E}
 a{color:inherit;text-decoration:none}a:hover{color:inherit}
 .hf-b:focus-visible,.hf-tab:focus-visible,.hf-icon-btn:focus-visible{outline:2px solid #74D447;outline-offset:2px}
 .hf-sug{transition:background .15s}.hf-sug:hover{background:#33243A}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; box-sizing: border-box; background: #1F1023; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
   <header style="padding: 62px 20px 0 20px; display: flex; align-items: flex-end; justify-content: space-between">
     <div style="display: flex; flex-direction: column; gap: 2px">
-      <p style="margin: 0; font-size: 14px; font-weight: 600; color: #B9A8C0">Saturday, 14 Nov</p>
+      <p style="margin: 0; font-size: 14px; font-weight: 600; color: #B9A8C0">Saturday, Nov 14</p>
       <h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px">My HabitFlowers</h1>
     </div>
-    <a class="hf-b" href="Settings.dc.html" aria-label="Settings and account" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 22px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 800">R</a>
+    <a class="hf-b" href="Settings.dc.html" aria-label="Settings" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 22px; background: #2A1C2F; color: #E4D7E9; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg></a>
   </header>
   <main style="flex: 1; display: flex; flex-direction: column; gap: 22px; padding: 20px 20px 20px 20px">
     <section style="border-radius: 28px; background: #2A1C2F; padding: 14px 14px 16px 14px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
@@ -32,26 +35,27 @@ a{color:inherit;text-decoration:none}a:hover{color:inherit}
         <dc-import name="Flower" kind="sunflower" stage="bud" size="96" hint-size="96px,96px"></dc-import>
         <dc-import name="Flower" kind="sunflower" stage="bloom" size="112" hint-size="112px,112px"></dc-import>
       </div>
-      <h2 style="margin: 0; font-size: 21px; font-weight: 800">Plant your first HabitFlower</h2>
+      <h2 class="hf-display" style="margin: 0; font-size: 22px; font-weight: 800">Plant your first HabitFlower</h2>
       <a class="hf-b" href="NewHabit.dc.html" style="height: 50px; width: 100%; border-radius: 25px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; font-weight: 800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Plant now</a>
     </section>
     <section aria-label="Suggestions" style="display: flex; flex-direction: column; gap: 12px">
       <h2 style="margin: 0; font-size: 18px; font-weight: 700">Suggestions</h2>
       <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
         <sc-for list="{{ideas}}" as="i" hint-placeholder-count="4">
-          <a class="hf-sug" href="NewHabit.dc.html" aria-label="{{i.aria}}" style="border-radius: 22px; background: #2A1C2F; padding: 8px 8px 10px 8px; display: flex; flex-direction: column; gap: 8px">
-            <span aria-hidden="true" style="{{i.tileStyle}}">
-              <dc-import name="Flower" kind="{{i.kind}}" stage="{{i.stage}}" size="64" hint-size="64px,64px"></dc-import>
+          <a class="hf-sug" href="NewHabit.dc.html" aria-label="{{i.aria}}" style="{{i.cardStyle}}">
+            <span style="position: relative; z-index: 1; display: flex; flex-direction: column; gap: 3px; padding: 18px 14px 0 14px">
+              <span class="hf-display" style="font-size: 18px; line-height: 1.15">{{i.name}}</span>
+              <span style="font-size: 12.5px; font-weight: 600; color: {{i.metaColor}}">{{i.meta}}</span>
             </span>
-            <span style="display: flex; align-items: center; gap: 8px; padding: 2px 6px">
-              <span style="flex: 1; min-width: 0; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{i.name}}</span>
+            <span aria-hidden="true" style="position: absolute; right: -10px; bottom: -6px">
+              <dc-import name="Flower" kind="{{i.kind}}" stage="bloom" size="92" hint-size="92px,92px"></dc-import>
             </span>
           </a>
         </sc-for>
       </div>
     </section>
   </main>
-  <nav aria-label="Main" style="height: 84px; box-sizing: border-box; padding: 8px 12px 26px 12px; background: #180B1B; border-top: 1px solid #33243A; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+  <nav aria-label="Main" style="position: relative; z-index: 2; height: 84px; box-sizing: border-box; padding: 8px 12px 26px 12px; background: #2F1F36; box-shadow: 0 -10px 28px rgba(0,0,0,0.38); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
     <button class="hf-tab" aria-current="page" style="border: none; background: none; color: #74D447; display: flex; flex-direction: column; align-items: center; gap: 3px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-8"></path><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5z"></path><path d="M12 15c0-2.5-1.8-4.5-4.5-4.5 0 2.5 1.8 4.5 4.5 4.5z"></path><circle cx="12" cy="6" r="3"></circle></svg>
       Habits
@@ -60,8 +64,8 @@ a{color:inherit;text-decoration:none}a:hover{color:inherit}
       <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"></rect><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg></span>
       Tasks
     </a>
-    <a class="hf-tab" href="CreateChooser.dc.html" aria-label="Add a habit or task" style="display: flex; align-items: flex-start; justify-content: center">
-      <span style="width: 56px; height: 56px; margin-top: -22px; border-radius: 28px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #180B1B">
+    <a class="hf-tab" href="CreateChooser.dc.html" aria-label="Add a habit or task" style="display: flex; align-items: center; margin-top: -4px; justify-content: center">
+      <span style="width: 52px; height: 40px; border-radius: 20px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
       </span>
     </a>
@@ -80,15 +84,15 @@ a{color:inherit;text-decoration:none}a:hover{color:inherit}
 class Component extends DCLogic {
   renderVals() {
     var ideas = [
-      ['Hit the gym', 'lavender', '169,139,234'],
-      ['Morning walk', 'sunflower', '255,201,60'],
-      ['Drink water', 'blossom', '255,183,201'],
-      ['Check mail', 'daisy', '247,242,234']
+      ['Hit the gym', 'lavender', '169,139,234', 'Mon, Wed, Fri', '#CDB9F5'],
+      ['Morning walk', 'sunflower', '255,201,60', 'Every day', '#FFE08A'],
+      ['Drink water', 'blossom', '255,183,201', '8 times a day', '#FFD3DF'],
+      ['Check mail', 'daisy', '247,242,234', 'Every day', '#E9E2D6']
     ];
     return {
       ideas: ideas.map(function (i) {
-        return { name: i[0], kind: i[1], stage: 'bloom', aria: 'Plant ' + i[0],
-          tileStyle: 'height: 76px; border-radius: 16px; background: rgba(' + i[2] + ',0.12); display: flex; align-items: flex-end; justify-content: center; overflow: hidden;' };
+        return { name: i[0], kind: i[1], meta: i[3], metaColor: i[4], aria: 'Plant ' + i[0],
+          cardStyle: 'position: relative; overflow: hidden; height: 136px; border-radius: 22px; background: rgba(' + i[2] + ',0.14); display: flex; flex-direction: column;' };
       })
     };
   }
