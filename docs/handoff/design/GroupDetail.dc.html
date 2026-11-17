@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Habit detail: Morning walk (group)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+@keyframes hfSway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes hfPop{0%{transform:scale(.55);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}@keyframes hfSpark{0%{transform:scale(.2);opacity:0}40%{opacity:1}100%{transform:scale(1.3);opacity:0}}@keyframes hfUp{0%{transform:translateY(14px);opacity:0}100%{transform:none;opacity:1}}
+body{margin:0;background:#1A0E1E}
+a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
+.hf-step:active{transform:scale(0.96)}
+.hf-step:focus-visible,.hf-back:focus-visible,.hf-row:focus-visible{outline:2px solid #FFC93C;outline-offset:2px}
+.hf-step:disabled{opacity:0.35;cursor:default}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 1298px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, linear-gradient(180deg, rgba(255,201,60,0.24) 0px, rgba(255,201,60,0.09) 240px, rgba(255,201,60,0) 420px), #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px; padding: 58px 20px 40px 20px">
+
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <a class="hf-back" href="Main.dc.html" style="display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+      Habits
+    </a>
+    <a href="EditHabit.dc.html" style="height: 44px; padding: 0 16px; border-radius: 22px; border: none; background: #2A1C2F; color: #F6EEF8; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-sizing: border-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path><path d="M13.5 6.5l4 4"></path></svg>Edit</a>
+  </div>
+
+  <section style="display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+    <div style="position: relative; width: 170px; height: 164px; display: flex; align-items: flex-end; justify-content: center">
+      <span aria-hidden="true" style="position: absolute; left: 50%; bottom: 4px; width: 120px; height: 18px; margin-left: -60px; border-radius: 50%; background: rgba(0,0,0,0.35); filter: blur(6px)"></span>
+      <span aria-hidden="true" style="position: absolute; left: 50%; bottom: 5px; width: 66px; height: 19px; margin-left: -33px; border-radius: 50%; background: #6B4436"></span>
+      <span style="position: relative; display: flex; transform-origin: 50% 92%; animation: hfSway 4.5s ease-in-out infinite; "><dc-import name="Flower" soil="off" kind="sunflower" stage="bloom" size="156" hint-size="156px,156px"></dc-import></span>
+    </div>
+    <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.4px">Morning walk</h1>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <span style="display: inline-flex; padding-left: 6px">
+        <span style="width: 26px; height: 26px; margin-left: -6px; border-radius: 13px; background: #74D447; color: #142008; box-shadow: 0 0 0 2px #1F1023; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800">R</span>
+        <span style="width: 26px; height: 26px; margin-left: -6px; border-radius: 13px; background: #FFC93C; color: #3A2600; box-shadow: 0 0 0 2px #1F1023; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800">M</span>
+        <span style="width: 26px; height: 26px; margin-left: -6px; border-radius: 13px; background: #A98BEA; color: #1F1023; box-shadow: 0 0 0 2px #1F1023; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800">S</span>
+      </span>
+      <span style="font-size: 15px; font-weight: 500; color: #B9A8C0">Every day, together</span>
+    </div>
+    <span style="height: 28px; padding: 0 12px; margin-top: 4px; border-radius: 14px; background: rgba(255,201,60,0.16); color: #FFE29A; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.2 2.2-5.3 3.6-7.1.4 1.8 1.4 2.9 2.4 3.2-.3-2.9.9-5.6 3-7.4.2 2.6 1.4 4.1 2.6 5.6 1.1 1.4 1.4 2.6 1.4 4.1C18.5 17.9 15.9 21 12 21z"></path></svg>In bloom for 4 days</span>
+  </section>
+
+  <section aria-label="Your check-in" style="background: #2A1C2F; border-radius: 24px; padding: 18px 16px 16px 16px; display: flex; flex-direction: column; gap: 14px">
+    <p style="margin: 0; padding: 0 4px; font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Today</p>
+    <sc-if value="{{meNotDone}}" hint-placeholder-val="{{true}}">
+      <button class="hf-step" onClick="{{checkIn}}" style="height: 60px; border-radius: 30px; border: none; background: #FFC93C; color: #3A2600; font: inherit; font-size: 17px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        Check in
+      </button>
+    </sc-if>
+    <sc-if value="{{meDone}}" hint-placeholder-val="{{false}}">
+      <div style="height: 60px; border-radius: 30px; background: rgba(255,201,60,0.16); color: #FFE29A; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 17px; font-weight: 800">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        Checked in
+      </div>
+    </sc-if>
+  </section>
+
+  <section aria-label="Your group" style="display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; align-items: baseline; justify-content: space-between">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Group</h2>
+      <p aria-live="polite" style="margin: 0; font-size: 14px; font-weight: 700; color: #B9A8C0">{{status}}</p>
+    </div>
+    <div style="background: #2A1C2F; border-radius: 22px; padding: 4px 14px; display: flex; flex-direction: column">
+      <sc-for list="{{members}}" as="m" hint-placeholder-count="2">
+        <div style="display: flex; align-items: center; gap: 12px; min-height: 62px; border-bottom: {{m.divider}}">
+          <span style="{{m.avatar}}">{{m.initial}}</span>
+          <span style="flex: 1; min-width: 0; font-size: 15.5px; font-weight: 700">{{m.name}}</span>
+          <sc-if value="{{m.isDone}}" hint-placeholder-val="{{false}}">
+            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 700; color: #FFE29A"><span style="width: 26px; height: 26px; border-radius: 13px; background: #FFC93C; color: #3A2600; display: inline-flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>{{m.when}}</span>
+          </sc-if>
+          <sc-if value="{{m.canWater}}" hint-placeholder-val="{{true}}">
+            <button class="hf-step" onClick="{{m.water}}" aria-label="{{m.waterAria}}" style="{{m.waterStyle}}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 21h4"></path></svg>
+              {{m.waterLabel}}
+            </button>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <div class="hf-row" role="button" tabindex="0" onClick="{{openHistory}}" aria-haspopup="dialog" aria-label="This week. See history" style="background: #2A1C2F; border-radius: 24px; padding: 16px 16px 14px 16px; display: flex; flex-direction: column; gap: 14px; cursor: pointer">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <span style="font-size: 18px; font-weight: 700">This week</span>
+      <span style="display: inline-flex; align-items: center; gap: 2px; font-size: 13.5px; font-weight: 700; color: #B9A8C0">History<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+      <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+          <span style="font-size: 12px; font-weight: 600; color: #B9A8C0">{{d.dow}}</span>
+          <span style="{{d.style}}">{{d.num}}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="height: 1px; background: #3D2D43"></div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr))"><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 22px; font-weight: 800">9<span style="font-size: 15px; font-weight: 700; color: #C9B9CF"> days</span></span><span style="font-size: 12px; font-weight: 600; color: #B9A8C0">Best streak</span></div><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 22px; font-weight: 800">11/13</span><span style="font-size: 12px; font-weight: 600; color: #B9A8C0">Days in Nov</span></div></div>
+  </div>
+
+  <section style="background: #2A1C2F; border-radius: 20px; display: flex; flex-direction: column">
+    <button class="hf-row" style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 18px; border: none; background: none; color: #F6EEF8; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 1px solid #3D2D43">
+      <span>Reminders</span><span style="color: #B9A8C0; font-weight: 500">8 AM, 1 PM, 7 PM</span>
+    </button>
+    <button class="hf-row" style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 18px; border: none; background: none; color: #F6EEF8; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">
+      <span>Shared with</span><span style="color: #B9A8C0; font-weight: 500">Friends</span>
+    </button>
+  </section>
+
+  <button class="hf-row" onClick="{{openLeave}}" aria-haspopup="dialog" style="min-height: 52px; border-radius: 18px; border: none; background: #2A1C2F; color: #FF7B7B; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer">Leave Morning walk</button>
+  <sc-if value="{{celebrate}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: absolute; inset: 0; z-index: 9; background: rgba(20,9,24,0.94); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 0 32px; text-align: center">
+      <div aria-hidden="true" style="position: relative; width: 220px; height: 200px; display: flex; align-items: center; justify-content: center">
+        <span style="position: absolute; left: 30px; top: 40px; width: 10px; height: 10px; border-radius: 50%; background: #FFC93C; animation: hfSpark 1.4s ease-out 0s infinite"></span><span style="position: absolute; left: 176px; top: 30px; width: 8px; height: 8px; border-radius: 50%; background: #FFC93C; animation: hfSpark 1.4s ease-out 0.3s infinite"></span><span style="position: absolute; left: 196px; top: 140px; width: 12px; height: 12px; border-radius: 50%; background: #FFC93C; animation: hfSpark 1.4s ease-out 0.6s infinite"></span><span style="position: absolute; left: 20px; top: 150px; width: 8px; height: 8px; border-radius: 50%; background: #FFC93C; animation: hfSpark 1.4s ease-out 0.9s infinite"></span><span style="position: absolute; left: 110px; top: 10px; width: 7px; height: 7px; border-radius: 50%; background: #FFC93C; animation: hfSpark 1.4s ease-out 0.45s infinite"></span>
+        <span style="width: 180px; height: 180px; border-radius: 56px; background: rgba(255,201,60,0.16); display: flex; align-items: center; justify-content: center; animation: hfPop .6s cubic-bezier(.2,.9,.3,1.2) both"><dc-import name="Flower" kind="sunflower" stage="bloom" size="146" hint-size="146px,146px"></dc-import></span>
+      </div>
+      <h2 style="margin: 0; font-size: 28px; font-weight: 800; animation: hfUp .4s .2s both">You’re checked in</h2>
+      <p style="margin: 0; font-size: 16px; font-weight: 500; color: #B9A8C0; animation: hfUp .4s .3s both">2 of 3 done. It grows when @sampatel checks in.</p>
+      <button onClick="{{dismiss}}" style="margin-top: 8px; width: 100%; height: 54px; border-radius: 27px; border: none; background: #FFC93C; color: #3A2600; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer; animation: hfUp .4s .4s both">Nudge @sampatel</button>
+    </div>
+  </sc-if>
+  <sc-if value="{{leaveOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 9; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeLeave}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="Leave Morning walk?" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <h2 style="margin: 4px 2px 0 2px; font-size: 21px; font-weight: 800">Leave Morning walk?</h2>
+        <p style="margin: 0 2px; font-size: 14.5px; font-weight: 500; line-height: 1.45; color: #B9A8C0">It keeps growing for @mayac and @sampatel. You keep your history, and they’ll see that you left.</p>
+        <a class="hf-b" href="Main.dc.html" style="height: 52px; border-radius: 26px; background: #FF7B7B; color: #2A0808; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800">Leave</a>
+        <button onClick="{{closeLeave}}" style="height: 52px; border-radius: 26px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Cancel</button>
+      </section>
+    </div>
+  </sc-if>
+  <sc-if value="{{historyOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 9; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeHistory}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="History" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 16px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">History</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+      <p style="margin: 0; font-size: 24px; font-weight: 800">9<span style="font-size: 15px; font-weight: 700; color: #C9B9CF"> days</span></p>
+      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Best streak</p>
+    </div><div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+      <p style="margin: 0; font-size: 24px; font-weight: 800">11/13</p>
+      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Days in Nov</p>
+    </div><div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 22px; font-weight: 800">91<span style="font-size: 14px; font-weight: 700; color: #C9B9CF">%</span></p><p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Completion</p></div><div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 22px; font-weight: 800">31<span style="font-size: 14px; font-weight: 700; color: #C9B9CF"></span></p><p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Group check-ins</p></div>
+        </div>
+        <div style="background: #2A1C2F; border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <button aria-label="Previous month" style="width: 36px; height: 36px; border-radius: 18px; border: none; background: #3A2A40; color: #E4D7E9; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+            <span style="font-size: 16px; font-weight: 700">November 2026</span>
+            <button aria-label="Next month" disabled="{{true}}" style="width: 36px; height: 36px; border-radius: 18px; border: none; background: #3A2A40; color: #6E5C75; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+          </div>
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+      <sc-for list="{{dows}}" as="w" hint-placeholder-count="7">
+        <span style="text-align: center; font-size: 11px; font-weight: 600; color: #A895AE">{{w}}</span>
+      </sc-for>
+      <sc-for list="{{month}}" as="c" hint-placeholder-count="30">
+        <span style="{{c.style}}">{{c.num}}</span>
+      </sc-for>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; padding-top: 2px; font-size: 12px; font-weight: 600; color: #B9A8C0">
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #FFC93C"></span>Done</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: rgba(255,201,60,0.4)"></span>Partly</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: rgba(255,158,107,0.45)"></span>Missed</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(135deg, rgba(122,167,255,0.26) 0 4px, rgba(122,167,255,0.10) 4px 8px);"></span>Paused</span>
+      </div>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1298},"history":{"type":"enum","options":["closed","open"],"default":"closed"}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { history: null, me: false, watered: false, cel: false, leave: false };
+  }
+  renderVals() {
+    var self = this;
+    var goal = 3;
+    var count = 1 + (this.state.me ? 1 : 0);
+    var C = 427.26;
+    var amber = '#FFC93C';
+    var part = 'rgba(255,201,60,0.4)';
+    var cellBase = 'height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; box-sizing: border-box;';
+    function cell(s) {
+      if (s === 'done') return cellBase + 'background: ' + amber + '; color: #1F1023;';
+      if (s === 'part') return cellBase + 'background: ' + part + '; color: #F6EEF8;';
+      if (s === 'miss') return cellBase + 'background: rgba(255,158,107,0.24); color: #FFB894;';
+      if (s === 'pause') return cellBase + 'background: repeating-linear-gradient(135deg, rgba(122,167,255,0.26) 0 4px, rgba(122,167,255,0.10) 4px 8px); color: #A9C6FF;';
+      if (s === 'today') return cellBase + 'background: ' + (count >= goal ? amber : part) + '; color: ' + (count >= goal ? '#1F1023' : '#F6EEF8') + '; box-shadow: 0 0 0 2px #2A1C2F, 0 0 0 4px ' + amber + ';';
+      return cellBase + 'background: #3A2A40; color: #7D6A83;';
+    }
+    var weekCell = 'width: 40px; height: 40px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; box-sizing: border-box;';
+    function wk(s) {
+      if (s === 'done') return weekCell + 'background: ' + amber + '; color: #1F1023;';
+      if (s === 'miss') return weekCell + 'background: rgba(255,158,107,0.24); color: #FFB894;';
+      if (s === 'today') return weekCell + 'background: ' + (count >= goal ? amber : part) + '; color: ' + (count >= goal ? '#1F1023' : '#F6EEF8') + '; box-shadow: 0 0 0 2px #1F1023, 0 0 0 4px ' + amber + ';';
+      return weekCell + 'background: #3A2A40; color: #8C7992;';
+    }
+    var wStates = ['done','done','miss','done','done','done','today'];
+    var dowsShort = ['S','M','T','W','T','F','S'];
+    var week = wStates.map(function (s, i) { return { dow: dowsShort[i], num: String(8 + i), style: wk(s) }; });
+    var hist = ['done','done','done','part','pause','pause','pause','done','done','miss','done','done','done'];
+    var month = [];
+    for (var d = 1; d <= 30; d++) {
+      var s = d <= 13 ? hist[d - 1] : (d === 14 ? 'today' : 'future');
+      month.push({ num: String(d), style: cell(s) });
+    }
+    var status = count + ' of ' + goal + ' checked in';
+    return {
+      status: status,
+      statusColor: '#B9A8C0',
+      checkIn: function () { self.setState({ me: true, cel: true }); },
+      leaveOpen: !!self.state.leave, openLeave: function () { self.setState({ leave: true }); }, closeLeave: function () { self.setState({ leave: false }); },
+      celebrate: !!self.state.cel, dismiss: function () { self.setState({ cel: false, watered: true }); },
+      meDone: !!self.state.me, meNotDone: !self.state.me,
+      members: [
+        { id: 'maya', name: '@mayac', initial: 'M', bg: '#FFC93C', fg: '#3A2600' },
+        { id: 'sam', name: '@sampatel', initial: 'S', bg: '#A98BEA', fg: '#1F1023' }
+      ].map(function (m, i, arr) {
+        var done = m.id === 'maya' || (m.id === 'me' && self.state.me);
+        var watered = self.state.watered;
+        return { name: m.name, initial: m.initial,
+          avatar: 'width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; background: ' + m.bg + '; color: ' + m.fg + '; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800;',
+          divider: i < arr.length - 1 ? '1px solid #3D2D43' : 'none',
+          isDone: done, when: m.id === 'maya' ? '7:12 AM' : 'Now',
+          isMe: m.id === 'me' && !done,
+          canWater: m.id === 'sam',
+          water: function () { self.setState({ watered: true }); },
+          waterAria: watered ? 'Nudged @sampatel' : 'Nudge @sampatel',
+          waterLabel: watered ? 'Nudged' : 'Nudge',
+          waterStyle: 'height: 40px; padding: 0 16px; border-radius: 20px; border: none; font: inherit; font-size: 14px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;' + (watered ? ' background: #3A2A40; color: #8C7992;' : ' background: rgba(122,167,255,0.20); color: #A9C6FF;')
+        };
+      }),
+      historyOpen: self.state.history === null ? (self.props.history || 'closed') === 'open' : self.state.history,
+      openHistory: function () { self.setState({ history: true }); }, closeHistory: function () { self.setState({ history: false }); },
+      week: week,
+      dows: dowsShort,
+      month: month
+    };
+  }
+}
+</script>
+</body>
+</html>

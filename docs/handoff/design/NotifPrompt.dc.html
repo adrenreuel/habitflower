@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Turn on notifications</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.hf-b:focus-visible,.hf-row:focus-visible,.hf-back:focus-visible{outline:2px solid #74D447;outline-offset:-2px}
+.hf-row{transition:background .15s}.hf-row:hover{background:#33243A}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; padding: 0 28px; text-align: center">
+    <div aria-hidden="true" style="position: relative; width: 300px; height: 210px; border-radius: 40px; background: rgba(122,167,255,0.10); display: flex; align-items: center; justify-content: center">
+      <div style="width: 248px; box-sizing: border-box; padding: 12px 14px; border-radius: 22px; background: rgba(246,238,248,0.12); display: flex; align-items: center; gap: 12px; text-align: left">
+        <span style="width: 38px; height: 38px; flex-shrink: 0; border-radius: 10px; background: #2A1C2F; display: flex; align-items: flex-end; justify-content: center; overflow: hidden"><dc-import name="Flower" kind="sunflower" stage="bloom" size="34" hint-size="34px,34px"></dc-import></span>
+        <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 13px; font-weight: 800">Hit the gym</span>
+          <span style="font-size: 13px; font-weight: 500; color: #D9CCDE">Your window is open until 8 PM</span>
+        </span>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.15">Never miss a check-in</h1>
+      <p style="margin: 0; font-size: 16px; font-weight: 500; color: #B9A8C0">We'll remind you before a flower wilts.</p>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 12px; padding: 0 24px 44px 24px">
+    <a class="hf-b" href="HabitsEmpty.dc.html" style="height: 56px; border-radius: 28px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 800">Turn on notifications</a>
+    <a class="hf-b" href="HabitsEmpty.dc.html" style="height: 44px; display: flex; align-items: center; justify-content: center; color: #B9A8C0; font-size: 15px; font-weight: 600">Not now</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

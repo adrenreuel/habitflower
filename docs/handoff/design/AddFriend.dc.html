@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add a friend</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+input::placeholder{color:#8C7992}
+.hf-b:focus-visible,.hf-f:focus-visible{outline:2px solid #74D447;outline-offset:2px}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 24px; padding: 62px 20px 34px 20px; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between">
+    <h1 style="margin: 0; font-size: 24px; font-weight: 800">Add a friend</h1>
+    <a class="hf-b" href="Friends.dc.html" aria-label="Close" style="width: 44px; height: 44px; border-radius: 22px; background: #2A1C2F; color: #E4D7E9; display: flex; align-items: center; justify-content: center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    </a>
+  </div>
+
+  <section aria-label="Find by username" style="display: flex; flex-direction: column; gap: 10px">
+    <div style="position: relative">
+      <label for="q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search by username</label>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A895AE" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 16px; top: 17px"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+      <input class="hf-f" id="q" value="{{query}}" placeholder="Search by username" style="width: 100%; height: 52px; box-sizing: border-box; padding: 0 56px 0 44px; border-radius: 16px; border: none; background: #2A1C2F; color: #F6EEF8; font: inherit; font-size: 16px; font-weight: 600">
+      <button class="hf-b" aria-label="Scan a friend's code" style="position: absolute; right: 6px; top: 6px; width: 40px; height: 40px; border-radius: 12px; border: none; background: #3A2A40; color: #E4D7E9; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M7 12h10"></path></svg>
+      </button>
+    </div>
+    <sc-if value="{{hasResults}}" hint-placeholder-val="{{true}}">
+    <div style="border-radius: 18px; background: #2A1C2F; display: flex; flex-direction: column">
+      <sc-for list="{{results}}" as="r" hint-placeholder-count="2">
+        <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px 10px 14px; box-sizing: border-box; border-bottom: {{r.divider}}">
+          <span style="{{r.avatarStyle}}">{{r.initials}}</span>
+          <div style="flex: 1; min-width: 0">
+            <p style="margin: 0; font-size: 15px; font-weight: 700">{{r.name}}</p>
+          </div>
+          <button class="hf-b" onClick="{{r.add}}" aria-pressed="{{r.sentAttr}}" style="{{r.btnStyle}}">{{r.btnLabel}}</button>
+        </div>
+      </sc-for>
+    </div>
+    </sc-if>
+    <sc-if value="{{noResults}}" hint-placeholder-val="{{false}}">
+      <div style="border-radius: 18px; background: #2A1C2F; padding: 18px 16px; display: flex; flex-direction: column; gap: 4px; text-align: center">
+        <p style="margin: 0; font-size: 15px; font-weight: 700">No one called @alexx</p>
+        <p style="margin: 0; font-size: 13.5px; font-weight: 500; color: #B9A8C0">Check the spelling, or invite them below.</p>
+      </div>
+    </sc-if>
+  </section>
+
+  <section aria-label="Invite friends" style="display: flex; flex-direction: column; gap: 12px">
+    <h2 style="margin: 0; font-size: 18px; font-weight: 700">Invite friends</h2>
+    <div style="position: relative; overflow: hidden; border-radius: 28px; background: #2A1C2F; padding: 16px 16px 18px 16px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJub25lIiBzaGFwZS1yZW5kZXJpbmc9ImF1dG8iIGFyaWEtaGlkZGVuPSJ0cnVlIiB3aWR0aD0iOTYiIGhlaWdodD0iOTYiPjwhLS0gR2VuZXJhdGVkIGJ5IERpY2VCZWFyIChodHRwczovL3d3dy5kaWNlYmVhci5jb20pIC0tPjxtZXRhZGF0YSB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6ZGN0ZXJtcz0iaHR0cDovL3B1cmwub3JnL2RjL3Rlcm1zLyI+PHJkZjpSREY+PHJkZjpEZXNjcmlwdGlvbj48ZGM6dGl0bGU+TG9vcHM8L2RjOnRpdGxlPjxkYzpjcmVhdG9yPkRpY2VCZWFyPC9kYzpjcmVhdG9yPjxkYzpzb3VyY2UgeHNpOnR5cGU9ImRjdGVybXM6VVJJIj5odHRwczovL3d3dy5kaWNlYmVhci5jb208L2RjOnNvdXJjZT48ZGN0ZXJtczpsaWNlbnNlIHhzaTp0eXBlPSJkY3Rlcm1zOlVSSSI+aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL3B1YmxpY2RvbWFpbi96ZXJvLzEuMC88L2RjdGVybXM6bGljZW5zZT48ZGM6cmlnaHRzPuKAnExvb3Bz4oCdIChodHRwczovL3d3dy5kaWNlYmVhci5jb20pIGJ5IOKAnERpY2VCZWFy4oCdLCBsaWNlbnNlZCB1bmRlciDigJxDQzAgMS4w4oCdIChodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvcHVibGljZG9tYWluL3plcm8vMS4wLyk8L2RjOnJpZ2h0cz48L3JkZjpEZXNjcmlwdGlvbj48L3JkZjpSREY+PC9tZXRhZGF0YT48ZGVmcz48ZyBpZD0idGlsZS1kZWZhdWx0LWZkMzkzYmYzIj48cGF0aCBkPSJNMCAxNEExNCAxNCAwIDAgMSAxNCAwbTAgMjhhMTQgMTQgMCAwIDAgMTQtMTQiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlPSIjZmZmZmZmIi8+PC9nPjxnIGlkPSJwYXR0ZXJuLWRlZmF1bHQtZmQzOTNiZjMiPjxnIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTpvdmVybGF5Ij48ZyBjbGFzcz0iZGJsby1nMSI+PHVzZSB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0IDQpIiBocmVmPSIjdGlsZS1kZWZhdWx0LWZkMzkzYmYzIi8+PC9nPjxnIGNsYXNzPSJkYmxvLWcyIj48dXNlIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMyIDQpIiBocmVmPSIjdGlsZS1kZWZhdWx0LWZkMzkzYmYzIi8+PC9nPjxnIGNsYXNzPSJkYmxvLWczIj48dXNlIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwIDQpIHJvdGF0ZSg5MCwgMTQsIDE0KSIgaHJlZj0iI3RpbGUtZGVmYXVsdC1mZDM5M2JmMyIvPjwvZz48ZyBjbGFzcz0iZGJsby1nMSI+PHVzZSB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0IDMyKSIgaHJlZj0iI3RpbGUtZGVmYXVsdC1mZDM5M2JmMyIvPjwvZz48ZyBjbGFzcz0iZGJsby1nMiI+PHVzZSB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMiAzMikgcm90YXRlKDkwLCAxNCwgMTQpIiBocmVmPSIjdGlsZS1kZWZhdWx0LWZkMzkzYmYzIi8+PC9nPjxnIGNsYXNzPSJkYmxvLWczIj48dXNlIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwIDMyKSByb3RhdGUoOTAsIDE0LCAxNCkiIGhyZWY9IiN0aWxlLWRlZmF1bHQtZmQzOTNiZjMiLz48L2c+PGcgY2xhc3M9ImRibG8tZzEiPjx1c2UgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNCA2MCkiIGhyZWY9IiN0aWxlLWRlZmF1bHQtZmQzOTNiZjMiLz48L2c+PGcgY2xhc3M9ImRibG8tZzIiPjx1c2UgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzIgNjApIiBocmVmPSIjdGlsZS1kZWZhdWx0LWZkMzkzYmYzIi8+PC9nPjxnIGNsYXNzPSJkYmxvLWczIj48dXNlIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwIDYwKSIgaHJlZj0iI3RpbGUtZGVmYXVsdC1mZDM5M2JmMyIvPjwvZz48L2c+PGcgb3BhY2l0eT0iLjUiPjxnIGNsYXNzPSJkYmxvLWcxIj48dXNlIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQgNCkiIGhyZWY9IiN0aWxlLWRlZmF1bHQtZmQzOTNiZjMiLz48L2c+PGcgY2xhc3M9ImRibG8tZzIiPjx1c2UgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzIgNCkiIGhyZWY9IiN0aWxlLWRlZmF1bHQtZmQzOTNiZjMiLz48L2c+PGcgY2xhc3M9ImRibG8tZzMiPjx1c2UgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAgNCkgcm90YXRlKDkwLCAxNCwgMTQpIiBocmVmPSIjdGlsZS1kZWZhdWx0LWZkMzkzYmYzIi8+PC9nPjxnIGNsYXNzPSJkYmxvLWcxIj48dXNlIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQgMzIpIiBocmVmPSIjdGlsZS1kZWZhdWx0LWZkMzkzYmYzIi8+PC9nPjxnIGNsYXNzPSJkYmxvLWcyIj48dXNlIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMyIDMyKSByb3RhdGUoOTAsIDE0LCAxNCkiIGhyZWY9IiN0aWxlLWRlZmF1bHQtZmQzOTNiZjMiLz48L2c+PGcgY2xhc3M9ImRibG8tZzMiPjx1c2UgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAgMzIpIHJvdGF0ZSg5MCwgMTQsIDE0KSIgaHJlZj0iI3RpbGUtZGVmYXVsdC1mZDM5M2JmMyIvPjwvZz48ZyBjbGFzcz0iZGJsby1nMSI+PHVzZSB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0IDYwKSIgaHJlZj0iI3RpbGUtZGVmYXVsdC1mZDM5M2JmMyIvPjwvZz48ZyBjbGFzcz0iZGJsby1nMiI+PHVzZSB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMiA2MCkiIGhyZWY9IiN0aWxlLWRlZmF1bHQtZmQzOTNiZjMiLz48L2c+PGcgY2xhc3M9ImRibG8tZzMiPjx1c2UgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAgNjApIiBocmVmPSIjdGlsZS1kZWZhdWx0LWZkMzkzYmYzIi8+PC9nPjwvZz48L2c+PGcgaWQ9ImFuaW1hdGlvbi1ub25lLWZkMzkzYmYzIj48L2c+PGNsaXBQYXRoIGlkPSJjbGlwLWZkMzkzYmYzIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjAiIHJ5PSIwIi8+PC9jbGlwUGF0aD48L2RlZnM+PGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtZmQzOTNiZjMpIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2I0NTMwOSIvPjx1c2UgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNCA0KSIgaHJlZj0iI3BhdHRlcm4tZGVmYXVsdC1mZDM5M2JmMyIvPjx1c2UgaHJlZj0iI2FuaW1hdGlvbi1ub25lLWZkMzkzYmYzIi8+PC9nPjwvc3ZnPg==" width="40" height="40" style="width: 40px; height: 40px; border-radius: 20px; background: #3A2A40; display: block; flex-shrink: 0">
+        <span style="flex: 1; font-size: 18px; font-weight: 800">@reuel</span>
+        <button class="hf-b" onClick="{{toggleQr}}" aria-pressed="{{qrAttr}}" aria-label="{{qrAria}}" style="{{qrBtnStyle}}">
+          <sc-if value="{{showQr}}" hint-placeholder-val="{{false}}">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-4-2-6-5-6-9a6 6 0 0 1 12 0c0 4-2 7-6 9z"></path><path d="M12 21v-8"></path></svg>
+          </sc-if>
+          <sc-if value="{{showGrid}}" hint-placeholder-val="{{true}}">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"></rect><rect x="14" y="4" width="6" height="6" rx="1.5"></rect><rect x="4" y="14" width="6" height="6" rx="1.5"></rect><path d="M14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5z" fill="currentColor" stroke="none"></path></svg>
+          </sc-if>
+        </button>
+      </div>
+      <sc-if value="{{showGrid}}" hint-placeholder-val="{{true}}">
+        <div style="height: 196px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); align-items: end; justify-items: center">
+          <sc-for list="{{mine}}" as="f" hint-placeholder-count="6">
+            <div style="position: relative; width: 80px; height: 80px">
+              <dc-import name="Flower" kind="{{f.kind}}" stage="{{f.stage}}" health="{{f.health}}" size="80" hint-size="80px,80px"></dc-import>
+              <sc-if value="{{f.hasCount}}" hint-placeholder-val="{{false}}"><span style="{{f.countStyle}}">{{f.count}}</span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{showQr}}" hint-placeholder-val="{{false}}">
+        <div style="height: 196px; display: flex; align-items: center; justify-content: center">
+          <div style="position: relative; width: 184px; height: 184px; box-sizing: border-box; padding: 12px; border-radius: 22px; background: #F6EEF8">
+            <svg width="160" height="160" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-label="QR code to add @reuel" role="img"><path d="{{qrPath}}" fill="#1F1023"></path></svg>
+            <span style="position: absolute; left: 66px; top: 66px; width: 52px; height: 52px; border-radius: 16px; background: #F6EEF8; display: flex; align-items: center; justify-content: center">
+              <dc-import name="Flower" kind="sunflower" stage="bloom" size="44" hint-size="44px,44px"></dc-import>
+            </span>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <button class="hf-b" onClick="{{copy}}" style="height: 50px; border-radius: 25px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>
+        {{copyLabel}}
+      </button>
+      <button class="hf-b" style="height: 50px; border-radius: 25px; border: none; background: rgba(116,212,71,0.22); color: #B8EE98; font: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"></path><path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg>
+        Invite
+      </button>
+    </div>
+  </section>
+
+  <p style="margin: auto 0 0 0; display: flex; gap: 8px; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #8C7992">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.5"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+    <span>Friends only see habits you share with them</span>
+  </p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844},"search":{"type":"enum","options":["results","none"],"default":"results"}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sent: {}, copied: false, qr: false };
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state;
+    var people = [
+      { id: 'alexk', name: '@alexk', handle: '@alexk', initials: 'A', bg: '#7AA7FF', fg: '#0F1E3A' },
+      { id: 'alexandra', name: '@alexandra.r', handle: '@alexandra.r', initials: 'A', bg: '#F28FB8', fg: '#2A0E1A' }
+    ];
+    var results = people.map(function (p, i) {
+      var on = !!st.sent[p.id];
+      return {
+        name: p.name, handle: p.handle, initials: p.initials,
+        avatarStyle: 'width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; background: ' + p.bg + '; color: ' + p.fg + '; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800;',
+        divider: i < people.length - 1 ? '1px solid #3D2D43' : 'none',
+        sentAttr: on ? 'true' : 'false',
+        btnLabel: on ? 'Requested' : 'Add',
+        btnStyle: 'height: 40px; min-width: 64px; padding: 0 16px; border-radius: 20px; border: none; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer;' + (on ? ' background: #3A2A40; color: #B9A8C0;' : ' background: rgba(116,212,71,0.22); color: #B8EE98;'),
+        add: function () { var s = Object.assign({}, self.state.sent); s[p.id] = !s[p.id]; self.setState({ sent: s }); }
+      };
+    });
+    var none = (this.props.search || 'results') === 'none';
+    return {
+      hasResults: !none, noResults: none, query: none ? 'alexx' : 'alex',
+      results: results,
+      copyLabel: st.copied ? 'Copied' : 'Copy link',
+      showQr: !!st.qr, showGrid: !st.qr,
+      qrAttr: st.qr ? 'true' : 'false',
+      qrAria: st.qr ? 'Show HabitFlowers' : 'Show QR code',
+      qrBtnStyle: 'width: 44px; height: 44px; border-radius: 22px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;' + (st.qr ? ' background: rgba(116,212,71,0.22); color: #B8EE98;' : ' background: rgba(31,16,35,0.6); color: #E4D7E9;'),
+      toggleQr: function () { self.setState({ qr: !self.state.qr }); },
+      qrPath: (function () {
+        var n = 25, d = '', seed = 7;
+        function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+        function finder(x, y) {
+          return 'M' + x + ' ' + y + 'h7v7h-7zM' + (x + 1) + ' ' + (y + 1) + 'v5h5v-5z' + 'M' + (x + 2) + ' ' + (y + 2) + 'h3v3h-3z';
+        }
+        for (var y = 0; y < n; y++) for (var x = 0; x < n; x++) {
+          var inF = (x < 8 && y < 8) || (x > 16 && y < 8) || (x < 8 && y > 16);
+          var inC = x > 8 && x < 16 && y > 8 && y < 16;
+          if (!inF && !inC && rnd() < 0.5) d += 'M' + x + ' ' + y + 'h1v1h-1z';
+        }
+        return finder(0, 0) + finder(18, 0) + finder(0, 18) + d;
+      })(),
+      mine: [['sunflower','bloom','ok',22],['lavender','bloom','ok',12],['daisy','bloom','ok',9],['marigold','bloom','ok',4],['tulip','bud','ok',0],['daisy','bud','dormant',0]].map(function (f) {
+        return { kind: f[0], stage: f[1], health: f[2], hasCount: f[3] > 0, count: String(f[3]),
+          countStyle: 'position: absolute; right: -4px; bottom: 4px; min-width: 26px; height: 22px; padding: 0 7px; box-sizing: border-box; border-radius: 11px; background: #3D2D43; box-shadow: 0 0 0 2px #2A1C2F; color: #F6EEF8; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center;' };
+      }),
+      copy: function () { self.setState({ copied: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

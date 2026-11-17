@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tasks: grouped by due date</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.hf-chk:focus-visible,.hf-icon-btn:focus-visible,.hf-tab:focus-visible,.hf-done:focus-visible{outline:2px solid #74D447;outline-offset:2px}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="width: 390px; height: 1040px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="padding: 62px 20px 0 20px; display: flex; align-items: flex-end; justify-content: space-between">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <p style="margin: 0; font-size: 14px; font-weight: 600; color: #B9A8C0">Saturday, Nov 14</p>
+      <h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px">My Tasks</h1>
+    </div>
+  </header>
+
+  <main style="flex: 1; overflow: hidden; padding: 12px 20px 0 20px; display: flex; flex-direction: column; gap: 14px">
+    <sc-for list="{{sections}}" as="s" hint-placeholder-count="4">
+      <section aria-label="{{s.title}}" style="display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: baseline; gap: 6px">
+          <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: {{s.color}}">{{s.title}}</h2>
+          <span style="font-size: 13px; font-weight: 600; color: #8C7992">({{s.count}})</span>
+        </div>
+        <div style="background: #2A1C2F; border-radius: 18px; display: flex; flex-direction: column">
+          <sc-for list="{{s.items}}" as="t" hint-placeholder-count="2">
+            <div style="border-bottom: {{t.divider}}">
+            <div style="display: flex; align-items: center; gap: 4px; min-height: 56px; padding: 5px 8px 5px 6px; box-sizing: border-box">
+              <button class="hf-chk" role="checkbox" aria-checked="{{t.checkedAttr}}" aria-label="{{t.title}}" onClick="{{t.toggle}}" style="width: 44px; height: 44px; flex-shrink: 0; border: none; background: none; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+                <span style="{{t.boxStyle}}">
+                  <sc-if value="{{t.checked}}" hint-placeholder-val="{{false}}">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#142008" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+                  </sc-if>
+                </span>
+              </button>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+                <a href="TaskDetail.dc.html" style="display: block; {{t.titleStyle}}">{{t.title}}</a>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12.5px; font-weight: 600">
+                  <sc-if value="{{t.hasDue}}" hint-placeholder-val="{{true}}">
+                    <span style="color: {{t.dueColor}}">{{t.due}}</span>
+                  </sc-if>
+                  <sc-if value="{{t.hasRepeat}}" hint-placeholder-val="{{false}}">
+                    <span style="display: inline-flex; align-items: center; gap: 4px; color: #B9A8C0">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l3 3-3 3"></path><path d="M4 11V9a4 4 0 0 1 4-4h12"></path><path d="M7 22l-3-3 3-3"></path><path d="M20 13v2a4 4 0 0 1-4 4H4"></path></svg>
+                      {{t.repeat}}
+                    </span>
+                  </sc-if>
+                  <sc-if value="{{t.hasSub}}" hint-placeholder-val="{{false}}">
+                    <span style="color: #B9A8C0">{{t.sub}}</span>
+                  </sc-if>
+                </div>
+                <sc-if value="{{t.showNext}}" hint-placeholder-val="{{false}}">
+                  <span style="font-size: 12.5px; font-weight: 700; color: #74D447">{{t.next}}</span>
+                </sc-if>
+              </div>
+              <sc-if value="{{t.hasSubs}}" hint-placeholder-val="{{false}}">
+                <button class="hf-chk" aria-expanded="{{t.expandedAttr}}" aria-label="Show checklist" onClick="{{t.toggleExpand}}" style="width: 44px; height: 44px; flex-shrink: 0; border: none; background: none; color: #B9A8C0; display: flex; align-items: center; justify-content: center; cursor: pointer">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="{{t.chevronStyle}}"><path d="M6 9l6 6 6-6"></path></svg>
+                </button>
+              </sc-if>
+            </div>
+            <sc-if value="{{t.showSubs}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; padding: 0 14px 10px 50px">
+                <sc-for list="{{t.subs}}" as="c" hint-placeholder-count="3">
+                  <button class="hf-chk" role="checkbox" aria-checked="{{c.checkedAttr}}" onClick="{{c.toggle}}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border: none; background: none; padding: 0; color: inherit; font: inherit; cursor: pointer; text-align: left">
+                    <span style="{{c.boxStyle}}">
+                      <sc-if value="{{c.checked}}" hint-placeholder-val="{{false}}">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#142008" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+                      </sc-if>
+                    </span>
+                    <span style="{{c.labelStyle}}">{{c.label}}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-for>
+
+    <button class="hf-done" style="display: flex; justify-content: space-between; align-items: center; min-height: 48px; padding: 0 16px; border-radius: 16px; border: none; background: #2A1C2F; color: #B9A8C0; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">
+      <span>4 done this week</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+    </button>
+  </main>
+
+  <nav aria-label="Main" style="position: relative; z-index: 2; height: 84px; box-sizing: border-box; padding: 8px 12px 26px 12px; background: #2F1F36; box-shadow: 0 -10px 28px rgba(0,0,0,0.38); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+    <a class="hf-tab" href="Main.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-8"></path><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5z"></path><path d="M12 15c0-2.5-1.8-4.5-4.5-4.5 0 2.5 1.8 4.5 4.5 4.5z"></path><circle cx="12" cy="6" r="3"></circle></svg>
+      Habits
+    </a>
+    <a class="hf-tab" href="Tasks.dc.html" aria-current="page" style="color: #74D447; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 700">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"></rect><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg><span aria-label="3 tasks need attention, 1 overdue" style="position: absolute; top: -5px; right: -9px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #FF9E6B; color: #2A1206; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #180B1B">3</span></span>
+      Tasks
+    </a>
+    <a class="hf-tab" href="CreateChooser.dc.html" aria-label="Add a habit or task" style="display: flex; align-items: center; margin-top: -4px; justify-content: center">
+      <span style="width: 52px; height: 40px; border-radius: 20px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+      </span>
+    </a>
+    <a class="hf-tab" href="Friends.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3.5"></circle><circle cx="17" cy="10" r="2.5"></circle><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"></path><path d="M15.5 14.2c2.8 0 5 1.8 5 4.8"></path></svg>
+      Friends
+    </a>
+    <a class="hf-tab" href="Notifications.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 21h4"></path></svg><span aria-label="3 new" style="position: absolute; top: -5px; right: -9px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #FF9E6B; color: #2A1206; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #180B1B">3</span></span>
+      Activity
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1040}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { checked: {}, subs: { milk: true }, expanded: { grocery: true } };
+  }
+  renderVals() {
+    var self = this;
+    var checked = this.state.checked;
+    var subState = this.state.subs;
+    var expanded = this.state.expanded;
+    var groups = [
+      { title: 'Overdue', color: '#FF9E6B', items: [
+        { id: 'phone', title: 'Pay phone bill', due: 'Due Thu, 2 days late', dueColor: '#FF9E6B', repeat: 'Monthly', next: 'Next due 12 Dec' }
+      ]},
+      { title: 'Today', color: '#74D447', items: [
+        { id: 'grocery', title: 'Grocery run', due: '6:00 PM', dueColor: '#B9A8C0', subs: [{ id: 'milk', label: 'Milk' }, { id: 'eggs', label: 'Eggs' }, { id: 'bread', label: 'Bread' }] },
+        { id: 'bath', title: 'Clean bathroom', due: 'Today', dueColor: '#B9A8C0', repeat: 'Every week', next: 'Next due Sat 21 Nov' }
+      ]},
+      { title: 'Upcoming', color: '#C9B9CF', items: [
+        { id: 'assign', title: 'Finish math assignment', due: 'Tomorrow, 11:05 AM', dueColor: '#B9A8C0' },
+        { id: 'sheets', title: 'Change bedsheets', due: 'Thu 19 Nov', dueColor: '#B9A8C0', repeat: '2 weeks after done', next: 'Next due 28 Nov' },
+        { id: 'rent', title: 'Pay rent', due: 'Tue 1 Dec', dueColor: '#B9A8C0', repeat: 'Monthly on the 1st', next: 'Next due 1 Jan' }
+      ]},
+      { title: 'Other', color: '#C9B9CF', items: [
+        { id: 'library', title: 'Renew library card' }
+      ]}
+    ];
+    var boxBase = 'width: 26px; height: 26px; border-radius: 9px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;';
+    var sections = groups.map(function (g) {
+      var items = g.items.map(function (t, i) {
+        var on = !!checked[t.id];
+        var subs = (t.subs || []).map(function (c) {
+          var cOn = !!subState[c.id];
+          return {
+            label: c.label, checked: cOn, checkedAttr: cOn ? 'true' : 'false',
+            boxStyle: 'width: 20px; height: 20px; border-radius: 7px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; flex-shrink: 0;' + (cOn ? ' background: #74D447;' : ' background: #463550;'),
+            labelStyle: 'font-size: 15px; font-weight: 500;' + (cOn ? ' color: #8C7992; text-decoration: line-through;' : ' color: #E4D7E9;'),
+            toggle: function () { var n = Object.assign({}, self.state.subs); n[c.id] = !n[c.id]; self.setState({ subs: n }); }
+          };
+        });
+        var subDone = subs.filter(function (c) { return c.checked; }).length;
+        var isOpen = !!expanded[t.id];
+        return {
+          title: t.title,
+          due: t.due || '', hasDue: !!t.due, dueColor: on ? '#7D6A83' : t.dueColor,
+          repeat: t.repeat || '', hasRepeat: !!t.repeat,
+          sub: subs.length ? subDone + ' of ' + subs.length + ' items' : '', hasSub: subs.length > 0,
+          subs: subs, hasSubs: subs.length > 0, showSubs: subs.length > 0 && isOpen,
+          expandedAttr: isOpen ? 'true' : 'false',
+          chevronStyle: 'transition: transform 150ms ease;' + (isOpen ? ' transform: rotate(180deg);' : ''),
+          toggleExpand: function () { var n = Object.assign({}, self.state.expanded); n[t.id] = !n[t.id]; self.setState({ expanded: n }); },
+          next: t.next || '', showNext: on && !!t.repeat,
+          checked: on, checkedAttr: on ? 'true' : 'false',
+          boxStyle: on ? boxBase + 'background: #74D447;' : boxBase + 'background: ' + (g.title === 'Overdue' ? 'rgba(255,158,107,0.32)' : '#463550') + ';',
+          titleStyle: 'margin: 0; font-size: 15.5px; font-weight: 600; line-height: 1.3;' + (on ? ' color: #8C7992; text-decoration: line-through;' : ''),
+          divider: i < g.items.length - 1 ? '1px solid #3D2D43' : 'none',
+          toggle: function () {
+            var next = Object.assign({}, self.state.checked);
+            next[t.id] = !next[t.id];
+            self.setState({ checked: next });
+          }
+        };
+      });
+      return { title: g.title, color: g.color, count: String(g.items.length), items: items };
+    });
+    return { sections: sections };
+  }
+}
+</script>
+</body>
+</html>

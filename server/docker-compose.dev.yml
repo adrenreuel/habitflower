@@ -1,0 +1,28 @@
+# Local development database only. The API runs on your Mac with `npm run dev:local`.
+# Production uses docker-compose.yml (API + Postgres + Caddy) on EC2; see DEPLOY.md.
+#
+#   npm run db:up      start Postgres on localhost:54329
+#   npm run db:down    stop it (data is kept in the habitflower_dev volume)
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: habitflower-dev-db
+    environment:
+      POSTGRES_DB: habitflower
+      POSTGRES_USER: habitflower
+      POSTGRES_PASSWORD: habitflower
+    ports:
+      # Bound to localhost only, never your network.
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - habitflower_dev:/var/lib/postgresql/data
+      # Creates habitflower_test for the integration tests.
+      - ./scripts/dev-init.sql:/docker-entrypoint-initdb.d/dev-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U habitflower -d habitflower"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  habitflower_dev:

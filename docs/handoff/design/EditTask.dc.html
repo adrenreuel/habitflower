@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Edit task: New task with repeat options</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
+input::placeholder{color:#8C7992}
+.hf-f:focus-visible,.hf-chip:focus-visible,.hf-sw:focus-visible,.hf-nav:focus-visible{outline:2px solid #74D447;outline-offset:2px}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column">
+
+  <div style="padding: 62px 20px 12px 20px; border-bottom: 1px solid #33243A">
+    <h1 style="margin: 0; font-size: 24px; font-weight: 800">Edit task</h1>
+  </div>
+
+  <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 18px 20px 24px 20px; display: flex; flex-direction: column; gap: 22px">
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <label for="title" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Task name</label>
+      <input class="hf-f" id="title" value="Grocery run" style="height: 54px; box-sizing: border-box; padding: 0 16px; border-radius: 16px; border: none; background: #2A1C2F; color: #F6EEF8; font: inherit; font-size: 18px; font-weight: 700">
+      <label for="notes" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Notes</label>
+      <input class="hf-f" id="notes" value="Oat milk, not almond" placeholder="Add notes" style="height: 48px; box-sizing: border-box; padding: 0 16px; border-radius: 16px; border: none; background: #2A1C2F; color: #F6EEF8; font: inherit; font-size: 15px">
+    </div>
+
+    <section aria-label="When" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">When</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{whenOpts}}" as="o" hint-placeholder-count="4">
+          <button class="hf-chip" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}"><span>{{o.label}}</span></button>
+        </sc-for>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; min-height: 52px; padding: 0 6px 0 16px; border-radius: 16px; background: #2A1C2F">
+        <span style="font-size: 15px; font-weight: 600">Time</span>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <sc-if value="{{timeOn}}" hint-placeholder-val="{{false}}">
+            <span style="font-size: 15px; font-weight: 600; color: #74D447">6:00 PM</span>
+          </sc-if>
+          <button class="hf-sw" role="switch" aria-checked="{{timeOnAttr}}" aria-label="Set a time" onClick="{{toggleTime}}" style="width: 60px; height: 44px; border: none; background: none; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer">
+            <span style="{{trackStyle}}"><span style="{{knobStyle}}"></span></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Repeat" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Repeat</h2>
+      <button class="hf-chip" onClick="{{openRepeat}}" aria-haspopup="dialog" aria-label="{{repeatAria}}" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 14px 0 16px; border: none; border-radius: 16px; background: #2A1C2F; color: #F6EEF8; font: inherit; text-align: left; cursor: pointer">
+        <span style="flex: 1; min-width: 0; font-size: 15.5px; font-weight: 600">{{repeatLabel}}</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8C7992" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+      </button>
+    </section>
+
+    <section aria-label="Checklist" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Checklist</h2>
+      <div style="border-radius: 16px; background: #2A1C2F; display: flex; flex-direction: column">
+        <div style="display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 16px; border-bottom: 1px solid #3D2D43">
+          <span style="width: 20px; height: 20px; border-radius: 7px; background: #74D447; box-sizing: border-box"></span>
+          <span style="flex: 1; font-size: 15px; font-weight: 500">Milk</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 16px; border-bottom: 1px solid #3D2D43">
+          <span style="width: 20px; height: 20px; border-radius: 7px; background: #3D2D43; box-sizing: border-box"></span>
+          <span style="flex: 1; font-size: 15px; font-weight: 500">Eggs</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 16px; border-bottom: 1px solid #3D2D43">
+          <span style="width: 20px; height: 20px; border-radius: 7px; background: #3D2D43; box-sizing: border-box"></span>
+          <span style="flex: 1; font-size: 15px; font-weight: 500">Bread</span>
+        </div>
+        <button class="hf-chip" style="display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 16px; border: none; background: none; color: #74D447; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+          Add item
+        </button>
+      </div>
+    </section>
+
+    <section aria-label="Sharing" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Share progress</h2>
+      <button class="hf-chip" onClick="{{openShare}}" aria-haspopup="dialog" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 0 14px 0 16px; border-radius: 16px; border: none; background: #2A1C2F; color: #F6EEF8; font: inherit; cursor: pointer; text-align: left">
+        <span style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 600">Share with friends</span>
+          <span style="font-size: 13px; font-weight: 500; color: #B9A8C0">{{shareSummary}}</span>
+        </span>
+        <span style="display: inline-flex; align-items: center; gap: 8px">
+          <span style="display: inline-flex; padding-left: 8px">
+            <sc-for list="{{sharedAvatars}}" as="a" hint-placeholder-count="2"><span style="{{a.style}}">{{a.initials}}</span></sc-for>
+          </span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A895AE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+        </span>
+      </button>
+    </section>
+
+    <button class="hf-chip" onClick="{{openDel}}" aria-haspopup="dialog" style="min-height: 52px; border-radius: 16px; border: none; background: #2A1C2F; color: #FF7B7B; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer">Delete task</button>
+  </div>
+
+  <footer style="flex-shrink: 0; display: grid; grid-template-columns: 1fr 2fr; gap: 10px; padding: 12px 20px 30px 20px; background: #1F1023; border-top: 1px solid #33243A">
+    <a class="hf-nav" href="TaskDetail.dc.html" style="height: 52px; border-radius: 26px; background: #3A2A40; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: #F6EEF8">Cancel</a>
+    <a class="hf-nav" href="TaskDetail.dc.html" style="height: 52px; border-radius: 26px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800">Save changes</a>
+  </footer>
+
+  <sc-if value="{{shareOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeShare}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="Share with friends" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">Share with friends</h2>
+          <p style="margin: 0; font-size: 14px; font-weight: 500; color: #B9A8C0">They'll see when it's done.</p>
+        </div>
+        <div style="border-radius: 18px; background: #2A1C2F; display: flex; flex-direction: column">
+          <sc-for list="{{friends}}" as="f" hint-placeholder-count="5">
+            <button class="hf-chip" role="checkbox" aria-checked="{{f.checkedAttr}}" onClick="{{f.toggle}}" style="display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 0 16px; border: none; border-bottom: {{f.divider}}; background: none; color: #F6EEF8; font: inherit; text-align: left; cursor: pointer">
+              <span style="{{f.avatarStyle}}">{{f.initials}}</span>
+              <span style="flex: 1; font-size: 15px; font-weight: 600">{{f.name}}</span>
+              <span style="{{f.boxStyle}}">
+                <sc-if value="{{f.checked}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#142008" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+        <button class="hf-nav" onClick="{{closeShare}}" style="height: 52px; border-radius: 26px; border: none; background: #F6EEF8; color: #1F1023; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Done</button>
+      </section>
+    </div>
+  </sc-if>
+  <sc-if value="{{delOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 7; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeDel}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="Delete this task?" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <h2 style="margin: 4px 2px 0 2px; font-size: 21px; font-weight: 800">Delete this task?</h2>
+        <p style="margin: 0 2px; font-size: 14.5px; font-weight: 500; line-height: 1.45; color: #B9A8C0">It repeats weekly. Future ones will be deleted too.</p>
+        <a class="hf-nav" href="Tasks.dc.html" style="height: 52px; border-radius: 26px; background: #FF7B7B; color: #2A0808; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800">Delete task</a>
+        <button class="hf-chip" onClick="{{closeDel}}" style="height: 52px; border-radius: 26px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Cancel</button>
+      </section>
+    </div>
+  </sc-if>
+  <sc-if value="{{repeatOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 8; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeRepeat}}" style="flex: 1; min-height: 40px; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="Repeat" style="max-height: 86%; overflow-y: auto; background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950; flex-shrink: 0"></div>
+        <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">Repeat</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{repeatOpts}}" as="o" hint-placeholder-count="5">
+            <button class="hf-chip" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{isWeekly}}" hint-placeholder-val="{{false}}">
+          <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; padding: 12px; border-radius: 16px; background: #2A1C2F">
+            <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+              <button class="hf-chip" aria-pressed="{{d.pressed}}" aria-label="{{d.full}}" onClick="{{d.pick}}" style="{{d.style}}">{{d.label}}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isCustom}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-direction: column; gap: 14px; padding: 16px; border-radius: 16px; background: #2A1C2F">
+            <div style="display: flex; align-items: center; justify-content: space-between">
+              <span style="font-size: 15px; font-weight: 600">Every</span>
+              <div style="display: flex; align-items: center; gap: 6px">
+                <button class="hf-chip" aria-label="Fewer" onClick="{{dec}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer">−</button>
+                <span style="min-width: 32px; text-align: center; font-size: 18px; font-weight: 800" aria-live="polite">{{n}}</span>
+                <button class="hf-chip" aria-label="More" onClick="{{inc}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer">+</button>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+              <sc-for list="{{units}}" as="u" hint-placeholder-count="3">
+                <button class="hf-chip" aria-pressed="{{u.pressed}}" onClick="{{u.pick}}" style="{{u.style}}">{{u.label}}</button>
+              </sc-for>
+            </div>
+            <div style="height: 1px; background: #3D2D43"></div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 15px; font-weight: 600">Count from</span>
+              <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+                <sc-for list="{{fromOpts}}" as="f" hint-placeholder-count="2">
+                  <button class="hf-chip" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{repeats}}" hint-placeholder-val="{{true}}">
+          <p style="margin: 0; display: flex; gap: 8px; align-items: flex-start; font-size: 13.5px; font-weight: 600; color: #C9B9CF; line-height: 1.45">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#74D447" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><path d="M17 2l3 3-3 3"></path><path d="M4 11V9a4 4 0 0 1 4-4h12"></path><path d="M7 22l-3-3 3-3"></path><path d="M20 13v2a4 4 0 0 1-4 4H4"></path></svg>
+            <span>{{summary}}</span>
+          </p>
+        </sc-if>
+        <button class="hf-chip" onClick="{{closeRepeat}}" style="flex-shrink: 0; height: 52px; border-radius: 26px; border: none; background: #F6EEF8; color: #1F1023; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Done</button>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { repeatOpen: false, delOpen: false, shareOpen: false, shared: { maya: true }, when: 'today', timeOn: true, repeat: 'weekly', days: { 6: true }, n: 2, unit: 'weeks', from: 'done' };
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state;
+    var green = '#74D447';
+    function chipStyle(on, extra) {
+      var base = 'height: 40px; padding: 0 14px; border-radius: 20px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; box-sizing: border-box;' + (extra || '');
+      return on ? base + 'background: rgba(116,212,71,0.22); color: #B8EE98; border: none;' : base + 'background: #3A2A40; color: #E4D7E9; border: none;';
+    }
+    function set(obj) { return function () { self.setState(obj); }; }
+    var whenOpts = [['today','Today'],['tomorrow','Tomorrow'],['date', st.when === 'date' ? 'Thu 19 Nov' : 'Pick date'],['none','No date']].map(function (o) {
+      var on = st.when === o[0];
+      return { label: o[1], pressed: on ? 'true' : 'false', style: chipStyle(on, 'display: inline-flex; align-items: center; gap: 6px;'), pick: set({ when: o[0] }), isToday: o[0] === 'today', isTomorrow: o[0] === 'tomorrow', isDate: o[0] === 'date', isNone: o[0] === 'none' };
+    });
+    var repeatOpts = [['never','Never'],['daily','Daily'],['weekly','Weekly'],['monthly','Monthly'],['custom','Custom']].map(function (o) {
+      var on = st.repeat === o[0];
+      return { label: o[1], pressed: on ? 'true' : 'false', style: chipStyle(on), pick: set({ repeat: o[0] }) };
+    });
+    var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var days = ['S','M','T','W','T','F','S'].map(function (l, i) {
+      var on = !!st.days[i];
+      return {
+        label: l, full: dayNames[i], pressed: on ? 'true' : 'false',
+        style: chipStyle(on, 'padding: 0; width: 100%; height: 40px;'),
+        pick: function () { var d = Object.assign({}, self.state.days); d[i] = !d[i]; self.setState({ days: d }); }
+      };
+    });
+    var units = [['days','Days'],['weeks','Weeks'],['months','Months']].map(function (u) {
+      var on = st.unit === u[0];
+      return { label: u[1], pressed: on ? 'true' : 'false', style: chipStyle(on, 'padding: 0;'), pick: set({ unit: u[0] }) };
+    });
+    var fromOpts = [['due','Due date'],['done','When I finish']].map(function (f) {
+      var on = st.from === f[0];
+      return { label: f[1], pressed: on ? 'true' : 'false', style: chipStyle(on, 'padding: 0;'), pick: set({ from: f[0] }) };
+    });
+    var people = [['maya','@mayac','M','#FFC93C','#3A2600'],['sam','@sampatel','S','#A98BEA','#1F1023'],['priya','@priya.n','P','#FF9F1C','#2A1206'],['alex','@alexk','A','#7AA7FF','#0F1E3A'],['jordan','@jordanlee','J','#4FD1C5','#0F2A27']];
+    function av(f, size, ring) { return 'width: ' + size + 'px; height: ' + size + 'px; flex-shrink: 0; border-radius: ' + (size / 2) + 'px; background: ' + f[3] + '; color: ' + f[4] + '; display: inline-flex; align-items: center; justify-content: center; font-size: ' + Math.round(size * 0.36) + 'px; font-weight: 800;' + (ring ? ' margin-left: -8px; box-shadow: 0 0 0 2px #2A1C2F;' : ''); }
+    var chosen = people.filter(function (f) { return st.shared[f[0]]; });
+    var friends = people.map(function (f, i) {
+      var on = !!st.shared[f[0]];
+      return {
+        name: f[1], initials: f[2], avatarStyle: av(f, 38, false), checked: on, checkedAttr: on ? 'true' : 'false',
+        divider: i < people.length - 1 ? '1px solid #3D2D43' : 'none',
+        boxStyle: 'width: 26px; height: 26px; border-radius: 9px; display: flex; align-items: center; justify-content: center;' + (on ? ' background: #74D447;' : ' background: #463550;'),
+        toggle: function () { var x = Object.assign({}, self.state.shared); x[f[0]] = !x[f[0]]; self.setState({ shared: x }); }
+      };
+    });
+    var shareSummary = chosen.length === 0 ? 'Only you' : chosen.length === 1 ? chosen[0][1].split(' ')[0] : chosen.length === 2 ? chosen[0][1].split(' ')[0] + ' and ' + chosen[1][1].split(' ')[0] : chosen[0][1].split(' ')[0] + ' and ' + (chosen.length - 1) + ' others';
+    var summary = '';
+    if (st.repeat === 'daily') summary = 'Repeats every day. A missed one stays overdue until you do it.';
+    if (st.repeat === 'monthly') summary = 'Repeats on the 19th of every month.';
+    if (st.repeat === 'weekly') {
+      var picked = dayNames.filter(function (_, i) { return st.days[i]; }).map(function (d) { return d.slice(0, 3); });
+      summary = picked.length ? 'Repeats every week on ' + picked.join(', ') + '.' : 'Pick at least one day.';
+    }
+    if (st.repeat === 'custom') {
+      var unitWord = st.n === 1 ? st.unit.slice(0, -1) : st.unit;
+      summary = st.from === 'done'
+        ? 'Next one is due ' + st.n + ' ' + unitWord + ' after you check this off, so a late finish pushes it back.'
+        : 'Due every ' + st.n + ' ' + unitWord + ' from Thu 19 Nov, whenever you finish.';
+    }
+    var trackBase = 'width: 52px; height: 32px; border-radius: 16px; box-sizing: border-box; display: flex; align-items: center; padding: 3px; transition: background 150ms ease;';
+    var knobBase = 'width: 26px; height: 26px; border-radius: 13px; transition: margin 150ms ease;';
+    return {
+      shareOpen: st.shareOpen, openShare: set({ shareOpen: true }), closeShare: set({ shareOpen: false }),
+      friends: friends, shareSummary: shareSummary,
+      sharedAvatars: chosen.slice(0, 3).map(function (f) { return { initials: f[2], style: av(f, 28, true) }; }),
+      whenOpts: whenOpts, repeatOpts: repeatOpts, days: days, units: units, fromOpts: fromOpts,
+      delOpen: !!st.delOpen, openDel: function () { self.setState({ delOpen: true }); }, closeDel: function () { self.setState({ delOpen: false }); },
+      repeatOpen: !!st.repeatOpen, openRepeat: function () { self.setState({ repeatOpen: true }); }, closeRepeat: function () { self.setState({ repeatOpen: false }); },
+      repeatLabel: st.repeat === 'never' ? 'Never' : st.repeat === 'daily' ? 'Every day' : st.repeat === 'monthly' ? 'Every month' : st.repeat === 'weekly' ? (function () { var nm = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].filter(function (_, i) { return st.days[i]; }); return nm.length === 1 ? 'Every ' + nm[0] : nm.length ? 'Weekly on ' + nm.length + ' days' : 'Weekly'; })() : 'Every ' + st.n + ' ' + (st.n === 1 ? st.unit.replace(/s$/, '') : st.unit) + (st.from === 'done' ? ' after I finish' : ''),
+      repeatAria: 'Repeat',
+      isWeekly: st.repeat === 'weekly', isCustom: st.repeat === 'custom', repeats: st.repeat !== 'never',
+      n: String(st.n), summary: summary,
+      inc: function () { self.setState({ n: Math.min(30, self.state.n + 1) }); },
+      dec: function () { self.setState({ n: Math.max(1, self.state.n - 1) }); },
+      timeOn: st.timeOn, timeOnAttr: st.timeOn ? 'true' : 'false',
+      toggleTime: function () { self.setState({ timeOn: !self.state.timeOn }); },
+      trackStyle: trackBase + (st.timeOn ? 'background: ' + green + ';' : 'background: #4A3950;'),
+      knobStyle: knobBase + (st.timeOn ? 'background: #142008; margin-left: 20px;' : 'background: #E4D7E9; margin-left: 0;')
+    };
+  }
+}
+</script>
+</body>
+</html>

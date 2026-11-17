@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Edit habit</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
+input::placeholder{color:#8C7992}
+.hf-f:focus-visible,.hf-chip:focus-visible,.hf-sw:focus-visible,.hf-nav:focus-visible{outline:2px solid #74D447;outline-offset:2px}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+@keyframes hfSway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; position: relative">
+
+  <div style="padding: 62px 20px 12px 20px; border-bottom: 1px solid #33243A">
+    <h1 style="margin: 0; font-size: 24px; font-weight: 800">Edit habit</h1>
+  </div>
+
+  <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 18px 20px 24px 20px; display: flex; flex-direction: column; gap: 22px">
+
+    <div style="display: flex; flex-direction: column; gap: 16px; align-items: center">
+      <button class="hf-chip" onClick="{{openPick}}" aria-haspopup="dialog" disabled="{{isMember}}" aria-label="Flower: {{flowerName}}. Change" style="position: relative; width: 104px; flex-shrink: 0; border: none; background: none; padding: 0 0 12px 0; display: flex; flex-direction: column; align-items: center; cursor: pointer; font: inherit">
+        <span style="width: 104px; height: 104px; border-radius: 30px; background: {{tint}}; display: flex; align-items: center; justify-content: center"><dc-import name="Flower" kind="{{kind}}" size="84" hint-size="84px,84px"></dc-import></span>
+        <span aria-hidden="true" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); height: 26px; padding: 0 10px 0 8px; border-radius: 13px; background: #F6EEF8; color: #1F1023; box-shadow: 0 0 0 3px #1A0C1D; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 800; white-space: nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13l-3-3M20 15H7l3 3"></path></svg>Change</span>
+      </button>
+      <div style="align-self: stretch; display: flex; flex-direction: column">
+        <label for="hname" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Habit name</label>
+        <input class="hf-f" id="hname" value="Hit the gym" placeholder="Habit name" style="height: 50px; box-sizing: border-box; padding: 0 14px; border-radius: 14px; border: none; background: #2A1C2F; color: #F6EEF8; font: inherit; font-size: 17px; font-weight: 700">
+      </div>
+    </div>
+
+    <sc-if value="{{isMember}}" hint-placeholder-val="{{false}}">
+      <div role="note" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; background: #2A1C2F">
+        <span aria-hidden="true" style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 18px; background: rgba(116,212,71,0.18); color: #B8EE98; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.2"></circle><circle cx="16.5" cy="10" r="2.6"></circle><path d="M3.5 19c.6-3 2.8-4.8 5.5-4.8s4.9 1.8 5.5 4.8M14.5 15c2.6-.4 5 1 5.8 4"></path></svg></span>
+        <p style="margin: 0; flex: 1; font-size: 13.5px; font-weight: 500; line-height: 1.4; color: #C9B9CF"><span style="color: #F6EEF8; font-weight: 700">@mayac</span> sets the shared rules. You can change your own reminders and sharing.</p>
+      </div>
+    </sc-if>
+    <section aria-label="How you check in" aria-disabled="{{memberAttr}}" style="display: flex; flex-direction: column; gap: 10px; {{memberLock}}">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">How you check in</h2>
+      <div role="group" aria-label="{{kindAria}}. Locked" style="display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 0 14px 0 12px; border: none; border-radius: 16px; background: #2A1C2F; color: #F6EEF8; font: inherit; text-align: left; ">
+        <span aria-hidden="true" style="width: 38px; height: 38px; flex-shrink: 0; border-radius: 12px; background: rgba(116,212,71,0.22); color: #B8EE98; display: flex; align-items: center; justify-content: center"><sc-if value="{{cur.isCheck}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.8 2.8L16.5 9.5"></path></svg></sc-if><sc-if value="{{cur.isCount}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="5"></rect><path d="M7.5 12h3M15 10.5v3M13.5 12h3"></path></svg></sc-if><sc-if value="{{cur.isList}}" hint-placeholder-val="{{true}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5l1.5 1.5L8 5.5M4 12.5l1.5 1.5L8 11.5M4.5 18h3M11 7h9M11 13h9M11 18h9"></path></svg></sc-if><sc-if value="{{cur.isPhoto}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></sc-if><sc-if value="{{cur.isHealth}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.8c0 1-.2 1.9-.6 2.7"></path><path d="M3 12.5h4l1.5-2.5 2.5 5 1.5-2.5h3"></path></svg></sc-if></span>
+        <span style="flex: 1; font-size: 16px; font-weight: 700">{{kindLabel}}</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8C7992" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.5"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+      </div>
+      <p style="margin: 0; font-size: 13.5px; font-weight: 500; color: #B9A8C0">To check in another way, <a href="NewHabit.dc.html" style="color: #B8EE98; font-weight: 700">start a new habit</a>.</p>
+      <sc-if value="{{isList}}" hint-placeholder-val="{{false}}">
+        <div style="border-radius: 16px; background: #2A1C2F; display: flex; flex-direction: column">
+          <sc-for list="{{listItems}}" as="li" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 4px 0 14px; border-bottom: 1px solid #3D2D43">
+              <span aria-hidden="true" style="width: 22px; height: 22px; flex-shrink: 0; border-radius: 7px; background: #3D2D43"></span>
+              <span style="flex: 1; min-width: 0; font-size: 15px; font-weight: 600">{{li.label}}</span>
+              <button class="hf-chip" onClick="{{li.remove}}" aria-label="{{li.aria}}" style="width: 44px; height: 44px; border: none; background: none; color: #8C7992; display: flex; align-items: center; justify-content: center; cursor: pointer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+              </button>
+            </div>
+          </sc-for>
+          <button class="hf-chip" onClick="{{addItem}}" style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 14px; border: none; background: none; color: #B8EE98; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 6v12M6 12h12"></path></svg>
+            Add item
+          </button>
+        </div>
+      </sc-if>
+      <sc-if value="{{isCount}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 8px 0 16px; border-radius: 16px; background: #2A1C2F">
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{timesLabel}}</span><sc-if value="{{showTimesTotal}}" hint-placeholder-val="{{false}}"><span style="font-size: 12.5px; font-weight: 500; color: #B9A8C0">{{timesTotal}}</span></sc-if></span>
+          <div style="display: flex; align-items: center; gap: 6px">
+            <button class="hf-chip" aria-label="Fewer" onClick="{{decTimes}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer">−</button>
+            <span style="min-width: 28px; text-align: center; font-size: 18px; font-weight: 800" aria-live="polite">{{times}}</span>
+            <button class="hf-chip" aria-label="More" onClick="{{incTimes}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer">+</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{isHealth}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 12px 0 14px; border-radius: 16px; background: #2A1C2F">
+            <span style="width: 32px; height: 32px; flex-shrink: 0; border-radius: 9px; background: #FFFFFF; display: flex; align-items: center; justify-content: center" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF2D55"><path d="M12 20.5s-8-4.9-8-10.9A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 8 3c0 6-8 10.9-8 10.9z"></path></svg></span>
+            <span style="flex: 1; font-size: 15px; font-weight: 600">Apple Health</span>
+            <sc-if value="{{healthConnected}}" hint-placeholder-val="{{true}}"><span style="font-size: 14px; font-weight: 700; color: #B8EE98">Connected</span></sc-if>
+            <sc-if value="{{healthNotConnected}}" hint-placeholder-val="{{false}}"><button class="hf-chip" onClick="{{connectHealth}}" style="height: 36px; padding: 0 14px; border-radius: 18px; border: none; background: rgba(116,212,71,0.22); color: #B8EE98; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Connect</button></sc-if>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+            <sc-for list="{{metrics}}" as="m" hint-placeholder-count="4">
+              <button class="hf-chip" aria-pressed="{{m.pressed}}" onClick="{{m.pick}}" style="{{m.style}}">{{m.label}}</button>
+            </sc-for>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 8px 0 16px; border-radius: 16px; background: #2A1C2F">
+            <span style="font-size: 15px; font-weight: 600">Daily goal</span>
+            <div style="display: flex; align-items: center; gap: 6px">
+              <button class="hf-chip" aria-label="Lower goal" onClick="{{decGoal}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer">−</button>
+              <span style="min-width: 86px; text-align: center; font-size: 16px; font-weight: 800" aria-live="polite">{{goalLabel}}</span>
+              <button class="hf-chip" aria-label="Raise goal" onClick="{{incGoal}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer">+</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{isPhoto}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 8px 0 16px; border-radius: 16px; background: #2A1C2F">
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{photosLabel}}</span><sc-if value="{{showPhotosTotal}}" hint-placeholder-val="{{false}}"><span style="font-size: 12.5px; font-weight: 500; color: #B9A8C0">{{photosTotal}}</span></sc-if></span>
+          <div style="display: flex; align-items: center; gap: 6px">
+            <button class="hf-chip" aria-label="Fewer photos" onClick="{{decPhotos}}" disabled="{{photosAtMin}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer; opacity: {{decOpacity}}">−</button>
+            <span style="min-width: 28px; text-align: center; font-size: 18px; font-weight: 800" aria-live="polite">{{photos}}</span>
+            <button class="hf-chip" aria-label="More photos" onClick="{{incPhotos}}" disabled="{{photosAtMax}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer; opacity: {{incOpacity}}">+</button>
+          </div>
+        </div>
+      </sc-if>
+    </section>
+
+    <section aria-label="Schedule" aria-disabled="{{memberAttr}}" style="display: flex; flex-direction: column; gap: 10px; {{memberLock}}">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Schedule</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{scheds}}" as="o" hint-placeholder-count="3">
+          <button class="hf-chip" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button>
+        </sc-for>
+      </div>
+      <sc-if value="{{isDays}}" hint-placeholder-val="{{true}}">
+        <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; padding: 12px; border-radius: 16px; background: #2A1C2F">
+          <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+            <button class="hf-chip" aria-pressed="{{d.pressed}}" aria-label="{{d.full}}" onClick="{{d.pick}}" style="{{d.style}}">{{d.label}}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{isPerWeek}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 8px 0 16px; border-radius: 16px; background: #2A1C2F">
+          <span style="font-size: 15px; font-weight: 600">Days a week</span>
+          <div style="display: flex; align-items: center; gap: 6px">
+            <button class="hf-chip" aria-label="Fewer" onClick="{{decWeek}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer">−</button>
+            <span style="min-width: 28px; text-align: center; font-size: 18px; font-weight: 800" aria-live="polite">{{perWeek}}</span>
+            <button class="hf-chip" aria-label="More" onClick="{{incWeek}}" style="width: 44px; height: 44px; border-radius: 14px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 20px; font-weight: 700; cursor: pointer">+</button>
+          </div>
+        </div>
+      </sc-if>
+      <p style="margin: 0; font-size: 13.5px; font-weight: 500; color: #B9A8C0">{{schedHint}}</p>
+      <sc-if value="{{showStartsNote}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px; background: rgba(122,167,255,0.12); color: #C9D8FF; font-size: 13px; font-weight: 600">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          Changes start tomorrow. Past days stay as they were.
+        </div>
+      </sc-if>
+    </section>
+
+    <section aria-label="Check-in window" aria-disabled="{{memberAttr}}" style="display: flex; flex-direction: column; gap: 10px; {{memberLock}}">
+      <div style="border-radius: 16px; background: #2A1C2F; display: flex; flex-direction: column">
+        <div style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 6px 0 16px">
+          <span style="font-size: 15px; font-weight: 600">Check-in window</span>
+          <button class="hf-sw" role="switch" aria-checked="{{winAttr}}" aria-label="Check-in window" onClick="{{toggleWin}}" style="width: 60px; height: 44px; border: none; background: none; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer">
+            <span style="{{winTrack}}"><span style="{{winKnob}}"></span></span>
+          </button>
+        </div>
+        <sc-if value="{{winOn}}" hint-placeholder-val="{{true}}">
+          <sc-for list="{{windows}}" as="w" hint-placeholder-count="2">
+            <div style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 6px 0 16px; border-top: 1px solid #3D2D43">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B9A8C0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5V12l3 2"></path></svg>
+              <span style="flex: 1; font-size: 15px; font-weight: 600; color: #B8EE98">{{w.label}}</span>
+              <button class="hf-chip" aria-label="{{w.aria}}" onClick="{{w.remove}}" style="width: 44px; height: 44px; border: none; background: none; color: #A895AE; display: flex; align-items: center; justify-content: center; cursor: pointer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+              </button>
+            </div>
+          </sc-for>
+          <sc-if value="{{canAddWin}}" hint-placeholder-val="{{true}}">
+            <button class="hf-chip" onClick="{{addWin}}" style="display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px; border: none; border-top: 1px solid #3D2D43; background: none; color: #74D447; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+              Add window
+            </button>
+          </sc-if>
+        </sc-if>
+      </div>
+      <sc-if value="{{showWinMode}}" hint-placeholder-val="{{true}}">
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{winModes}}" as="o" hint-placeholder-count="2">
+            <button class="hf-chip" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{winOn}}" hint-placeholder-val="{{true}}">
+        <p style="margin: 0; font-size: 13.5px; font-weight: 500; color: #B9A8C0">{{winHint}}</p>
+      </sc-if>
+    </section>
+
+    <section aria-label="Reminders" style="border-radius: 16px; background: #2A1C2F; display: flex; flex-direction: column">
+      <div style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 6px 0 16px">
+        <span style="font-size: 15px; font-weight: 600">Reminders</span>
+        <button class="hf-sw" role="switch" aria-checked="{{remindAttr}}" aria-label="Reminders" onClick="{{toggleRemind}}" style="width: 60px; height: 44px; border: none; background: none; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <span style="{{trackStyle}}"><span style="{{knobStyle}}"></span></span>
+        </button>
+      </div>
+      <sc-if value="{{remindOn}}" hint-placeholder-val="{{true}}">
+        <sc-for list="{{reminders}}" as="r" hint-placeholder-count="2">
+          <div style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 6px 0 16px; border-top: 1px solid #3D2D43">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B9A8C0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"></path><path d="M10 20.5a2 2 0 0 0 4 0"></path></svg>
+            <span style="flex: 1; font-size: 15px; font-weight: 600; color: #B8EE98">{{r.label}}</span>
+            <button class="hf-chip" aria-label="{{r.aria}}" onClick="{{r.remove}}" style="width: 44px; height: 44px; border: none; background: none; color: #A895AE; display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+            </button>
+          </div>
+        </sc-for>
+        <sc-if value="{{canAddRem}}" hint-placeholder-val="{{true}}">
+          <button class="hf-chip" onClick="{{addRem}}" style="display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px; border: none; border-top: 1px solid #3D2D43; background: none; color: #74D447; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+            Add reminder
+          </button>
+        </sc-if>
+      </sc-if>
+    </section>
+
+    <section aria-label="Sharing" style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Sharing</h2>
+      <div style="border-radius: 16px; background: #2A1C2F; display: flex; flex-direction: column">
+        <button class="hf-chip" onClick="{{openShare}}" aria-haspopup="dialog" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 0 14px 0 16px; border: none; border-bottom: 1px solid #3D2D43; background: none; color: #F6EEF8; font: inherit; cursor: pointer; text-align: left">
+          <span style="font-size: 15px; font-weight: 600">Progress</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #B9A8C0"><sc-if value="{{isEveryone}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8EE98" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path></svg></sc-if><span style="display: inline-flex; padding-left: 8px">
+            <sc-for list="{{sharedAvatars}}" as="a" hint-placeholder-count="2"><span style="{{a.style}}">{{a.initials}}</span></sc-for>
+          </span>{{shareSummary}}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A895AE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></span>
+        </button>
+        <button class="hf-chip" onClick="{{openShare}}" aria-haspopup="dialog" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 0 14px 0 16px; border: none; border-bottom: {{shareDivider}}; background: none; color: #F6EEF8; font: inherit; cursor: pointer; text-align: left">
+          <span style="font-size: 15px; font-weight: 600">History</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #B9A8C0">{{histSummary}}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A895AE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></span>
+        </button>
+        <sc-if value="{{isPhotoHabit}}" hint-placeholder-val="{{true}}">
+        <button class="hf-chip" onClick="{{openShare}}" aria-haspopup="dialog" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 0 14px 0 16px; border: none; background: none; color: #F6EEF8; font: inherit; cursor: pointer; text-align: left">
+          <span style="font-size: 15px; font-weight: 600">Check-in photos</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #B9A8C0">{{photoSummaryCap}}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A895AE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></span>
+        </button>
+        </sc-if>
+      </div>
+    </section>
+
+    <section aria-label="Manage habit" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px">
+      <button class="hf-chip" onClick="{{openArchive}}" style="display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 16px; border-radius: 16px; border: none; background: #2A1C2F; color: #F6EEF8; font: inherit; text-align: left; cursor: pointer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="9"></circle><path d="M10 9v6M14 9v6"></path></svg>
+        <span style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 700">Pause habit</span>
+          <span style="font-size: 13px; font-weight: 500; color: #B9A8C0">Hide it and stop tracking. Restore any time.</span>
+        </span>
+      </button>
+      <sc-if value="{{isOwner}}" hint-placeholder-val="{{true}}">
+      <button class="hf-chip" onClick="{{openDelete}}" style="display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 16px; border-radius: 16px; border: none; background: #2A1C2F; color: #FF8F85; font: inherit; text-align: left; cursor: pointer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M4 7h16"></path><path d="M9 7V4.5h6V7"></path><path d="M6.5 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5l1-12.5"></path></svg>
+        <span style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 700">Delete habit</span>
+          <span style="font-size: 13px; font-weight: 500; color: #B9A8C0">Removes its history and photos for good</span>
+        </span>
+      </button>
+      </sc-if>
+      <sc-if value="{{isMember}}" hint-placeholder-val="{{false}}">
+      <button class="hf-chip" style="display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 16px; border-radius: 16px; border: none; background: #2A1C2F; color: #FF8F85; font: inherit; text-align: left; cursor: pointer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M4 7h16"></path><path d="M9 7V4.5h6V7"></path><path d="M6.5 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5l1-12.5"></path></svg>
+        <span style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 700">Leave group</span>
+          <span style="font-size: 13px; font-weight: 500; color: #B9A8C0">The flower keeps growing for everyone else</span>
+        </span>
+      </button>
+      </sc-if>
+    </section>
+  </div>
+
+  <footer style="flex-shrink: 0; display: grid; grid-template-columns: 1fr 2fr; gap: 10px; padding: 12px 20px 30px 20px; background: #1F1023; border-top: 1px solid #33243A">
+    <a class="hf-nav" href="GymDetail.dc.html" style="height: 52px; border-radius: 26px; background: #3A2A40; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: #F6EEF8">Cancel</a>
+    <a class="hf-nav" href="GymDetail.dc.html" style="height: 52px; border-radius: 26px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800">Save changes</a>
+  </footer>
+
+  <sc-if value="{{shareOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeShare}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="Share progress" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">Share progress</h2>
+          <p style="margin: 0; font-size: 14px; font-weight: 500; color: #B9A8C0">Choose who can see this habit. Check-in photos show in their feed.</p>
+        </div>
+        <button class="hf-chip" role="checkbox" aria-checked="{{everyoneAttr}}" onClick="{{toggleEveryone}}" style="display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 0 16px; border-radius: 18px; border: none; background: #2A1C2F; color: #F6EEF8; font: inherit; text-align: left; cursor: pointer">
+          <span style="width: 38px; height: 38px; flex-shrink: 0; border-radius: 19px; background: rgba(116,212,71,0.2); color: #B8EE98; display: inline-flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path></svg></span>
+          <span style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 15px; font-weight: 700">Everyone</span>
+            <span style="font-size: 13px; font-weight: 500; color: #B9A8C0">All your friends, including new ones</span>
+          </span>
+          <span style="{{everyoneBox}}">
+            <sc-if value="{{isEveryone}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#142008" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+          </span>
+        </button>
+        <div style="border-radius: 18px; background: #2A1C2F; display: flex; flex-direction: column; opacity: {{listOpacity}}">
+          <sc-for list="{{friendsList}}" as="f" hint-placeholder-count="5">
+            <button class="hf-chip" role="checkbox" aria-checked="{{f.checkedAttr}}" disabled="{{f.disabled}}" onClick="{{f.toggle}}" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 16px; border: none; border-bottom: {{f.divider}}; background: none; color: #F6EEF8; font: inherit; text-align: left; cursor: pointer">
+              <span style="{{f.avatarStyle}}">{{f.initials}}</span>
+              <span style="flex: 1; font-size: 15px; font-weight: 600">{{f.name}}</span>
+              <span style="{{f.boxStyle}}">
+                <sc-if value="{{f.checked}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#142008" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+        <sc-if value="{{showHist}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <p style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Full history</p>
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+              <sc-for list="{{histOpts}}" as="o" hint-placeholder-count="3">
+                <button class="hf-chip" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button>
+              </sc-for>
+            </div>
+            <p style="margin: 0; font-size: 13px; font-weight: 500; color: #B9A8C0">{{histHint}}</p>
+          </div>
+        </sc-if>
+        <sc-if value="{{isPhotoHabit}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <p style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Check-in photos</p>
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+              <sc-for list="{{photoOpts}}" as="o" hint-placeholder-count="3">
+                <button class="hf-chip" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button>
+              </sc-for>
+            </div>
+            <p style="margin: 0; font-size: 13px; font-weight: 500; color: #B9A8C0">{{photoHint}}</p>
+          </div>
+        </sc-if>
+        <button class="hf-nav" onClick="{{closeShare}}" style="height: 52px; border-radius: 26px; border: none; background: #F6EEF8; color: #1F1023; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Done</button>
+      </section>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeSheet}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <sc-if value="{{isArchive}}" hint-placeholder-val="{{true}}">
+        <section role="dialog" aria-label="Pause habit" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+          <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+          <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">Pause Hit the gym?</h2>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; font-weight: 500; color: #D9CCDF; line-height: 1.4">
+            <p style="margin: 0">It leaves your Habits screen and widget, and stops sending reminders.</p>
+            <p style="margin: 0">Its flower is kept safe under glass. Days while paused don't count as missed.</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px">
+            <a class="hf-nav" href="Archived.dc.html" style="height: 52px; border-radius: 26px; background: #F6EEF8; color: #1F1023; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800">Pause</a>
+            <button class="hf-nav" onClick="{{closeSheet}}" style="height: 52px; border-radius: 26px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Keep it active</button>
+          </div>
+        </section>
+      </sc-if>
+      <sc-if value="{{isDelete}}" hint-placeholder-val="{{false}}">
+        <section role="dialog" aria-label="Delete habit" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+          <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+          <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">Delete Hit the gym?</h2>
+          <p style="margin: 0; font-size: 14.5px; font-weight: 500; color: #D9CCDF; line-height: 1.4">This removes its flower, history and 5 photos. You can't undo this. If you might come back to it, pause it instead.</p>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px">
+            <a class="hf-nav" href="Main.dc.html" style="height: 52px; border-radius: 26px; background: #FF8F85; color: #2A0B08; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800">Delete habit</a>
+            <button class="hf-nav" onClick="{{openArchive}}" style="height: 52px; border-radius: 26px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Pause instead</button>
+          </div>
+        </section>
+      </sc-if>
+    </div>
+  </sc-if>
+  <sc-if value="{{kindsOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 7; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeKinds}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="How you check in" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 16px 34px 16px; display: flex; flex-direction: column; gap: 12px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <h2 style="margin: 4px 4px 0 4px; font-size: 20px; font-weight: 800">How you check in</h2>
+        <div role="radiogroup" style="display: flex; flex-direction: column; gap: 6px">
+          <sc-for list="{{kinds}}" as="k" hint-placeholder-count="5">
+            <button class="hf-chip" role="radio" aria-checked="{{k.pressed}}" onClick="{{k.pick}}" style="{{k.style}}">
+              <span aria-hidden="true" style="{{k.tile}}"><sc-if value="{{k.isCheck}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.8 2.8L16.5 9.5"></path></svg></sc-if><sc-if value="{{k.isCount}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="5"></rect><path d="M7.5 12h3M15 10.5v3M13.5 12h3"></path></svg></sc-if><sc-if value="{{k.isList}}" hint-placeholder-val="{{true}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5l1.5 1.5L8 5.5M4 12.5l1.5 1.5L8 11.5M4.5 18h3M11 7h9M11 13h9M11 18h9"></path></svg></sc-if><sc-if value="{{k.isPhoto}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></sc-if><sc-if value="{{k.isHealth}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.8c0 1-.2 1.9-.6 2.7"></path><path d="M3 12.5h4l1.5-2.5 2.5 5 1.5-2.5h3"></path></svg></sc-if></span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; text-align: left">
+                <span style="font-size: 16px; font-weight: 700">{{k.label}}</span>
+                <span style="{{k.descStyle}}">{{k.desc}}</span>
+              </span>
+              <sc-if value="{{k.on}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+  <sc-if value="{{pickOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 8; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closePick}}" style="flex: 1; min-height: 40px; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="Pick a flower" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px; max-height: 760px; box-sizing: border-box">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">Pick a flower</h2>
+          <button class="hf-chip" onClick="{{openGuide}}" aria-haspopup="dialog" style="height: 32px; padding: 0 12px 0 8px; border-radius: 16px; border: none; background: rgba(116,212,71,0.16); color: #B8EE98; font: inherit; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; cursor: pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"></path></svg>How to grow?</button>
+        </div>
+        <div style="flex-shrink: 0; border-radius: 22px; background: {{dTintSoft}}; padding: 16px 16px 14px 16px; display: flex; align-items: center; gap: 14px">
+          <div style="position: relative; width: 112px; height: 112px; flex-shrink: 0; display: flex; align-items: flex-end; justify-content: center">
+            <span aria-hidden="true" style="position: absolute; left: 50%; bottom: 3px; width: 48px; height: 13px; margin-left: -24px; border-radius: 50%; background: #6B4436"></span>
+            <span style="position: relative; display: flex; transform-origin: 50% 92%; animation: hfSway 4.5s ease-in-out infinite"><dc-import name="Flower" kind="{{dKind}}" soil="off" size="112" hint-size="112px,112px"></dc-import></span>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0">
+            <p class="hf-display" style="margin: 0; font-size: 24px; line-height: 1.1">{{dName}}</p>
+            <div style="display: flex; align-items: flex-end; gap: 4px" aria-label="Grows from sprout to bud to bloom">
+              <dc-import name="Flower" kind="{{dKind}}" stage="seed" size="34" hint-size="34px,34px"></dc-import>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8C7992" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-bottom: 12px"><path d="M9 5l7 7-7 7"></path></svg>
+              <dc-import name="Flower" kind="{{dKind}}" stage="bud" size="38" hint-size="38px,38px"></dc-import>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8C7992" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-bottom: 12px"><path d="M9 5l7 7-7 7"></path></svg>
+              <dc-import name="Flower" kind="{{dKind}}" stage="bloom" size="42" hint-size="42px,42px"></dc-import>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1; min-height: 0; overflow-y: auto; margin: 0 -4px; padding: 4px">
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+            <sc-for list="{{pickList}}" as="f" hint-placeholder-count="8">
+              <button class="hf-chip" aria-pressed="{{f.pressed}}" aria-label="{{f.aria}}" onClick="{{f.pick}}" style="{{f.style}}">
+                <dc-import name="Flower" kind="{{f.kind}}" size="44" hint-size="44px,44px"></dc-import>
+                <span style="font-size: 12px; font-weight: 700; line-height: 1.2">{{f.label}}</span>
+                <sc-if value="{{f.taken}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="position: absolute; top: 6px; right: 6px; height: 18px; padding: 0 6px; border-radius: 9px; background: #3D2D43; color: #C9B9CF; font-size: 10px; font-weight: 800; line-height: 18px">Used</span></sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <button class="hf-chip" onClick="{{choosePick}}" style="flex-shrink: 0; height: 52px; border-radius: 26px; border: none; background: #F6EEF8; color: #1F1023; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Pick {{dName}}</button>
+      </section>
+    </div>
+  </sc-if>
+  <sc-if value="{{guideOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 9; z-index: 8; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeGuide}}" style="flex: 1; min-height: 40px; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="How to grow" style="max-height: 88%; overflow-y: auto; background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 30px 20px; display: flex; flex-direction: column; gap: 18px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950; flex-shrink: 0"></div>
+        <h2 style="margin: 2px 0 0 0; font-size: 22px; font-weight: 800">How to grow</h2>
+          <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 128px; box-sizing: border-box; border-radius: 20px; background: rgba(116,212,71,0.10); padding: 0 10px 14px 10px">
+            <span style="display: flex; flex-direction: column; align-items: center; gap: 2px"><dc-import name="Flower" kind="{{kind}}" stage="seed" health="ok" size="64" hint-size="64px,64px"></dc-import><span style="font-size: 12px; font-weight: 700; color: #B9A8C0">Sprout</span></span>
+            <span style="display: flex; flex-direction: column; align-items: center; gap: 2px"><dc-import name="Flower" kind="{{kind}}" stage="bud" health="ok" size="72" hint-size="72px,72px"></dc-import><span style="font-size: 12px; font-weight: 700; color: #B9A8C0">Bud</span></span>
+            <span style="display: flex; flex-direction: column; align-items: center; gap: 2px"><dc-import name="Flower" kind="{{kind}}" stage="bloom" health="ok" size="80" hint-size="80px,80px"></dc-import><span style="font-size: 12px; font-weight: 700; color: #B9A8C0">Bloom</span></span>
+          </div>
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; align-items: center; gap: 14px">
+            <span aria-hidden="true" style="width: 68px; height: 68px; flex-shrink: 0; border-radius: 18px; background: rgba(116,212,71,0.10); display: flex; align-items: center; justify-content: center; overflow: hidden"><dc-import name="Flower" kind="{{kind}}" stage="bloom" health="ok" size="50" hint-size="50px,50px"></dc-import></span>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+              <p style="margin: 0; font-size: 16px; font-weight: 800">Check in</p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500; line-height: 1.4; color: #B9A8C0">Each check-in grows it one stage. Keep checking in to keep it in bloom.</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px">
+            <span aria-hidden="true" style="width: 68px; height: 68px; flex-shrink: 0; border-radius: 18px; background: rgba(255,158,107,0.12); display: flex; align-items: center; justify-content: center; overflow: hidden"><dc-import name="Flower" kind="{{kind}}" stage="bloom" health="wilt" size="50" hint-size="50px,50px"></dc-import></span>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+              <p style="margin: 0; font-size: 16px; font-weight: 800">Wilting</p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500; line-height: 1.4; color: #B9A8C0">Miss a day and it droops. Check in next time to perk it back up. Sprouts skip this and dry up.</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px">
+            <span aria-hidden="true" style="width: 68px; height: 68px; flex-shrink: 0; border-radius: 18px; background: rgba(255,123,123,0.10); display: flex; align-items: center; justify-content: center; overflow: hidden"><dc-import name="Flower" kind="{{kind}}" stage="seed" health="dormant" size="50" hint-size="50px,50px"></dc-import></span>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+              <p style="margin: 0; font-size: 16px; font-weight: 800">Dried up</p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500; line-height: 1.4; color: #B9A8C0">Miss twice in a row and it dries up. Check in to bring it back as a bud, or a sprout if it was one.</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px">
+            <span aria-hidden="true" style="width: 68px; height: 68px; flex-shrink: 0; border-radius: 18px; background: rgba(122,167,255,0.12); display: flex; align-items: center; justify-content: center; overflow: hidden"><span style="position: relative; width: 48px; height: 54px"><span style="position: absolute; left: 7.5px; top: 15px"><dc-import name="Flower" kind="{{kind}}" stage="bud" size="33" hint-size="33px,33px"></dc-import></span><svg width="48" height="54" viewBox="0 0 64 72" style="position: absolute; inset: 0"><path d="M10 64V30a22 22 0 0 1 44 0v34z" fill="rgba(210,230,255,0.10)" stroke="rgba(220,235,255,0.6)" stroke-width="1.6"></path><path d="M17 57V31a15 15 0 0 1 8-13" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2.2" stroke-linecap="round"></path><circle cx="32" cy="6" r="3.2" fill="rgba(210,230,255,0.25)" stroke="rgba(220,235,255,0.6)" stroke-width="1.4"></circle><rect x="5" y="63" width="54" height="7" rx="3.5" fill="#5A4660"></rect></svg></span></span>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+              <p style="margin: 0; font-size: 16px; font-weight: 800">Resting</p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500; line-height: 1.4; color: #B9A8C0">Rest days, paused days and <span style="color: #A9C6FF; font-weight: 700">Away mode</span> never hurt it.</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px">
+            <span aria-hidden="true" style="width: 68px; height: 68px; flex-shrink: 0; border-radius: 18px; background: #3A2A40; display: flex; align-items: center; justify-content: center; overflow: hidden"><span style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; gap: 4px"><span style="display: inline-flex; padding-left: 6px"><span style="width: 22px; height: 22px; margin-left: -6px; border-radius: 11px; background: #74D447; color: #142008; box-shadow: 0 0 0 2px #2A1C2F; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800">R</span><span style="width: 22px; height: 22px; margin-left: -6px; border-radius: 11px; background: #FFC93C; color: #3A2600; box-shadow: 0 0 0 2px #2A1C2F; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800">M</span><span style="width: 22px; height: 22px; margin-left: -6px; border-radius: 11px; background: #A98BEA; color: #1F1023; box-shadow: 0 0 0 2px #2A1C2F; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800">S</span></span></span></span>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+              <p style="margin: 0; font-size: 16px; font-weight: 800">Grow together</p>
+              <p style="margin: 0; font-size: 14px; font-weight: 500; line-height: 1.4; color: #B9A8C0">One flower for the group. It only grows when everyone checks in. Nudge anyone who hasn’t.</p>
+            </div>
+          </div>
+        </div>
+        <button class="hf-chip" onClick="{{closeGuide}}" style="flex-shrink: 0; height: 52px; border-radius: 26px; border: none; background: #F6EEF8; color: #1F1023; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Got it</button>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844},"role":{"type":"enum","options":["owner","member"],"default":"owner"},"flowerSheet":{"type":"enum","options":["closed","open"],"default":"closed"},"shareSheet":{"type":"enum","options":["closed","open"],"default":"closed"}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { pick: null, draft: null, hist: 'none', guideOpen: false, items: ['Warm up', 'Squats', 'Bench press', 'Stretch'], winMode: null, rems: ['6:00 PM', '7:30 PM'], winOn: true, wins: ['6:00 to 8:00 PM'], metric: 'steps', goals: { steps: 10000, exercise: 30, move: 500, distance: 5 }, healthOn: true, photoAud: 'me', shareOpen: null, everyone: true, sharedF: {}, sheet: 'none', flower: 'lavender', kind: 'photo', photos: 1, times: 3, sched: 'days', days: { 1: true, 3: true, 6: true }, perWeek: 3, remind: true, share: 'me' };
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state;
+    function set(o) { return function () { self.setState(o); }; }
+    function chip(on, extra) {
+      var base = 'height: 40px; padding: 0 14px; border-radius: 20px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; box-sizing: border-box;' + (extra || '');
+      return on ? base + 'background: rgba(116,212,71,0.22); color: #B8EE98; border: none;' : base + 'background: #3A2A40; color: #E4D7E9; border: none;';
+    }
+    function hexA(hex, a) {
+      var n = parseInt(hex.slice(1), 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+    }
+    var flowerList = [['sunflower','Sunflower','#FFC93C'],['daisy','Daisy','#F7F2EA'],['tulip','Tulip','#FF6B8A'],['rose','Rose','#E8455A'],['spider','Spider lily','#FF5A4E'],['lavender','Lavender','#A98BEA'],['blossom','Blossom','#FFB7C9'],['marigold','Marigold','#FF9F1C']];
+    var current = flowerList.filter(function (f) { return f[0] === st.flower; })[0];
+    var flowers = flowerList.map(function (f) {
+      var on = st.flower === f[0];
+      var base = 'height: 92px; padding: 6px 2px; border-radius: 16px; font: inherit; cursor: pointer; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;';
+      return {
+        kind: f[0], label: f[1], pressed: on ? 'true' : 'false', pick: set({ flower: f[0] }),
+        style: on ? base + 'background: rgba(116,212,71,0.22); color: #B8EE98; border: none;' : base + 'background: #2A1C2F; color: #E4D7E9; border: none;'
+      };
+    });
+    var used = { sunflower: 'Morning run', daisy: 'Check mail', tulip: 'Cook dinner', marigold: 'Push-ups' };
+    var pickOpen = st.pick === null ? (self.props.flowerSheet || 'closed') === 'open' : st.pick;
+    var dk = st.draft || st.flower;
+    var dCur = flowerList.filter(function (f) { return f[0] === dk; })[0];
+    var pickList = flowerList.map(function (f) {
+      var on = dk === f[0];
+      var base = 'position: relative; height: 92px; padding: 6px 2px; border-radius: 16px; font: inherit; cursor: pointer; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border: none;';
+      return {
+        kind: f[0], label: f[1], taken: !!used[f[0]], pressed: on ? 'true' : 'false',
+        aria: f[1] + (used[f[0]] ? ', used by ' + used[f[0]] : ''),
+        pick: set({ draft: f[0] }),
+        style: on ? base + 'background: ' + hexA(f[2], 0.22) + '; color: #F6EEF8; box-shadow: inset 0 0 0 2px ' + f[2] + ';' : base + 'background: #2A1C2F; color: #E4D7E9;'
+      };
+    });
+    var kindDefs = [['check','Check off','Tap once to finish'],['count','Count','Do it a set number of times'],['list','List','Check off every item'],['photo','Photo','Snap a photo'],['health','Health','Syncs from Apple Health']];
+    var kinds = kindDefs.map(function (k) {
+      var on = st.kind === k[0];
+      return {
+        label: k[1], desc: k[2], on: on, pressed: on ? 'true' : 'false',
+        pick: function () { var n = { kind: k[0], kindsOpen: false }; if (k[0] === 'photo' && self.state.kind !== 'photo') n.photos = 1; self.setState(n); },
+        isCheck: k[0] === 'check', isCount: k[0] === 'count', isList: k[0] === 'list', isPhoto: k[0] === 'photo', isHealth: k[0] === 'health',
+        style: 'display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 0 16px 0 12px; border: none; border-radius: 18px; font: inherit; cursor: pointer;' + (on ? ' background: rgba(116,212,71,0.22); color: #B8EE98;' : ' background: #2A1C2F; color: #F6EEF8;'),
+        tile: 'width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center;' + (on ? ' background: rgba(116,212,71,0.25); color: #B8EE98;' : ' background: #3A2A40; color: #E4D7E9;'),
+        descStyle: 'font-size: 13px; font-weight: 500; color: ' + (on ? '#9BCB80' : '#A895AE') + ';'
+      };
+    });
+    var cur = kinds.filter(function (k) { return k.on; })[0] || kinds[0];
+    var metricDefs = { steps: ['Steps', 1000, 'steps'], exercise: ['Exercise', 5, 'min'], move: ['Move', 50, 'cal'], distance: ['Distance', 1, 'km'] };
+    var md = metricDefs[st.metric];
+    var goalLabel = (st.goals[st.metric] >= 1000 ? st.goals[st.metric].toLocaleString('en-US') : st.goals[st.metric]) + ' ' + md[2];
+    var metrics = Object.keys(metricDefs).map(function (k) {
+      var on = st.metric === k;
+      return { label: metricDefs[k][0], pressed: on ? 'true' : 'false', style: chip(on, 'height: 42px; padding: 0;'), pick: set({ metric: k }) };
+    });
+    function stepGoal(dir) { return function () { var g = Object.assign({}, self.state.goals); g[self.state.metric] = Math.max(metricDefs[self.state.metric][1], g[self.state.metric] + dir * metricDefs[self.state.metric][1]); self.setState({ goals: g }); }; }
+    var kindHint = st.kind === 'health' ? 'Checks in by itself when you reach ' + goalLabel + '. Your daily total is saved too.'
+      : st.kind === 'check' ? 'Tap once to mark the day done.'
+      : st.kind === 'list' ? (st.winOn && st.wins.length >= 2 && (st.winMode || 'per') === 'per' ? 'Check off every item in each window.' : 'Check off every item to finish the day.')
+      : st.kind === 'count' ? 'Done after ' + st.times + ' times.'
+      : (st.photos === 1 ? 'Take a photo with the camera to check in.' : 'Take ' + st.photos + ' photos with the camera to check in.');
+    var scheds = [['daily','Every day'],['days','Specific days'],['perweek','Days a week']].map(function (o) {
+      var on = st.sched === o[0];
+      return { label: o[1], pressed: on ? 'true' : 'false', style: chip(on), pick: set({ sched: o[0] }) };
+    });
+    var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var days = ['S','M','T','W','T','F','S'].map(function (l, i) {
+      var on = !!st.days[i];
+      return {
+        label: l, full: dayNames[i], pressed: on ? 'true' : 'false',
+        style: chip(on, 'padding: 0; width: 100%;'),
+        pick: function () { var d = Object.assign({}, self.state.days); d[i] = !d[i]; self.setState({ days: d }); }
+      };
+    });
+    var picked = dayNames.filter(function (_, i) { return st.days[i]; });
+    var schedHint = st.sched === 'daily' ? 'Missing a day restarts your streak.'
+      : st.sched === 'days' ? (picked.length ? 'Other days are rest days and won’t break your streak.' : 'Pick at least one day.')
+      : 'Any ' + st.perWeek + ' days count. Your streak counts weeks you hit the goal.';
+    var people = [['maya','@mayac','M','#FFC93C','#3A2600'],['sam','@sampatel','S','#A98BEA','#1F1023'],['priya','@priya.n','P','#FF9F1C','#2A1206'],['alex','@alexk','A','#7AA7FF','#0F1E3A'],['jordan','@jordanlee','J','#4FD1C5','#0F2A27']];
+    function av(f, size, ring) { return 'width: ' + size + 'px; height: ' + size + 'px; flex-shrink: 0; border-radius: ' + (size / 2) + 'px; background: ' + f[3] + '; color: ' + f[4] + '; display: inline-flex; align-items: center; justify-content: center; font-size: ' + Math.round(size * 0.36) + 'px; font-weight: 800;' + (ring ? ' margin-left: -8px; box-shadow: 0 0 0 2px #2A1C2F;' : ''); }
+    function box(on) { return 'width: 26px; height: 26px; flex-shrink: 0; border-radius: 9px; display: flex; align-items: center; justify-content: center;' + (on ? ' background: #74D447;' : ' background: #463550;'); }
+    var everyone = !!st.everyone;
+    var closeF = ['@mayac', '@sampatel', '@priya.n', '@jordanlee', '@kofi.a', '@lena.r'];
+    var closeNames = closeF.length <= 3 ? (closeF.length === 1 ? closeF[0] : closeF.slice(0, -1).join(', ') + ' and ' + closeF[closeF.length - 1]) : closeF.slice(0, 2).join(', ') + ' and ' + (closeF.length - 2) + ' others';
+    var chosen = everyone ? [] : people.filter(function (f) { return st.sharedF[f[0]]; });
+    var friendsList = people.map(function (f, i) {
+      var on = everyone || !!st.sharedF[f[0]];
+      return {
+        name: f[1], initials: f[2], avatarStyle: av(f, 36, false), checked: on, checkedAttr: on ? 'true' : 'false', disabled: everyone,
+        divider: i < people.length - 1 ? '1px solid #3D2D43' : 'none', boxStyle: box(on),
+        toggle: function () { var x = Object.assign({}, self.state.sharedF); x[f[0]] = !x[f[0]]; self.setState({ sharedF: x }); }
+      };
+    });
+    var first = function (f) { return f[1].split(' ')[0]; };
+    var shareSummary = everyone ? 'Everyone' : chosen.length === 0 ? 'Only you' : chosen.length === 1 ? first(chosen[0]) : chosen.length === 2 ? first(chosen[0]) + ' and ' + first(chosen[1]) : first(chosen[0]) + ' and ' + (chosen.length - 1) + ' others';
+    var trackBase = 'width: 52px; height: 32px; border-radius: 16px; box-sizing: border-box; display: flex; align-items: center; padding: 3px;';
+    var knobBase = 'width: 26px; height: 26px; border-radius: 13px;';
+    var multi = st.winOn && st.wins.length >= 2 && st.kind !== 'health';
+    var wm = st.winMode || (st.kind === 'photo' || st.kind === 'count' || st.kind === 'list' ? 'per' : 'any');
+    var perWin = multi && wm === 'per' && (st.kind === 'photo' || st.kind === 'count' || st.kind === 'list');
+    return {
+      sheetOpen: st.sheet !== 'none', isArchive: st.sheet === 'archive', isDelete: st.sheet === 'delete',
+      openArchive: set({ sheet: 'archive' }), openDelete: set({ sheet: 'delete' }), closeSheet: set({ sheet: 'none' }),
+      guideOpen: !!st.guideOpen, openGuide: function () { self.setState({ guideOpen: true }); }, closeGuide: function () { self.setState({ guideOpen: false }); },
+      kind: st.flower, tint: hexA(current[2], 0.16), flowers: flowers, flowerName: current[1],
+      pickOpen: pickOpen, pickList: pickList,
+      openPick: set({ pick: true, draft: st.flower }), closePick: set({ pick: false, draft: null }),
+      choosePick: function () { self.setState({ flower: self.state.draft || self.state.flower, pick: false, draft: null }); },
+      dKind: dk, dName: dCur[1], dTintSoft: hexA(dCur[2], 0.12), dTaken: !!used[dk], dTakenBy: used[dk] || '',
+      isHealth: st.kind === 'health', metrics: metrics, goalLabel: goalLabel, incGoal: stepGoal(1), decGoal: stepGoal(-1),
+      healthConnected: st.healthOn, healthNotConnected: !st.healthOn, connectHealth: set({ healthOn: true }),
+      winOn: st.winOn, winAttr: st.winOn ? 'true' : 'false',
+      toggleWin: function () { self.setState({ winOn: !self.state.winOn }); },
+      winTrack: 'width: 52px; height: 32px; border-radius: 16px; box-sizing: border-box; display: flex; align-items: center; padding: 3px;' + (st.winOn ? ' background: #4E8A2F;' : ' background: #4A3950;'),
+      winKnob: 'width: 26px; height: 26px; border-radius: 13px;' + (st.winOn ? ' background: #F6EEF8; margin-left: 20px;' : ' background: #E4D7E9; margin-left: 0;'),
+      windows: st.wins.map(function (w, i) {
+        return { label: w, aria: 'Remove ' + w, remove: function () { var x = self.state.wins.slice(); x.splice(i, 1); self.setState({ wins: x, winOn: x.length > 0 }); } };
+      }),
+      canAddWin: st.wins.length < 3,
+      addWin: function () {
+        var presets = ['5:00 to 6:00 AM', '12:00 to 1:00 PM', '8:00 to 9:00 PM', '6:00 to 8:00 PM'];
+        var next = presets.filter(function (p) { return self.state.wins.indexOf(p) < 0; })[0] || '7:00 to 8:00 AM';
+        self.setState({ wins: self.state.wins.concat([next]) });
+      },
+      showWinMode: multi,
+      winModes: [['per','Per window'],['any','Any window']].map(function (o) {
+        var on = wm === o[0];
+        return { label: o[1], pressed: on ? 'true' : 'false', style: chip(on, 'height: 42px; padding: 0;'), pick: set({ winMode: o[0] }) };
+      }),
+      timesLabel: perWin ? 'Times per window' : 'Times a day',
+      showTimesTotal: perWin, timesTotal: (st.times * st.wins.length) + ' times a day',
+      photosLabel: perWin ? 'Photos per window' : 'Photos to check in',
+      showPhotosTotal: perWin, photosTotal: (st.photos * st.wins.length) + ' photos a day',
+      winHint: multi ? (wm === 'per' ? 'Check in during each window. ' : 'Any open window counts. ') + (st.kind === 'photo' ? 'Check-in is only available during these times.' : 'You can log up to 1 hour after a window ends.') : (st.kind === 'photo' ? 'Check-in is only available during these times.' : st.kind === 'health' ? 'Activity has to happen during these times.' : 'You can still check in up to 1 hour after a window ends.'),
+      kinds: kinds, kindHint: kindHint, cur: cur, kindLabel: cur.label, kindAria: 'How you check in: ' + cur.label,
+      kindsOpen: !!st.kindsOpen, openKinds: function () { self.setState({ kindsOpen: true }); }, closeKinds: function () { self.setState({ kindsOpen: false }); }, isList: st.kind === 'list',
+      listItems: st.items.map(function (l, i) { return { label: l, aria: 'Remove ' + l, remove: function () { var x = self.state.items.slice(); x.splice(i, 1); self.setState({ items: x }); } }; }),
+      addItem: function () { var pool = ['Deadlifts', 'Pull-ups', 'Plank', 'Cool down']; var next = pool.filter(function (p) { return self.state.items.indexOf(p) < 0; })[0] || 'New item'; self.setState({ items: self.state.items.concat([next]) }); },
+      isCount: st.kind === 'count', isPhoto: st.kind === 'photo',
+      photos: String(st.photos), photosAtMin: st.photos <= 1, photosAtMax: st.photos >= 8,
+      decOpacity: st.photos <= 1 ? '0.35' : '1', incOpacity: st.photos >= 8 ? '0.35' : '1',
+      incPhotos: function () { self.setState({ photos: Math.min(8, self.state.photos + 1) }); },
+      decPhotos: function () { self.setState({ photos: Math.max(1, self.state.photos - 1) }); }, times: String(st.times),
+      incTimes: function () { self.setState({ times: Math.min(20, self.state.times + 1) }); },
+      decTimes: function () { self.setState({ times: Math.max(2, self.state.times - 1) }); },
+      scheds: scheds, days: days, isDays: st.sched === 'days', isPerWeek: st.sched === 'perweek', perWeek: String(st.perWeek),
+      incWeek: function () { self.setState({ perWeek: Math.min(6, self.state.perWeek + 1) }); },
+      decWeek: function () { self.setState({ perWeek: Math.max(1, self.state.perWeek - 1) }); },
+      schedHint: schedHint,
+      isMember: (self.props.role || 'owner') === 'member', isOwner: (self.props.role || 'owner') !== 'member',
+      memberAttr: (self.props.role || 'owner') === 'member' ? 'true' : 'false',
+      memberLock: (self.props.role || 'owner') === 'member' ? 'opacity: 0.5; pointer-events: none;' : '',
+      showStartsNote: (self.props.role || 'owner') !== 'member',
+      remindOn: st.remind, remindAttr: st.remind ? 'true' : 'false',
+      reminders: st.rems.map(function (r, i) {
+        return { label: r, aria: 'Remove reminder at ' + r, remove: function () { var x = self.state.rems.slice(); x.splice(i, 1); self.setState({ rems: x, remind: x.length > 0 }); } };
+      }),
+      canAddRem: st.rems.length < 5,
+      addRem: function () {
+        var presets = ['7:00 AM', '12:00 PM', '6:00 PM', '9:00 PM', '8:00 AM', '3:00 PM'];
+        var next = presets.filter(function (t) { return self.state.rems.indexOf(t) < 0; })[0] || '10:00 AM';
+        self.setState({ rems: self.state.rems.concat([next]) });
+      },
+      toggleRemind: function () { self.setState({ remind: !self.state.remind }); },
+      trackStyle: trackBase + (st.remind ? 'background: #4E8A2F;' : 'background: #4A3950;'),
+      knobStyle: knobBase + (st.remind ? 'background: #F6EEF8; margin-left: 20px;' : 'background: #E4D7E9; margin-left: 0;'),
+      shareOpen: st.shareOpen === null ? (self.props.shareSheet || 'closed') === 'open' : st.shareOpen, openShare: set({ shareOpen: true }), closeShare: set({ shareOpen: false }),
+      isEveryone: everyone, everyoneAttr: everyone ? 'true' : 'false', everyoneBox: box(everyone), listOpacity: everyone ? '0.45' : '1',
+      toggleEveryone: function () { self.setState({ everyone: !self.state.everyone }); },
+      friendsList: friendsList, shareSummary: shareSummary,
+      isPhotoHabit: st.kind === 'photo',
+      showHist: !(chosen.length === 0 && !everyone),
+      histSummary: (chosen.length === 0 && !everyone) ? 'Only you' : st.hist === 'all' ? 'Full history' : st.hist === 'close' ? 'Close friends' : 'This week',
+      histOpts: [['none','Nobody'],['close','Close friends'],['all','Everyone']].map(function (o) {
+        var on = st.hist === o[0];
+        return { label: o[1], pressed: on ? 'true' : 'false', style: chip(on, 'height: 44px; padding: 0 4px; font-size: 13px;'), pick: set({ hist: o[0] }) };
+      }),
+      histHint: st.hist === 'all' ? 'Everyone above can open the calendar and stats, back to day one.' : st.hist === 'close' ? closeNames + ' see everything. Everyone else sees this week.' : 'Friends see your flower, streak and this week. Older days stay private.',
+      photoOpts: [['same','Same as above'],['close','Close friends'],['me','Only me']].map(function (o) {
+        var on = st.photoAud === o[0];
+        return { label: o[1], pressed: on ? 'true' : 'false', style: chip(on, 'height: 44px; padding: 0 4px; font-size: 13px;'), pick: set({ photoAud: o[0] }) };
+      }),
+      photoHint: st.photoAud === 'same' ? 'The same people above see your photos.' : st.photoAud === 'close' ? closeNames + '. Edit the list in Friends.' : 'Friends see your HabitFlowers, not your photos.',
+      photoSummaryCap: st.photoAud === 'same' ? 'Same people' : st.photoAud === 'close' ? 'Close friends' : 'Only you',
+      shareDivider: st.kind === 'photo' ? '1px solid #3D2D43' : 'none',
+      sharedAvatars: chosen.slice(0, 3).map(function (f) { return { initials: f[2], style: av(f, 28, true) }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

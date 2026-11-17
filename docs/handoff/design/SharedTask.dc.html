@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shared task: friend view</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+input::placeholder,textarea::placeholder{color:#8C7992}
+.hf-b:focus-visible,.hf-row:focus-visible,.hf-back:focus-visible{outline:2px solid #74D447;outline-offset:-2px}
+.hf-row{transition:background .15s}.hf-row:hover{background:#33243A}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; gap: 16px; padding: 58px 20px 30px 20px">
+  <a class="hf-back" href="Friends.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    Friends
+  </a>
+  <div style="display: flex; align-items: center; gap: 10px">
+    <span style="width: 32px; height: 32px; border-radius: 16px; background: #FF9F1C; color: #2A1206; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800">P</span>
+    <span style="font-size: 14.5px; font-weight: 600; color: #B9A8C0"><span style="color: #F6EEF8; font-weight: 700">@priya.n</span> shared this with you</span>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.4px">Submit lab report</h1>
+    <span style="align-self: flex-start; height: 30px; padding: 0 12px; border-radius: 15px; background: rgba(116,212,71,0.18); color: #B8EE98; font-size: 13.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Done 4 hours ago</span>
+  </div>
+  <div style="border-radius: 22px; background: #2A1C2F; display: flex; flex-direction: column; overflow: hidden">
+    <div style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 16px; border-bottom: 1px solid #3D2D43"><span style="flex: 1; font-size: 15px; font-weight: 600">Due</span><span style="font-size: 14.5px; font-weight: 600; color: #B9A8C0">Today, 11:59 PM</span></div>
+    <div style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 16px"><span style="flex: 1; font-size: 15px; font-weight: 600">Checklist</span><span style="font-size: 14.5px; font-weight: 600; color: #B9A8C0">3 of 3</span></div>
+  </div>
+  <div style="border-radius: 22px; background: #2A1C2F; display: flex; flex-direction: column; overflow: hidden">
+    <sc-for list="{{items}}" as="it" hint-placeholder-count="3">
+      <div style="display: flex; align-items: center; gap: 14px; min-height: 50px; padding: 0 16px; border-bottom: {{it.divider}}">
+        <span style="width: 22px; height: 22px; flex-shrink: 0; border-radius: 7px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+        <span style="flex: 1; font-size: 15px; font-weight: 600; color: #8C7992; text-decoration: line-through">{{it.label}}</span>
+      </div>
+    </sc-for>
+  </div>
+  <p style="margin: 0 4px; font-size: 13.5px; font-weight: 500; color: #8C7992">Only @priya.n can edit or check this off.</p>
+  <button class="hf-b" onClick="{{react}}" style="{{reactStyle}}">{{reactLabel}}</button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { reacted: false }; }
+  renderVals() {
+    var self = this, r = this.state.reacted, L = ['Write results', 'Add graphs', 'Upload PDF'];
+    return {
+      items: L.map(function (l, i) { return { label: l, divider: i < L.length - 1 ? '1px solid #3D2D43' : 'none' }; }),
+      reactLabel: r ? '\u{1F525} Reacted' : 'React',
+      react: function () { self.setState({ reacted: !self.state.reacted }); },
+      reactStyle: 'margin-top: auto; height: 54px; border-radius: 27px; border: none; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer;' + (r ? ' background: rgba(255,159,28,0.2); color: #FFD29A;' : ' background: #74D447; color: #142008;')
+    };
+  }
+}
+</script>
+</body>
+</html>

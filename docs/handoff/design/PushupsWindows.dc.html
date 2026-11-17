@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Habit detail: Push-ups with two windows</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+@keyframes hfSway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+body{margin:0;background:#1A0E1E}
+a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
+.hf-step:active{transform:scale(0.96)}
+.hf-step:focus-visible,.hf-back:focus-visible{outline:2px solid #FF9F1C;outline-offset:2px}
+.hf-step:disabled{opacity:0.35;cursor:default}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="width: 390px; height: 1308px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, linear-gradient(180deg, rgba(255,159,28,0.24) 0px, rgba(255,159,28,0.09) 240px, rgba(255,159,28,0) 420px), #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px; padding: 58px 20px 34px 20px; overflow: hidden">
+
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <a class="hf-back" href="Main.dc.html" style="display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+      Habits
+    </a>
+    <a href="EditHabit.dc.html" style="height: 44px; padding: 0 16px; border-radius: 22px; background: #2A1C2F; color: #F6EEF8; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-sizing: border-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path><path d="M13.5 6.5l4 4"></path></svg>
+      Edit
+    </a>
+  </div>
+
+  <section style="display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+    <div style="position: relative; width: 170px; height: 164px; display: flex; align-items: flex-end; justify-content: center">
+      <span aria-hidden="true" style="position: absolute; left: 50%; bottom: 4px; width: 120px; height: 18px; margin-left: -60px; border-radius: 50%; background: rgba(0,0,0,0.35); filter: blur(6px)"></span>
+      <span aria-hidden="true" style="position: absolute; left: 50%; bottom: 5px; width: 66px; height: 19px; margin-left: -33px; border-radius: 50%; background: #6B4436"></span>
+      <span style="position: relative; display: flex; transform-origin: 50% 92%; animation: hfSway 4.5s ease-in-out infinite; "><dc-import name="Flower" soil="off" kind="marigold" stage="bloom" size="156" hint-size="156px,156px"></dc-import></span>
+    </div>
+    <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.4px">Push-ups</h1>
+    <p style="margin: 0; font-size: 15px; font-weight: 500; color: #B9A8C0">Every day, 2 times per window</p>
+    <span style="height: 28px; padding: 0 12px; margin-top: 4px; border-radius: 14px; background: rgba(255,159,28,0.16); color: #FFD29A; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.2 2.2-5.3 3.6-7.1.4 1.8 1.4 2.9 2.4 3.2-.3-2.9.9-5.6 3-7.4.2 2.6 1.4 4.1 2.6 5.6 1.1 1.4 1.4 2.6 1.4 4.1C18.5 17.9 15.9 21 12 21z"></path></svg>In bloom for 4 days</span>
+  </section>
+
+  <section aria-label="Today" style="background: #2A1C2F; border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <p style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #B9A8C0">Today</p>
+      <p style="margin: 0; font-size: 14px; font-weight: 700; color: {{totalColor}}" aria-live="polite">{{totalLabel}}</p>
+    </div>
+
+    <sc-for list="{{slots}}" as="w" hint-placeholder-count="2">
+      <div style="{{w.boxStyle}}">
+        <div style="display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0">
+          <p style="margin: 0; font-size: 15px; font-weight: 700">{{w.name}}</p>
+          <p style="margin: 0; font-size: 13px; font-weight: 600; color: {{w.subColor}}">{{w.sub}}</p>
+        </div>
+        <sc-if value="{{w.isOpen}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <button class="hf-step" aria-label="{{w.decAria}}" onClick="{{w.dec}}" disabled="{{w.atMin}}" style="width: 44px; height: 44px; border-radius: 22px; border: none; background: rgba(255,159,28,0.18); color: #FF9F1C; display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg>
+            </button>
+            <span style="min-width: 36px; text-align: center; font-size: 18px; font-weight: 800">{{w.count}}</span>
+            <button class="hf-step" aria-label="{{w.incAria}}" onClick="{{w.inc}}" disabled="{{w.atMax}}" style="width: 44px; height: 44px; border-radius: 22px; border: none; background: #FF9F1C; color: #1F1023; display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+            </button>
+          </div>
+        </sc-if>
+        <sc-if value="{{w.isDone}}" hint-placeholder-val="{{false}}">
+          <span style="height: 32px; padding: 0 12px; border-radius: 16px; background: #FF9F1C; color: #1F1023; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 5px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+            2/2
+          </span>
+        </sc-if>
+        <sc-if value="{{w.isClosed}}" hint-placeholder-val="{{false}}">
+          <span style="height: 32px; padding: 0 12px; border-radius: 16px; background: #3D2D43; color: #C9B9CF; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5V12l3 2"></path></svg>
+            0/2
+          </span>
+        </sc-if>
+      </div>
+    </sc-for>
+  </section>
+
+  <div class="hf-row" role="button" tabindex="0" onClick="{{openHistory}}" aria-haspopup="dialog" aria-label="This week. See history" style="background: #2A1C2F; border-radius: 24px; padding: 16px 16px 14px 16px; display: flex; flex-direction: column; gap: 14px; cursor: pointer">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <span style="font-size: 18px; font-weight: 700">This week</span>
+      <span style="display: inline-flex; align-items: center; gap: 2px; font-size: 13.5px; font-weight: 700; color: #B9A8C0">History<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+      <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+          <span style="font-size: 12px; font-weight: 600; color: #B9A8C0">{{d.dow}}</span>
+          <span style="{{d.style}}">{{d.num}}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="height: 1px; background: #3D2D43"></div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr))"><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 22px; font-weight: 800">9<span style="font-size: 15px; font-weight: 700; color: #C9B9CF"> days</span></span><span style="font-size: 12px; font-weight: 600; color: #B9A8C0">Best streak</span></div><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 22px; font-weight: 800">11/13</span><span style="font-size: 12px; font-weight: 600; color: #B9A8C0">Days in Nov</span></div></div>
+  </div>
+
+  <section style="background: #2A1C2F; border-radius: 20px; display: flex; flex-direction: column">
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 18px; border-bottom: 1px solid #3D2D43; font-size: 15px; font-weight: 600">
+      <span>Check-in windows</span><span style="color: #B9A8C0; font-weight: 500">7 to 9 AM, 6 to 8 PM</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 18px; border-bottom: 1px solid #3D2D43; font-size: 15px; font-weight: 600">
+      <span>Reminders</span><span style="color: #B9A8C0; font-weight: 500">7:00 AM, 6:00 PM</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 18px; font-size: 15px; font-weight: 600">
+      <span>Shared with</span><span style="color: #B9A8C0; font-weight: 500">Friends</span>
+    </div>
+  </section>
+  <sc-if value="{{historyOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 9; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{closeHistory}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="History" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 16px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <h2 style="margin: 4px 0 0 0; font-size: 21px; font-weight: 800">History</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+      <p style="margin: 0; font-size: 24px; font-weight: 800">9<span style="font-size: 15px; font-weight: 700; color: #C9B9CF"> days</span></p>
+      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Best streak</p>
+    </div><div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+      <p style="margin: 0; font-size: 24px; font-weight: 800">11/13</p>
+      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Days in Nov</p>
+    </div><div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 22px; font-weight: 800">82<span style="font-size: 14px; font-weight: 700; color: #C9B9CF">%</span></p><p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Completion</p></div><div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 22px; font-weight: 800">41<span style="font-size: 14px; font-weight: 700; color: #C9B9CF"></span></p><p style="margin: 0; font-size: 12px; font-weight: 600; color: #B9A8C0">Total check-ins</p></div>
+        </div>
+        <div style="background: #2A1C2F; border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <button aria-label="Previous month" style="width: 36px; height: 36px; border-radius: 18px; border: none; background: #3A2A40; color: #E4D7E9; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+            <span style="font-size: 16px; font-weight: 700">November 2026</span>
+            <button aria-label="Next month" disabled="{{true}}" style="width: 36px; height: 36px; border-radius: 18px; border: none; background: #3A2A40; color: #6E5C75; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+          </div>
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+      <sc-for list="{{dows}}" as="w" hint-placeholder-count="7">
+        <span style="text-align: center; font-size: 11px; font-weight: 600; color: #A895AE">{{w}}</span>
+      </sc-for>
+      <sc-for list="{{month}}" as="c" hint-placeholder-count="30">
+        <span style="{{c.style}}">{{c.num}}</span>
+      </sc-for>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; padding-top: 2px; font-size: 12px; font-weight: 600; color: #B9A8C0">
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: {{accent}}"></span>Done</span>
+        <sc-if value="{{showPartial}}" hint-placeholder-val="{{true}}"><span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: {{accentSoft}}"></span>Partly</span></sc-if>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: rgba(255,158,107,0.45)"></span>Missed</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px"><span style="width: 10px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(135deg, rgba(122,167,255,0.26) 0 4px, rgba(122,167,255,0.10) 4px 8px);"></span>Paused</span>
+      </div>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"evening":{"editor":"enum","options":["closed","open"],"default":"closed"},"$preview":{"width":390,"height":1308},"history":{"type":"enum","options":["closed","open"],"default":"closed"}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { history: null, evening: 0 };
+  }
+  renderVals() {
+    var self = this;
+    function hfHistory(accent, accentSoft, doneText, weekStates, hist, todayState) {
+      var wc = 'width: 40px; height: 40px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; box-sizing: border-box;';
+      var cc = 'height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; box-sizing: border-box;';
+      function look(s, base, ring) {
+        if (s === 'done') return base + 'background: ' + accent + '; color: ' + doneText + ';';
+        if (s === 'part') return base + 'background: ' + accentSoft + '; color: #F6EEF8;';
+        if (s === 'miss') return base + 'background: rgba(255,158,107,0.24); color: #FFB894;';
+        if (s === 'pause') return base + 'background: repeating-linear-gradient(135deg, rgba(122,167,255,0.26) 0 4px, rgba(122,167,255,0.10) 4px 8px); color: #A9C6FF;';
+        if (s === 'off') return base + 'color: #6E5B74;';
+        return base + 'background: ' + ring + '; color: #7D6A83;';
+      }
+      function today(base, bg) { return look(todayState, base, bg) + ' box-shadow: 0 0 0 2px ' + bg + ', 0 0 0 4px ' + accent + ';' + (todayState === 'none' ? ' color: #F6EEF8;' : ''); }
+      var dows = ['S','M','T','W','T','F','S'];
+      var week = weekStates.map(function (s, i) { return { dow: dows[i], num: String(8 + i), style: s === 'today' ? today(wc, '#1F1023') : look(s, wc, '#2A1C2F') }; });
+      var month = [];
+      for (var d = 1; d <= 30; d++) {
+        var st2 = d <= 13 ? hist[d - 1] : (d === 14 ? 'today' : 'future');
+        month.push({ num: String(d), style: st2 === 'today' ? today(cc, '#2A1C2F') : look(st2, cc, '#3A2A40') });
+      }
+      return { week: week, month: month, dows: dows, accent: accent, accentSoft: accentSoft };
+    }
+
+    var eveningOpen = (this.props.evening ?? 'closed') === 'open';
+    var ev = this.state.evening;
+    var per = 2;
+    var boxBase = 'display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 10px 12px 10px 16px; border-radius: 18px; box-sizing: border-box;';
+    var slots = [
+      { name: 'Morning', sub: '7 to 9 AM, done at 7:40 AM', subColor: '#FFC27A', isOpen: false, isDone: true, isClosed: false, boxStyle: boxBase + ' background: rgba(255,159,28,0.10);' },
+      eveningOpen
+        ? { name: 'Evening', sub: 'Open until 8 PM', subColor: '#B9A8C0', isOpen: true, isDone: false, isClosed: false, boxStyle: boxBase + ' background: #3A2A40;',
+            count: ev + '/' + per, atMin: ev <= 0, atMax: ev >= per, decAria: 'Remove one', incAria: 'Add one',
+            inc: function () { self.setState({ evening: Math.min(per, self.state.evening + 1) }); },
+            dec: function () { self.setState({ evening: Math.max(0, self.state.evening - 1) }); } }
+        : { name: 'Evening', sub: 'Opens at 6:00 PM', subColor: '#B9A8C0', isOpen: false, isDone: false, isClosed: true, boxStyle: boxBase + ' background: #3A2A40;' }
+    ];
+    var done = per + (eveningOpen ? ev : 0);
+    var h = hfHistory('#FF9F1C', 'rgba(255,159,28,0.4)', '#1F1023', ['miss','done','done','done','done','done','today'],
+      ['done','done','done','part','pause','pause','pause','done','done','miss','done','done','done'], done >= 4 ? 'done' : 'part');
+    return {
+      historyOpen: self.state.history === null ? (self.props.history || 'closed') === 'open' : self.state.history,
+      openHistory: function () { self.setState({ history: true }); }, closeHistory: function () { self.setState({ history: false }); },
+      week: h.week, month: h.month, dows: h.dows, accent: h.accent, accentSoft: h.accentSoft, showPartial: true,
+      slots: slots,
+      totalLabel: done + ' of 4 today',
+      totalColor: done >= 4 ? '#FF9F1C' : '#B9A8C0'
+    };
+  }
+}
+</script>
+</body>
+</html>

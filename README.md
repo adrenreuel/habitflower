@@ -1,46 +1,32 @@
-# HabitFlower
+# Habitflower
 
-HabitFlower is a social habit tracker where growth is visible. Create daily routines, invite friends into your circle, and stay accountable together. Each completed habit helps your flower bloom, blending discipline and encouragement into a simple, motivating experience built for consistency.
+A habit and task app where every habit grows a flower. Check in and it grows from sprout to bud to bloom. Miss days and it wilts, then dries up. Tasks sit alongside, with dates, repeats and checklists. Anonymous by default, usernames only.
 
-## Features
+- **App**: `app/HabitFlower/` (Expo, React Native, TypeScript). iOS first, with Home Screen widgets.
+- **Server**: `server/` (Node, Hono, Postgres) for backup and sync, deployed to AWS EC2. See [server/DEPLOY.md](server/DEPLOY.md).
+- **Spec**: [docs/handoff/HANDOFF.md](docs/handoff/HANDOFF.md) and the screen mockups in `docs/handoff/design/`.
+- **Conventions**: [CLAUDE.md](CLAUDE.md).
 
-- **Habits:** Create and track habits with multiple interaction types:
-  - Checkbox habits: mark a habit complete for today and watch the "contribution" cell for today fill with the habit's color.
-  - Count-based habits: record a number (e.g. 1/3) for today's progress — the app maps the fraction to the cell opacity so partial completion is visible.
-  - Per-habit colors, a compact contribution visualizer, and a concise summary (days completed).
-
-- **To-dos:** Lightweight to-do list with useful fields:
-  - Title, optional date/time, optional description.
-  - Optional sublists (checklist items) — each subitem has its own checkbox.
-  - Toggle between showing pending or completed items; friendly empty states guide the user when there are no items.
-
-- **Social / Friends:** Basic social features for accountability:
-  - A Friends view to see people in your circle and recent activity.
-  - Designed to be extended with invites, activity feeds, and sharing in future updates.
-
-## Running locally
-
-1. Install dependencies (from the `app/HabitFlower` folder):
+## Run the app
 
 ```bash
+cd app/HabitFlower
 npm install
+cp .env.example .env.local   # optional: set EXPO_PUBLIC_API_URL to enable backup and sync
+npx expo run:ios             # builds a dev client (widgets and notifications need it)
+npm test
 ```
 
-2. If you want to use local SVGs, install the native SVG packages:
+## Run the server locally
 
 ```bash
-npm install react-native-svg react-native-svg-transformer --save
+cd server
+npm install
+DATABASE_URL=postgres://... JWT_SECRET=$(openssl rand -base64 48) APPLE_BUNDLE_ID=com.habitflower.app npm run dev
 ```
 
-3. Start the Expo dev server:
+## Release plan
 
-```bash
-npx expo start --clear
-```
-
-## Notes & next steps
-
-- Persistence (saving habits and to-dos) and a create/edit flow for items are not yet implemented — these are logical next steps.
-- The UI is intentionally compact and designed for easy extension (animations, persistence, cloud sync, and richer social features can be added).
-
-Contributions and issues are welcome.
+- **v1**: solo MVP (habits, flowers, tasks, widgets, backup).
+- **v1.1**: friends, photo check-ins, Updates feed.
+- **v1.2**: grow together, Apple Health, shared tasks.

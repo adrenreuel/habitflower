@@ -1,827 +1,170 @@
-import React, { useCallback, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-  LayoutChangeEvent,
-} from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
-import SeedlingSvg from "../../assets/images/sprites/0.svg";
+import { router } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 
-type Habit = {
-  title: string;
-  type?: "count" | "checklist";
-  target?: number;
-  daysPerWeek?: number;
-  timesPerDay?: number;
-  timesByDay?: Record<string, number>;
-  tasksByDay?: Record<string, string[]>; // per-day checklist tasks
-};
+import { HabitCard } from '@/features/home/HabitCard';
+import { HabitsEmpty } from '@/features/home/HabitsEmpty';
+import { useHabitViews, type HabitView } from '@/state/selectors';
+import { useStore } from '@/state/store';
+import { away as awayColors, colors, space } from '@/theme/tokens';
+import { Button, IconButton } from '@/ui/Button';
+import { Icon } from '@/ui/Icon';
+import { TabScreen } from '@/ui/TabScreen';
+import { Text } from '@/ui/Text';
 
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const CARD_GAP = 12;
 
-const HABITS: Habit[] = [
-  // simple checkbox habit
-  { title: "Hit the gym" },
+/** Width of one card: half the screen inside the page padding. Shared by the grid and the rows so every card matches. */
+function useCardWidth(): number {
+  const { width } = useWindowDimensions();
+  return Math.floor((width - space.page * 2 - CARD_GAP) / 2);
+}
 
-  // checklist habit: different workouts per day
-  {
-    title: "Gym workout",
-    type: "checklist",
-    daysPerWeek: 5,
-    tasksByDay: {
-      Mon: ["Bench press", "Incline dumbbell", "Tricep dips"],
-      Tue: ["Squats", "Lunges", "Calf raises"],
-      Wed: ["Pull-ups", "Barbell rows", "Bicep curls"],
-      Thu: ["Shoulder press", "Lateral raises", "Face pulls"],
-      Fri: ["Deadlifts", "Hip thrusts", "Leg curls"],
-    },
-  },
+function rankDue(v: HabitView) {
+  return v.flower.health === 'wilt' ? 0 : v.flower.health === 'dormant' ? 1 : 2;
+}
 
-  // count-based habit: uniform times per day (example: 3x/day, every day)
-  {
-    title: "Push-ups",
-    type: "count",
-    target: 3,
-    daysPerWeek: 7,
-    timesPerDay: 3,
-  },
-
-  // count-based habit: different counts for specific days
-  {
-    title: "Practice scales",
-    type: "count",
-    target: 3,
-    daysPerWeek: 5,
-    timesByDay: { Mon: 2, Wed: 3, Fri: 1 },
-  },
-];
-
-// Per-habit colors (used for chart and checkbox)
-const HABIT_COLORS = ["#6B3F69", "#4BAF17", "#FFB020", "#3B82F6"];
-
-function randomLevels(days = 28) {
-  return Array.from({ length: days }, (_, i) =>
-    i % 5 === 0 ? 0 : (i % 4) + 1,
+function SectionTitle({ title, count, color }: { title: string; count: number; color: string }) {
+  return (
+    <View style={styles.sectionTitle} accessibilityRole="header">
+      <Text label color={color}>
+        {title}
+      </Text>
+      <Text size={13} weight={600} color={colors.text3}>
+        ({count})
+      </Text>
+    </View>
   );
 }
 
-function emojiForTitle(title: string) {
-  const t = title.toLowerCase();
-  return "🌱";
-}
-
-function formatTimesByDay(map?: Record<string, number>) {
-  if (!map) return null;
-  return Object.entries(map)
-    .map(([k, v]) => `${k}: ${v}x`)
-    .join(", ");
-}
-
-function ContributionGraph({
-  levels,
-  tint,
-  isLight,
-  labelColor,
-  todayFraction,
-}: {
-  levels?: number[];
-  tint: string;
-  isLight: boolean;
-  labelColor?: string;
-  // optional fraction 0..1 to indicate today's completion (overrides today's cell opacity)
-  todayFraction?: number;
-}) {
-  const ROWS = 1;
-  const COLS = 7;
-  const total = ROWS * COLS;
-  const data =
-    levels && levels.length >= total
-      ? levels.slice(0, total)
-      : randomLevels(total);
-
-  const [cellWidth, setCellWidth] = useState(0);
-  const gap = 8;
-
-  const onLayout = useCallback((e: LayoutChangeEvent) => {
-    const width = e.nativeEvent.layout.width;
-    const cw = Math.floor((width - (COLS - 1) * gap) / COLS);
-    const final = Math.max(24, Math.min(cw, 64));
-    setCellWidth(final);
-  }, []);
-
-  const cellHeight = Math.max(18, Math.floor(cellWidth * 0.5));
-  const borderRadius = Math.floor(cellHeight / 2);
-
-  const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const today = new Date().getDay();
-
-  function contrastColor(hex: string) {
-    if (!hex) return isLight ? "rgba(0,0,0,0.85)" : "#FFFFFF";
-    const h = hex.replace("#", "");
-    const r = parseInt(h.length === 3 ? h[0] + h[0] : h.slice(0, 2), 16);
-    const g = parseInt(h.length === 3 ? h[1] + h[1] : h.slice(2, 4), 16);
-    const b = parseInt(h.length === 3 ? h[2] + h[2] : h.slice(4, 6), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.5 ? "#000000" : "#FFFFFF";
-  }
-
+function CardRow({ items }: { items: HabitView[] }) {
+  const cardWidth = useCardWidth();
   return (
-    <View
-      style={styles.graphContainer}
-      onLayout={onLayout}
-    >
-      <View style={styles.labelsRow}>
-        {Array.from({ length: COLS }).map((_, c) => {
-          const isTodayLabel = c === today;
-          return (
-            <View
-              key={c}
-              style={{
-                width: cellWidth || 28,
-                marginRight: c === COLS - 1 ? 0 : gap,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 11,
-                    fontWeight: isTodayLabel ? "700" : "400",
-                    color: isTodayLabel
-                      ? tint
-                      : labelColor
-                        ? labelColor
-                        : isLight
-                          ? "rgba(0,0,0,0.68)"
-                          : "rgba(255,255,255,0.85)",
-                  }}
-                >
-                  {DAYS[c]}
-                </Text>
-                {isTodayLabel && (
-                  <FontAwesome6
-                    name="chevron-down"
-                    size={10}
-                    color={tint}
-                    iconStyle="solid"
-                    style={{ marginLeft: 4 }}
-                  />
-                )}
-              </View>
-            </View>
-          );
-        })}
-      </View>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -space.page }} contentContainerStyle={styles.rowContent}>
+      {items.map((v) => (
+        <HabitCard key={v.habit.id} view={v} width={cardWidth} />
+      ))}
+    </ScrollView>
+  );
+}
 
-      <View style={styles.graphRow}>
-        {Array.from({ length: COLS }).map((_, c) => {
-          const idx = c;
-          const lvl = data[idx] ?? 0;
-          const isTodayCell = c === today;
-          let bw = 0;
-          let padding = 0;
-          let opacity = 0;
+function Grid({ items }: { items: HabitView[] }) {
+  const cardWidth = useCardWidth();
+  const rows: HabitView[][] = [];
+  for (let i = 0; i < items.length; i += 2) rows.push(items.slice(i, i + 2));
+  return (
+    <View style={{ gap: CARD_GAP }}>
+      {rows.map((r) => (
+        <View key={r[0].habit.id} style={{ flexDirection: 'row', gap: CARD_GAP }}>
+          <HabitCard view={r[0]} width={cardWidth} />
+          {r[1] ? <HabitCard view={r[1]} width={cardWidth} /> : null}
+        </View>
+      ))}
+    </View>
+  );
+}
 
-          if (isTodayCell) {
-            const hasTodayInfo = typeof todayFraction === "number";
-            const f = hasTodayInfo
-              ? Math.max(0, Math.min(1, todayFraction as number))
-              : 0;
-
-            // Always show an outline for today's cell; fill only when fraction > 0
-            bw = 1;
-            if (hasTodayInfo && f > 0) {
-              // Brighten today's cell proportionally to today's fraction
-              opacity = 0.2 + f * 0.8;
-            } else {
-              // No data for today or explicit 0 → no fill (transparent)
-              opacity = 0;
-            }
-
-            padding = Math.ceil(bw / 2);
-          } else {
-            // Historical cells continue to use the provided level data
-            opacity = lvl === 0 ? (isLight ? 0.06 : 0.04) : 0.2 + lvl * 0.16;
-            bw = 0;
-            padding = 0;
-          }
-          return (
-            <View
-              key={c}
-              style={{
-                width: cellWidth,
-                height: cellHeight,
-                marginRight: c === COLS - 1 ? 0 : gap,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <View
-                style={{
-                  width: cellWidth,
-                  height: cellHeight,
-                  borderRadius: borderRadius,
-                  borderWidth: bw,
-                  borderColor: bw > 0 ? tint : undefined,
-                  padding,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <View
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: Math.max(0, borderRadius - padding),
-                    backgroundColor: tint,
-                    opacity,
-                  }}
-                />
-              </View>
-            </View>
-          );
-        })}
+/** Away mode: centred message over the dimmed, blurred habit list. */
+function AwayOverlay() {
+  const setAway = useStore((s) => s.setAway);
+  return (
+    <View style={styles.awayWrap}>
+      <View accessibilityRole="summary" style={styles.awayContent}>
+        <View style={styles.awayIcon} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+          <Icon name="umbrella" size={34} color={colors.infoText} strokeWidth={2} />
+        </View>
+        <Text size={28} display color={awayColors.title} align="center" accessibilityRole="header">
+          You’re away
+        </Text>
+        <Text size={14.5} weight={500} color={awayColors.body} align="center" lineHeight={21}>
+          Your HabitFlowers won’t wilt, and reminders are off until you’re back.
+        </Text>
+        <Button title="I’m back" height={52} color={awayColors.button} textColor={awayColors.onButton} onPress={() => setAway(false)} style={{ alignSelf: 'stretch', marginTop: 14 }} />
       </View>
     </View>
   );
 }
 
-export default function HabitsScreen() {
-  const insets = useSafeAreaInsets();
-  const background = useThemeColor({}, "background");
-  const textColor = useThemeColor({}, "text");
-  const tint = useThemeColor({}, "tint");
-  const now = new Date();
-  const weekday = now.toLocaleDateString(undefined, { weekday: "short" });
-  const month = now.toLocaleDateString(undefined, { month: "short" });
-  const day = now.getDate();
-  const dateLabel = `${weekday} ${day} ${month}`;
-  const isLight = background === "#FEF3FF";
-  const cardBg = isLight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.06)";
-  const [checked, setChecked] = useState<Record<string, boolean>>({});
-  const [counts, setCounts] = useState<Record<string, number>>({});
-  const [taskChecked, setTaskChecked] = useState<
-    Record<string, Record<string, boolean>>
-  >({});
-  const [showUpcoming, setShowUpcoming] = useState(false);
+/** Link to Paused habits with a count. Hidden when nothing is paused. */
+function PausedLink({ count }: { count: number }) {
+  if (count === 0) return null;
+  return (
+    <Pressable
+      accessibilityRole="link"
+      accessibilityLabel={`Paused habits, ${count}`}
+      onPress={() => router.push('/habits/paused')}
+      style={styles.pausedLink}
+    >
+      <Icon name="pause" size={16} color={colors.text3Small} />
+      <Text size={14} weight={600} color={colors.text3Small}>
+        Paused habits
+      </Text>
+      <Text size={14} weight={600} color={colors.text3}>
+        ({count})
+      </Text>
+    </Pressable>
+  );
+}
 
-  const toggleTask = (habitTitle: string, task: string) => {
-    setTaskChecked((s) => {
-      const cur = s[habitTitle] ?? {};
-      return { ...s, [habitTitle]: { ...cur, [task]: !cur[task] } };
-    });
-  };
+export default function HomeScreen() {
+  const { views, paused } = useHabitViews();
+  const user = useStore((s) => s.user);
+  const away = user.settings.away;
 
-  const toggleChecked = (title: string) => {
-    setChecked((s) => ({ ...s, [title]: !s[title] }));
-  };
-
-  const incCount = (title: string, target?: number) => {
-    setCounts((s) => {
-      const cur = s[title] ?? 0;
-      const next =
-        typeof target === "number" ? Math.min(cur + 1, target) : cur + 1;
-      return { ...s, [title]: next };
-    });
-  };
-
-  const decCount = (title: string) => {
-    setCounts((s) => {
-      const cur = s[title] ?? 0;
-      const next = Math.max(0, cur - 1);
-      return { ...s, [title]: next };
-    });
-  };
+  const due = views.filter((v) => v.status === 'todo').sort((a, b) => rankDue(a) - rankDue(b));
+  const later = views.filter((v) => v.status === 'later');
+  const done = views.filter((v) => v.status === 'done');
+  const rest = views.filter((v) => v.status === 'rest');
 
   return (
-    <SafeAreaView
-      edges={["top", "left", "right"]}
-      style={[styles.safeArea, { backgroundColor: background }]}
+    <TabScreen
+      title="My HabitFlowers"
+      right={<IconButton name="settings" accessibilityLabel="Settings" onPress={() => router.push('/settings')} iconSize={22} />}
+      overlay={away ? <AwayOverlay /> : undefined}
     >
-      <View style={styles.container}>
-        <View style={styles.headerRow}>
-          <Text style={[styles.dateLabel, { color: textColor }]}>
-            {" "}
-            {dateLabel}{" "}
-          </Text>
-          <Text style={[styles.title, { color: textColor }]}>My Habits</Text>
-        </View>
 
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={[
-            styles.list,
-            { paddingBottom: insets.bottom + 96 },
-          ]}
-          showsVerticalScrollIndicator={false}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 8,
-              marginBottom: 16,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => setShowUpcoming(false)}
-              activeOpacity={0.8}
-              style={[
-                styles.tabButton,
-                !showUpcoming
-                  ? { backgroundColor: tint, borderColor: tint }
-                  : {
-                      backgroundColor: "transparent",
-                      borderColor: "rgba(0,0,0,0.2)",
-                    },
-              ]}
-            >
-              <FontAwesome6
-                name="calendar-day"
-                size={12}
-                color={!showUpcoming ? "white" : textColor}
-                iconStyle="solid"
-                style={{ marginRight: 6 }}
-              />
-              <Text
-                style={{
-                  color: !showUpcoming ? "white" : textColor,
-                  fontWeight: !showUpcoming ? "700" : "600",
-                }}
-              >
-                Today
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => setShowUpcoming(true)}
-              activeOpacity={0.8}
-              style={[
-                styles.tabButton,
-                showUpcoming
-                  ? { backgroundColor: tint, borderColor: tint }
-                  : {
-                      backgroundColor: "transparent",
-                      borderColor: "rgba(0,0,0,0.2)",
-                    },
-              ]}
-            >
-              <FontAwesome6
-                name="calendar"
-                size={12}
-                color={showUpcoming ? "white" : textColor}
-                iconStyle="solid"
-                style={{ marginRight: 6 }}
-              />
-              <Text
-                style={{
-                  color: showUpcoming ? "white" : textColor,
-                  fontWeight: showUpcoming ? "700" : "600",
-                }}
-              >
-                Upcoming
-              </Text>
-            </TouchableOpacity>
+        {views.length === 0 ? (
+          // No active habits (none yet, or all paused): show the empty state,
+          // keeping a way back to paused ones.
+          <View style={{ flex: 1, gap: 18 }}>
+            <HabitsEmpty />
+            <PausedLink count={paused.length} />
           </View>
-          {HABITS.map((h, i) => {
-            // Simple filter: Today shows habits with tasks for today or all habits
-            // Upcoming shows the same (can be enhanced with actual scheduling logic)
-            // For now, just show all habits in both views
-            const emoji = emojiForTitle(h.title);
-            const habitColor = HABIT_COLORS[i % HABIT_COLORS.length];
-            const levels = randomLevels();
-            const plantLevelRaw = levels.reduce((sum, lvl) => {
-              const denom = h.target ?? h.timesPerDay ?? 1;
-              return sum + Math.min(1, lvl / denom);
-            }, 0);
-            const plantLevel = Math.round(plantLevelRaw * 10) / 10;
-            const plantLevelLabel =
-              plantLevel % 1 === 0 ? `${plantLevel}` : plantLevel.toFixed(1);
-            // compute today's fraction for coloring today's cell
-            const todayDayName = DAY_NAMES[new Date().getDay()];
-            let todayFraction: number | undefined;
-            if (h.type === "count") {
-              const cur = counts[h.title] ?? 0;
-              const target =
-                typeof h.target === "number" ? h.target : (h.timesPerDay ?? 1);
-              if (target > 0 && cur > 0) {
-                todayFraction = Math.min(1, cur / target);
-              }
-            } else if (h.type === "checklist") {
-              const todayTasks = h.tasksByDay?.[todayDayName] ?? [];
-              if (todayTasks.length > 0) {
-                const checkedCount = todayTasks.filter(
-                  (t) => !!taskChecked[h.title]?.[t],
-                ).length;
-                if (checkedCount > 0) {
-                  todayFraction = checkedCount / todayTasks.length;
-                }
-              }
-            } else {
-              if (checked[h.title]) todayFraction = 1;
-            }
-
-            // Resolve today's tasks for checklist habits
-            const todayTasks =
-              h.type === "checklist"
-                ? (h.tasksByDay?.[todayDayName] ?? [])
-                : [];
-
-            return (
-              <View
-                key={h.title}
-                style={[
-                  styles.card,
-                  {
-                    backgroundColor: cardBg,
-                  },
-                ]}
-              >
-                <ContributionGraph
-                  levels={levels}
-                  tint={habitColor}
-                  isLight={isLight}
-                  labelColor={textColor}
-                  todayFraction={todayFraction}
-                />
-
-                <View style={styles.cardHeader}>
-                  <View style={styles.headerLeft}>
-                    <View style={styles.iconBox}>
-                      <SeedlingSvg
-                        width={28}
-                        height={28}
-                      />
-                    </View>
-                    <View>
-                      <Text style={[styles.cardTitle, { color: textColor }]}>
-                        {h.title}
-                      </Text>
-                      <Text style={[styles.levelLabel, { color: textColor }]}>
-                        {plantLevelLabel} days completed
-                      </Text>
-                      {h.type === "count" ? (
-                        <>
-                          <Text
-                            style={[styles.cardSubtitle, { color: textColor }]}
-                          >
-                            {h.daysPerWeek ?? 0} days / week
-                          </Text>
-                          {h.timesByDay ? (
-                            <Text
-                              style={[
-                                styles.cardSubtitleSmall,
-                                { color: textColor },
-                              ]}
-                            >
-                              {formatTimesByDay(h.timesByDay)}
-                            </Text>
-                          ) : (
-                            <Text
-                              style={[
-                                styles.cardSubtitleSmall,
-                                { color: textColor },
-                              ]}
-                            >
-                              {(h.timesPerDay ?? h.target) +
-                                "x / day (all days)"}
-                            </Text>
-                          )}
-                        </>
-                      ) : h.type === "checklist" ? (
-                        <Text
-                          style={[styles.cardSubtitle, { color: textColor }]}
-                        >
-                          {h.daysPerWeek ?? 0} days / week
-                        </Text>
-                      ) : (
-                        <Text
-                          style={[styles.cardSubtitle, { color: textColor }]}
-                        >
-                          3 days / week
-                        </Text>
-                      )}
-                    </View>
-                  </View>
-                  {h.type === "count" ? (
-                    <View style={styles.counterRow}>
-                      {(() => {
-                        const cur = counts[h.title] ?? 0;
-                        const max =
-                          typeof h.target === "number" ? h.target : undefined;
-                        const decDisabled = cur <= 0;
-                        const incDisabled =
-                          typeof max === "number" ? cur >= max : false;
-                        return (
-                          <>
-                            <TouchableOpacity
-                              style={[
-                                styles.counterBtn,
-                                decDisabled
-                                  ? {
-                                      borderColor: habitColor,
-                                      backgroundColor: "transparent",
-                                      borderWidth: 1,
-                                    }
-                                  : {
-                                      backgroundColor: habitColor,
-                                      borderWidth: 0,
-                                    },
-                              ]}
-                              onPress={() => decCount(h.title)}
-                              disabled={decDisabled}
-                            >
-                              <FontAwesome6
-                                name="minus"
-                                size={14}
-                                color={decDisabled ? habitColor : "#FFFFFF"}
-                                iconStyle="solid"
-                              />
-                            </TouchableOpacity>
-
-                            <Text
-                              style={[
-                                styles.counterLabel,
-                                { color: textColor },
-                              ]}
-                            >
-                              {" "}
-                              {cur}/{h.target ?? 1}
-                            </Text>
-
-                            <TouchableOpacity
-                              style={[
-                                styles.counterBtn,
-                                incDisabled
-                                  ? {
-                                      borderColor: habitColor,
-                                      backgroundColor: "transparent",
-                                      borderWidth: 1,
-                                    }
-                                  : {
-                                      backgroundColor: habitColor,
-                                      borderWidth: 0,
-                                    },
-                              ]}
-                              onPress={() => incCount(h.title, h.target)}
-                              disabled={incDisabled}
-                            >
-                              <FontAwesome6
-                                name="plus"
-                                size={14}
-                                color={incDisabled ? habitColor : "#FFFFFF"}
-                                iconStyle="solid"
-                              />
-                            </TouchableOpacity>
-                          </>
-                        );
-                      })()}
-                    </View>
-                  ) : h.type === "checklist" ? (
-                    <Text
-                      style={[
-                        styles.counterLabel,
-                        { color: textColor, opacity: 0.7 },
-                      ]}
-                    >
-                      {todayTasks.length > 0
-                        ? `${todayTasks.filter((t) => !!taskChecked[h.title]?.[t]).length}/${todayTasks.length}`
-                        : "Rest day"}
-                    </Text>
-                  ) : (
-                    <TouchableOpacity
-                      style={[
-                        styles.checkbox,
-                        checked[h.title]
-                          ? { backgroundColor: habitColor }
-                          : { borderColor: habitColor, borderWidth: 1 },
-                      ]}
-                      onPress={() => toggleChecked(h.title)}
-                      activeOpacity={0.8}
-                    >
-                      <Text
-                        style={[
-                          styles.checkboxText,
-                          checked[h.title]
-                            ? { color: "#FFFFFF" }
-                            : { color: habitColor },
-                        ]}
-                      >
-                        {checked[h.title] ? "✓" : ""}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-
-                {/* Checklist tasks for today */}
-                {h.type === "checklist" && todayTasks.length > 0 && (
-                  <View style={{ marginTop: 4 }}>
-                    {todayTasks.map((task) => {
-                      const isChecked = !!taskChecked[h.title]?.[task];
-                      return (
-                        <View
-                          key={task}
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            marginBottom: 8,
-                          }}
-                        >
-                          <TouchableOpacity
-                            style={[
-                              styles.checkbox,
-                              isChecked
-                                ? { backgroundColor: habitColor }
-                                : { borderColor: habitColor, borderWidth: 1 },
-                              { marginRight: 12 },
-                            ]}
-                            onPress={() => toggleTask(h.title, task)}
-                            activeOpacity={0.8}
-                          >
-                            <Text
-                              style={[
-                                styles.checkboxText,
-                                isChecked
-                                  ? { color: "#FFFFFF" }
-                                  : { color: habitColor },
-                              ]}
-                            >
-                              {isChecked ? "✓" : ""}
-                            </Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity
-                            onPress={() => toggleTask(h.title, task)}
-                            activeOpacity={0.7}
-                          >
-                            <Text
-                              style={{
-                                color: textColor,
-                                fontSize: 15,
-                                textDecorationLine: isChecked
-                                  ? "line-through"
-                                  : "none",
-                                opacity: isChecked ? 0.5 : 1,
-                              }}
-                            >
-                              {task}
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      );
-                    })}
-                  </View>
-                )}
-
-                {h.type === "checklist" && todayTasks.length === 0 && (
-                  <Text
-                    style={[
-                      styles.cardSubtitleSmall,
-                      { color: textColor, marginTop: 4, fontStyle: "italic" },
-                    ]}
-                  >
-                    No tasks scheduled for today
-                  </Text>
-                )}
+        ) : (
+          <View style={{ flex: 1, gap: 18, paddingTop: 16 }}>
+            {due.length > 0 ? <Grid items={due} /> : null}
+            {later.length > 0 ? (
+              <View style={styles.section}>
+                <SectionTitle title="Later today" count={later.length} color={colors.chipMutedText} />
+                <CardRow items={later} />
               </View>
-            );
-          })}
-        </ScrollView>
-
-        <TouchableOpacity
-          style={[
-            styles.fab,
-            {
-              backgroundColor: tint,
-              paddingHorizontal: 14,
-              bottom: insets.bottom,
-            },
-          ]}
-          onPress={() => Alert.alert("Create Habit", "Placeholder action")}
-          activeOpacity={0.85}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <FontAwesome6
-              name="plus"
-              size={18}
-              color={background}
-              iconStyle="solid"
-              style={{ marginRight: 8 }}
-            />
-            <Text style={{ color: background, fontWeight: "700" }}>
-              New Habit
-            </Text>
+            ) : null}
+            {done.length > 0 ? (
+              <View style={styles.section}>
+                <SectionTitle title="Complete" count={done.length} color={colors.completeHeading} />
+                <CardRow items={done} />
+              </View>
+            ) : null}
+            {rest.length > 0 ? (
+              <View style={styles.section}>
+                <SectionTitle title="Another day" count={rest.length} color={colors.text3} />
+                <CardRow items={rest} />
+              </View>
+            ) : null}
+            <PausedLink count={paused.length} />
           </View>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        )}
+    </TabScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1 },
-  container: { flex: 1, padding: 16, paddingBottom: 0, marginBottom: 0 },
-  headerRow: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    marginBottom: 12,
-  },
-  title: { fontSize: 28, fontWeight: "700" },
-  dateLabel: { fontSize: 14, fontWeight: "600", opacity: 0.9, marginBottom: 4 },
-  createButton: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
-  createButtonText: { fontSize: 14, fontWeight: "700" },
-  list: { paddingBottom: 12 },
-  card: { borderRadius: 12, padding: 12, marginBottom: 12 },
-  cardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  cardTitle: { fontSize: 16, fontWeight: "700" },
-  cardSubtitle: { fontSize: 12, opacity: 0.8 },
-  graphScroll: { paddingVertical: 4 },
-  graphContainer: { width: "100%", marginBottom: 8 },
-  labelsRow: { flexDirection: "row", marginBottom: 4 },
-  graphColumnWrap: { flexDirection: "column" },
-  graphRow: { flexDirection: "row" },
-  graph: { flexDirection: "row", flexWrap: "wrap", width: "100%" },
-  graphCell: {
-    width: 14,
-    height: 14,
-    borderRadius: 3,
-    marginRight: 4,
-    marginBottom: 4,
-  },
-  scroll: { flex: 1 },
-  headerLeft: { flexDirection: "row", alignItems: "center" },
-  iconBox: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
-  },
-  iconText: { fontSize: 30 },
-  checkbox: {
-    width: 32,
-    height: 32,
-    borderRadius: 999,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  checkboxText: { fontSize: 16, fontWeight: "700" },
-  counterRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  counterBtn: {
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-    borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: 6,
-  },
-  counterLabel: { fontSize: 14, fontWeight: "700" },
-  cardSubtitleSmall: { fontSize: 12, opacity: 0.85, marginTop: 2 },
-  levelLabel: { fontSize: 12, opacity: 0.9, marginTop: 4, fontWeight: "600" },
-  tabButton: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  fab: {
-    position: "absolute",
-    right: 16,
-    minWidth: 56,
-    height: 56,
-    borderRadius: 28,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
-    elevation: 4,
-  },
+  section: { gap: 10 },
+  sectionTitle: { flexDirection: 'row', alignItems: 'baseline', gap: 6 },
+  rowContent: { gap: CARD_GAP, paddingHorizontal: space.page, paddingBottom: 2 },
+  // Sits at the bottom of the screen; with a long list it follows the last card.
+  pausedLink: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, minHeight: 44, marginTop: 'auto' },
+  // Centred in the space between the header and the tab bar.
+  awayWrap: { flex: 1, justifyContent: 'center', paddingHorizontal: 28 },
+  awayContent: { alignItems: 'center', gap: 10, paddingHorizontal: 6 },
+  awayIcon: { width: 72, height: 72, borderRadius: 24, borderCurve: 'continuous', backgroundColor: awayColors.iconTile, alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
 });

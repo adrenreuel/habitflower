@@ -1,529 +1,288 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-  Animated,
-} from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
-import { useRouter } from "expo-router";
+import { useFocusEffect } from '@react-navigation/native';
+import { router } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 
-type Todo = {
-  title: string;
-  datetime?: string; // ISO string
-  sublist?: string[];
-  description?: string;
-};
+import { diffDays, formatDay, formatDayTime, formatTimeOfDay, startOfWeek, weekdayShort, weekday } from '@/domain/day';
+import { isRepeating, repeatLabel, sortTasks, taskSection, type TaskSection } from '@/domain/tasks';
+import type { RepeatRule, Task } from '@/domain/types';
+import { useToday } from '@/state/selectors';
+import { useStore, type TaskCompletion } from '@/state/store';
+import { colors, tint } from '@/theme/tokens';
+import { Button } from '@/ui/Button';
+import { Icon } from '@/ui/Icon';
+import { TabScreen } from '@/ui/TabScreen';
+import { Text } from '@/ui/Text';
 
-const TODOS: Todo[] = [
-  {
-    title: "Finish assignment",
-    datetime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // tomorrow
-    description: "Finish the math assignment before class",
-  },
-  {
-    title: "Grocery run",
-    datetime: new Date().toISOString(),
-    sublist: ["Milk", "Eggs", "Bread"],
-    description: "Quick trip to pick up essentials for the week",
-  },
+const SECTIONS: { key: TaskSection; title: string; color: string }[] = [
+  { key: 'overdue', title: 'Overdue', color: colors.badge },
+  { key: 'today', title: 'Today', color: colors.accent },
+  { key: 'upcoming', title: 'Upcoming', color: colors.chipMutedText },
+  { key: 'other', title: 'Other', color: colors.chipMutedText },
 ];
 
-export default function TodosScreen() {
-  const insets = useSafeAreaInsets();
-  const router = useRouter();
-  const background = useThemeColor({}, "background");
-  const textColor = useThemeColor({}, "text");
-  const tint = useThemeColor({}, "tint");
-  const isLight = background === "#FEF3FF";
-  const cardBg = isLight ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.06)";
-  const [todosChecked, setTodosChecked] = useState<Record<string, boolean>>({});
-  const [subChecked, setSubChecked] = useState<
-    Record<string, Record<string, boolean>>
-  >({});
-  const [showCompleted, setShowCompleted] = useState(false);
-  const [hiddenTodos, setHiddenTodos] = useState<Set<string>>(new Set());
-  const [timeoutIds, setTimeoutIds] = useState<
-    Record<string, ReturnType<typeof setTimeout>>
-  >({});
-  const [blinkAnimations, setBlinkAnimations] = useState<
-    Record<string, Animated.Value>
-  >({});
+function dueLabel(t: Task, today: string): { text: string; color: string } | null {
+  if (!t.dueDay) return null;
+  const late = diffDays(t.dueDay, today);
+  if (late > 0) return { text: `Due ${weekdayShort(weekday(t.dueDay))}, ${late === 1 ? '1 day' : `${late} days`} late`, color: colors.badge };
+  if (late === 0) return { text: t.dueTime ? formatTimeOfDay(t.dueTime) : 'Today', color: colors.text2 };
+  return { text: formatDayTime(t.dueDay, t.dueTime, today), color: colors.text2 };
+}
 
-  const toggleTodo = (title: string) => {
-    setTodosChecked((s) => {
-      const newState = { ...s, [title]: !s[title] };
-
-      if (newState[title]) {
-        // Marking as complete - start blink animation
-        const animValue = new Animated.Value(1);
-
-        Animated.sequence([
-          Animated.timing(animValue, {
-            toValue: 0.3,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 1,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 0.3,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 1,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 0.3,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-          Animated.timing(animValue, {
-            toValue: 1,
-            duration: 150,
-            useNativeDriver: false,
-          }),
-        ]).start();
-
-        setBlinkAnimations((prev) => ({ ...prev, [title]: animValue }));
-
-        // Set timeout to hide after blinking completes (1.2 seconds for animation + 100ms delay)
-        const id = setTimeout(() => {
-          setHiddenTodos((prev) => new Set(prev).add(title));
-        }, 1300);
-        setTimeoutIds((prev) => ({ ...prev, [title]: id }));
-      } else {
-        // Marking as pending - stop animation and reset opacity
-        const animValue = blinkAnimations[title];
-        if (animValue) {
-          animValue.stopAnimation(() => {
-            animValue.setValue(1);
-          });
-        }
-
-        // Clear timeout so it doesn't hide
-        if (timeoutIds[title]) {
-          clearTimeout(timeoutIds[title]);
-          setTimeoutIds((prev) => {
-            const copy = { ...prev };
-            delete copy[title];
-            return copy;
-          });
-        }
-        setHiddenTodos((prev) => {
-          const copy = new Set(prev);
-          copy.delete(title);
-          return copy;
-        });
-      }
-
-      return newState;
-    });
-  };
-
-  const toggleSubItem = (todoTitle: string, item: string) => {
-    setSubChecked((s) => {
-      const cur = s[todoTitle] ?? {};
-      return { ...s, [todoTitle]: { ...cur, [item]: !cur[item] } };
-    });
-  };
-
-  const now = new Date();
-  const weekday = now.toLocaleDateString(undefined, { weekday: "short" });
-  const month = now.toLocaleDateString(undefined, { month: "short" });
-  const day = now.getDate();
-  const dateLabel = `${weekday} ${day} ${month}`;
+function TaskRow({
+  task,
+  section,
+  today,
+  completion,
+  onToggle,
+  last,
+}: {
+  task: Task;
+  section: TaskSection;
+  today: string;
+  completion: TaskCompletion | undefined;
+  onToggle: () => void;
+  last: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const toggleItem = useStore((s) => s.toggleChecklistItem);
+  const checked = !!completion;
+  const shown = completion?.task ?? task;
+  const due = dueLabel(shown, today);
+  const subs = shown.checklist;
+  const subDone = subs.filter((c) => c.done).length;
+  const boxBg = checked ? colors.accent : section === 'overdue' ? colors.overdueBox : colors.checkboxOff;
 
   return (
-    <SafeAreaView
-      edges={["top", "left", "right"]}
-      style={[styles.safeArea, { backgroundColor: background }]}
-    >
-      <View style={styles.container}>
-        <View style={styles.headerRow}>
-          <Text style={[styles.dateLabel, { color: textColor }]}>
-            {" "}
-            {dateLabel}{" "}
+    <View style={!last && styles.divider}>
+      <View style={styles.row}>
+        <Pressable accessibilityRole="checkbox" accessibilityState={{ checked }} accessibilityLabel={shown.title} onPress={onToggle} style={styles.check}>
+          <View style={[styles.box, { backgroundColor: boxBg }]}>{checked ? <Icon name="check" size={16} color={colors.onAccentDeep} strokeWidth={3.2} /> : null}</View>
+        </Pressable>
+        <Pressable accessibilityRole="button" onPress={() => router.push(`/task/${task.id}`)} style={{ flex: 1, gap: 3, paddingVertical: 5 }}>
+          <Text size={15.5} weight={600} lineHeight={20} color={checked ? colors.text3 : colors.text} style={checked && { textDecorationLine: 'line-through' }}>
+            {shown.title}
           </Text>
-          <Text style={[styles.title, { color: textColor }]}>My Tasks</Text>
-        </View>
-
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={[
-            styles.list,
-            { paddingBottom: insets.bottom + 96 },
-          ]}
-          showsVerticalScrollIndicator={false}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 8,
-              marginBottom: 16,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => setShowCompleted(false)}
-              activeOpacity={0.8}
-              style={[
-                styles.tabButton,
-                !showCompleted
-                  ? { backgroundColor: tint, borderColor: tint }
-                  : {
-                      backgroundColor: "transparent",
-                      borderColor: "rgba(0,0,0,0.2)",
-                    },
-              ]}
-            >
-              <FontAwesome6
-                name="circle-check"
-                size={12}
-                color={!showCompleted ? "white" : textColor}
-                iconStyle="solid"
-                style={{ marginRight: 6 }}
-              />
-              <Text
-                style={{
-                  color: !showCompleted ? "white" : textColor,
-                  fontWeight: !showCompleted ? "700" : "600",
-                }}
-              >
-                Pending
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => setShowCompleted(true)}
-              activeOpacity={0.8}
-              style={[
-                styles.tabButton,
-                showCompleted
-                  ? { backgroundColor: tint, borderColor: tint }
-                  : {
-                      backgroundColor: "transparent",
-                      borderColor: "rgba(0,0,0,0.2)",
-                    },
-              ]}
-            >
-              <FontAwesome6
-                name="circle-check"
-                size={12}
-                color={showCompleted ? "white" : textColor}
-                iconStyle="solid"
-                style={{ marginRight: 6 }}
-              />
-              <Text
-                style={{
-                  color: showCompleted ? "white" : textColor,
-                  fontWeight: showCompleted ? "700" : "600",
-                }}
-              >
-                Completed
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {(() => {
-            const pending = TODOS.filter((t) => !hiddenTodos.has(t.title));
-            const completed = TODOS.filter((t) => !!todosChecked[t.title]);
-            const listToShow = showCompleted ? completed : pending;
-
-            if (listToShow.length === 0) {
-              const msg = showCompleted
-                ? "No completed tasks"
-                : "No pending tasks";
-              return (
-                <View style={styles.emptyStateContainer}>
-                  <FontAwesome6
-                    name="inbox"
-                    size={48}
-                    color={tint}
-                    iconStyle="solid"
-                    style={{ marginBottom: 16 }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: "600",
-                      color: textColor,
-                      textAlign: "center",
-                    }}
-                  >
-                    {msg}
+          {due || isRepeating(shown.repeat) || subs.length ? (
+            <View style={styles.meta}>
+              {due ? (
+                <Text size={12.5} weight={600} color={checked ? colors.doneDueText : due.color}>
+                  {due.text}
+                </Text>
+              ) : null}
+              {isRepeating(shown.repeat) ? (
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                  <Icon name="repeat" size={12} color={colors.text2} />
+                  <Text size={12.5} weight={600} color={colors.text2}>
+                    {repeatLabel(shown.repeat)}
                   </Text>
                 </View>
-              );
-            }
-
-            return listToShow.map((t) => {
-              const done = !!todosChecked[t.title];
-              const opacityValue = blinkAnimations[t.title] || 1;
-              return (
-                <Animated.View
-                  key={t.title}
-                  style={[
-                    styles.card,
-                    { backgroundColor: cardBg, opacity: opacityValue },
-                  ]}
-                >
-                  <View style={styles.cardHeader}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        flex: 1,
-                      }}
-                    >
-                      <View
-                        style={[
-                          styles.iconBox,
-                          { backgroundColor: "rgba(0,0,0,0.04)" },
-                        ]}
-                      >
-                        <FontAwesome6
-                          name="clipboard"
-                          size={18}
-                          color={tint}
-                          iconStyle="solid"
-                        />
-                      </View>
-                      <View style={{ flex: 1 }}>
-                        <Text
-                          style={[
-                            styles.cardTitle,
-                            {
-                              color: textColor,
-                              textDecorationLine: done
-                                ? "line-through"
-                                : "none",
-                            },
-                          ]}
-                        >
-                          {" "}
-                          {t.title}{" "}
-                        </Text>
-                        {t.datetime && (
-                          <Text
-                            style={[
-                              styles.cardSubtitleSmall,
-                              { color: textColor },
-                            ]}
-                          >
-                            {new Date(t.datetime).toLocaleString()}
-                          </Text>
-                        )}
-                        {t.description && (
-                          <Text
-                            style={[
-                              styles.cardSubtitleSmall,
-                              { color: textColor, marginTop: 4 },
-                            ]}
-                          >
-                            {t.description}
-                          </Text>
-                        )}
-                      </View>
-                    </View>
-
-                    <TouchableOpacity
-                      style={[
-                        styles.checkbox,
-                        done
-                          ? { backgroundColor: tint }
-                          : { borderColor: tint, borderWidth: 1 },
-                      ]}
-                      onPress={() => toggleTodo(t.title)}
-                      activeOpacity={0.8}
-                    >
-                      <Text
-                        style={[
-                          styles.checkboxText,
-                          done ? { color: "#FFFFFF" } : { color: tint },
-                        ]}
-                      >
-                        {done ? "✓" : ""}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  {t.sublist && (
-                    <View style={{ marginTop: 8 }}>
-                      {t.sublist.map((it) => {
-                        const checkedItem = subChecked[t.title]?.[it];
-                        return (
-                          <View
-                            key={it}
-                            style={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                              marginBottom: 8,
-                            }}
-                          >
-                            <TouchableOpacity
-                              style={[
-                                styles.checkbox,
-                                checkedItem
-                                  ? { backgroundColor: tint }
-                                  : { borderColor: tint, borderWidth: 1 },
-                                { marginRight: 12 },
-                              ]}
-                              onPress={() => toggleSubItem(t.title, it)}
-                              activeOpacity={0.8}
-                            >
-                              <Text
-                                style={[
-                                  styles.checkboxText,
-                                  checkedItem
-                                    ? { color: "#FFFFFF", fontSize: 16 }
-                                    : { color: tint, fontSize: 16 },
-                                ]}
-                              >
-                                {checkedItem ? "✓" : ""}
-                              </Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                              onPress={() => toggleSubItem(t.title, it)}
-                              activeOpacity={0.7}
-                            >
-                              <Text
-                                style={{
-                                  color: textColor,
-                                  fontSize: 15,
-                                  textDecorationLine: checkedItem
-                                    ? "line-through"
-                                    : "none",
-                                  opacity: checkedItem ? 0.5 : 1,
-                                }}
-                              >
-                                {it}
-                              </Text>
-                            </TouchableOpacity>
-                          </View>
-                        );
-                      })}
-                    </View>
-                  )}
-                </Animated.View>
-              );
-            });
-          })()}
-        </ScrollView>
-
-        <TouchableOpacity
-          style={[
-            styles.fab,
-            {
-              backgroundColor: tint,
-              paddingHorizontal: 14,
-              bottom: insets.bottom,
-            },
-          ]}
-          onPress={() => router.push("/create-task")}
-          activeOpacity={0.85}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <FontAwesome6
-              name="plus"
-              size={18}
-              color={background}
-              iconStyle="solid"
-              style={{ marginRight: 8 }}
-            />
-            <Text style={{ color: background, fontWeight: "700" }}>
-              New Task
+              ) : null}
+              {subs.length ? (
+                <Text size={12.5} weight={600} color={colors.text2}>
+                  {subDone} of {subs.length} items
+                </Text>
+              ) : null}
+            </View>
+          ) : null}
+          {checked && completion?.nextDueDay ? (
+            <Text size={12.5} weight={700} color={colors.accent}>
+              Next due {formatDay(completion.nextDueDay)}
             </Text>
-          </View>
-        </TouchableOpacity>
+          ) : null}
+        </Pressable>
+        {subs.length && !checked ? (
+          <Pressable accessibilityRole="button" accessibilityLabel={open ? 'Hide checklist' : 'Show checklist'} accessibilityState={{ expanded: open }} onPress={() => setOpen(!open)} style={styles.check}>
+            <View style={{ transform: [{ rotate: open ? '180deg' : '0deg' }] }}>
+              <Icon name="chevronDown" size={20} color={colors.text2} />
+            </View>
+          </Pressable>
+        ) : null}
       </View>
-    </SafeAreaView>
+      {open && !checked ? (
+        <View style={styles.subs}>
+          {subs.map((c) => (
+            <Pressable key={c.id} accessibilityRole="checkbox" accessibilityState={{ checked: c.done }} onPress={() => toggleItem(task.id, c.id)} style={styles.sub}>
+              <View style={[styles.subBox, { backgroundColor: c.done ? colors.accent : colors.checkboxOff }]}>{c.done ? <Icon name="check" size={12} color={colors.onAccentDeep} strokeWidth={3.4} /> : null}</View>
+              <Text size={15} weight={500} color={c.done ? colors.text3 : colors.chipText} style={c.done && { textDecorationLine: 'line-through' }}>
+                {c.label}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
+const IDEAS: { name: string; when: string; repeat?: RepeatRule['kind']; param: { title: string; repeat?: string; when?: string } }[] = [
+  { name: 'Pay credit card', when: 'Monthly', repeat: 'monthly', param: { title: 'Pay credit card', repeat: 'monthly' } },
+  { name: 'Finish homework', when: 'Tomorrow', param: { title: 'Finish homework', when: 'tomorrow' } },
+  { name: 'Do groceries', when: 'Weekly', repeat: 'weekly', param: { title: 'Do groceries', repeat: 'weekly' } },
+];
+
+function TasksEmpty() {
+  const ghost = [
+    { done: true, w: '62%' },
+    { done: false, w: '78%' },
+    { done: false, w: '48%' },
+  ] as const;
+  return (
+    <View style={{ gap: 22, paddingTop: 20 }}>
+      <View style={styles.emptyHero}>
+        <View style={styles.ghost} importantForAccessibility="no-hide-descendants">
+          {ghost.map((g, i) => (
+            <View key={i} style={[styles.ghostRow, { opacity: 1 - i * 0.25 }]}>
+              <View style={[styles.ghostBox, { backgroundColor: g.done ? colors.accent : colors.raised }]}>{g.done ? <Icon name="check" size={11} color={colors.onAccentDeep} strokeWidth={3.6} /> : null}</View>
+              <View style={{ height: 7, width: g.w, borderRadius: 4, backgroundColor: g.done ? colors.switchOff : colors.raised }} />
+            </View>
+          ))}
+        </View>
+        <Text size={22} display>
+          No tasks yet
+        </Text>
+        <Button title="Add a task" icon="plus" height={50} onPress={() => router.push('/task/new')} style={{ alignSelf: 'stretch' }} />
+      </View>
+      <View style={{ gap: 12 }}>
+        <Text size={18} weight={700} accessibilityRole="header">
+          Suggestions
+        </Text>
+        <View style={styles.card}>
+          {IDEAS.map((i, idx) => (
+            <Pressable
+              key={i.name}
+              accessibilityRole="button"
+              accessibilityLabel={`Add ${i.name}`}
+              onPress={() => router.push({ pathname: '/task/new', params: i.param })}
+              style={({ pressed }) => [styles.idea, idx < IDEAS.length - 1 && styles.divider, pressed && { backgroundColor: colors.cardPressed }]}
+            >
+              <View style={styles.ideaBox} />
+              <View style={{ flex: 1, gap: 2 }}>
+                <Text size={15} weight={700}>
+                  {i.name}
+                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                  {i.repeat ? <Icon name="repeat" size={12} color={colors.text3} /> : null}
+                  <Text size={12.5} weight={600} color={colors.text3}>
+                    {i.when}
+                  </Text>
+                </View>
+              </View>
+            </Pressable>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+export default function TasksScreen() {
+  const today = useToday();
+  const tasks = useStore((s) => s.tasks);
+  const weekStart = useStore((s) => s.user.settings.weekStart);
+  const { completeTask, undoCompleteTask } = useStore.getState();
+  // Tasks checked off while this screen is open stay in place (checked) so they can be unchecked.
+  const [checked, setChecked] = useState<Record<string, TaskCompletion>>({});
+  const [showDone, setShowDone] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => setChecked({});
+    }, []),
+  );
+
+  const toggle = (t: Task) => {
+    const c = checked[t.id];
+    if (c) {
+      undoCompleteTask(c);
+      const { [t.id]: _, ...rest } = checked;
+      setChecked(rest);
+    } else {
+      const res = completeTask(t.id);
+      if (res) setChecked({ ...checked, [t.id]: res });
+    }
+  };
+
+  // A checked task keeps its original section until the screen is left.
+  const visible = tasks.filter((t) => !t.completedAt || checked[t.id]);
+  const sectionOf = (t: Task) => taskSection(checked[t.id]?.task ?? t, today);
+  const weekFirst = startOfWeek(today, weekStart);
+  const doneThisWeek = tasks.reduce((n, t) => n + t.doneLog.filter((d) => d >= weekFirst).length, 0);
+  const doneTasks = tasks.filter((t) => t.completedAt && !checked[t.id] && t.doneLog.some((d) => d >= weekFirst));
+
+  return (
+    <TabScreen title="My Tasks">
+
+        {tasks.length === 0 ? (
+          <TasksEmpty />
+        ) : (
+          <View style={{ gap: 14, paddingTop: 12 }}>
+            {SECTIONS.map((sec) => {
+              const items = sortTasks(visible.filter((t) => sectionOf(t) === sec.key));
+              if (!items.length) return null;
+              return (
+                <View key={sec.key} style={{ gap: 8 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 6 }} accessibilityRole="header">
+                    <Text label color={sec.color}>
+                      {sec.title}
+                    </Text>
+                    <Text size={13} weight={600} color={colors.text3}>
+                      ({items.length})
+                    </Text>
+                  </View>
+                  <View style={styles.card}>
+                    {items.map((t, i) => (
+                      <TaskRow key={t.id} task={t} section={sec.key} today={today} completion={checked[t.id]} onToggle={() => toggle(t)} last={i === items.length - 1} />
+                    ))}
+                  </View>
+                </View>
+              );
+            })}
+            {doneThisWeek > 0 ? (
+              <View style={{ gap: 8 }}>
+                <Pressable accessibilityRole="button" accessibilityState={{ expanded: showDone }} onPress={() => setShowDone(!showDone)} style={styles.doneRow}>
+                  <Text size={14} weight={700} color={colors.text2}>
+                    {doneThisWeek} done this week
+                  </Text>
+                  <View style={{ transform: [{ rotate: showDone ? '180deg' : '0deg' }] }}>
+                    <Icon name="chevronDown" size={18} color={colors.text2} />
+                  </View>
+                </Pressable>
+                {showDone && doneTasks.length ? (
+                  <View style={styles.card}>
+                    {doneTasks.map((t, i) => (
+                      <Pressable key={t.id} accessibilityRole="button" onPress={() => router.push(`/task/${t.id}`)} style={[styles.row, { paddingLeft: 16 }, i < doneTasks.length - 1 && styles.divider]}>
+                        <Icon name="check" size={16} color={colors.accent} strokeWidth={3} />
+                        <Text size={15} weight={600} color={colors.text3} style={{ textDecorationLine: 'line-through', flex: 1 }}>
+                          {t.title}
+                        </Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                ) : null}
+              </View>
+            ) : null}
+          </View>
+        )}
+    </TabScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1 },
-  container: { flex: 1, padding: 16, paddingBottom: 0, marginBottom: 0 },
-  headerRow: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    marginBottom: 12,
-  },
-  title: { fontSize: 28, fontWeight: "700" },
-  dateLabel: { fontSize: 14, fontWeight: "600", opacity: 0.9, marginBottom: 4 },
-  list: { paddingBottom: 12 },
-  card: { borderRadius: 12, padding: 12, marginBottom: 12 },
-  cardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  cardTitle: { fontSize: 16, fontWeight: "700" },
-  scroll: { flex: 1 },
-  iconBox: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
-  },
-  checkbox: {
-    width: 32,
-    height: 32,
-    borderRadius: 999,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  checkboxText: { fontSize: 16, fontWeight: "700" },
-  cardSubtitleSmall: { fontSize: 12, opacity: 0.85, marginTop: 2 },
-  tabButton: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  emptyStateContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 32,
-    paddingTop: 120,
-  },
-  fab: {
-    position: "absolute",
-    right: 16,
-    minWidth: 56,
-    height: 56,
-    borderRadius: 28,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
-    elevation: 4,
-  },
+  card: { backgroundColor: colors.card, borderRadius: 18, borderCurve: 'continuous', overflow: 'hidden' },
+  divider: { borderBottomWidth: 1, borderBottomColor: colors.divider },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 4, minHeight: 56, paddingVertical: 5, paddingLeft: 6, paddingRight: 8 },
+  check: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  box: { width: 26, height: 26, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
+  meta: { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
+  subs: { paddingLeft: 50, paddingRight: 14, paddingBottom: 10 },
+  sub: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 44 },
+  subBox: { width: 20, height: 20, borderRadius: 7, alignItems: 'center', justifyContent: 'center' },
+  doneRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', minHeight: 48, paddingHorizontal: 16, borderRadius: 16, borderCurve: 'continuous', backgroundColor: colors.card },
+  emptyHero: { borderRadius: 28, borderCurve: 'continuous', backgroundColor: colors.card, padding: 14, paddingBottom: 16, alignItems: 'center', gap: 14 },
+  ghost: { alignSelf: 'stretch', height: 132, borderRadius: 20, borderCurve: 'continuous', backgroundColor: tint(colors.taskBlue, 0.1), justifyContent: 'center', gap: 8, paddingHorizontal: 36 },
+  ghostRow: { height: 30, borderRadius: 10, backgroundColor: colors.card, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 10 },
+  ghostBox: { width: 18, height: 18, borderRadius: 6, alignItems: 'center', justifyContent: 'center' },
+  idea: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 64, paddingVertical: 10, paddingLeft: 14, paddingRight: 12 },
+  ideaBox: { width: 24, height: 24, borderRadius: 8, backgroundColor: colors.raised },
 });

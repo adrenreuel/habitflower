@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Widget: small HabitFlowers</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="width: 170px; height: 170px; box-sizing: border-box; padding: 12px 10px 8px 10px; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #241628; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 4px; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px">
+    <p style="margin: 0; font-size: 14px; font-weight: 800; white-space: nowrap">My HabitFlowers</p>
+  </div>
+  <div style="flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); align-items: end; justify-items: center">
+    <sc-for list="{{habits}}" as="h" hint-placeholder-count="6">
+      <div style="position: relative; width: 50px; height: 50px">
+        <dc-import name="Flower" kind="{{h.kind}}" stage="{{h.stage}}" health="{{h.health}}" size="50" hint-size="50px,50px"></dc-import>
+        <span style="{{h.badgeStyle}}">
+          <sc-if value="{{h.isDue}}" hint-placeholder-val="{{true}}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#74D447" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l7 7 7-7"></path></svg></sc-if>
+          <sc-if value="{{h.isDone}}" hint-placeholder-val="{{false}}">
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#142008" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          </sc-if>
+          <sc-if value="{{h.isRest}}" hint-placeholder-val="{{false}}">
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="#E4D7E9" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+          </sc-if>
+            <sc-if value="{{h.isLater}}" hint-placeholder-val="{{false}}"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#E4D7E9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5V12l3 2"></path></svg></sc-if>
+        </span>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":170,"height":170}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var data = [
+      { kind: 'marigold', stage: 'bloom', count: 4, status: 'due' },
+      { kind: 'tulip', stage: 'bud', status: 'due' },
+      { kind: 'lavender', stage: 'bloom', count: 12, status: 'later' },
+      { kind: 'daisy', stage: 'bud', health: 'dormant', status: 'due' },
+      { kind: 'sunflower', stage: 'bloom', count: 21, status: 'due' },
+      { kind: 'rose', stage: 'bloom', health: 'wilt', count: 3, status: 'due' }
+    ];
+    var badgeBase = 'position: absolute; top: 0; right: 0; width: 14px; height: 14px; border-radius: 7px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #241628;';
+    return {
+      habits: data.map(function (h) {
+        var bg = h.status === 'due' ? '#241628' : (h.status === 'done' ? '#74D447' : '#4A3950');
+        return {
+          kind: h.kind, stage: h.stage, health: h.health || 'ok',
+          isDue: h.status === 'due', isDone: h.status === 'done', isRest: h.status === 'rest', isLater: h.status === 'later',
+          badgeStyle: badgeBase + 'background: ' + bg + ';' + (h.status === 'due' ? ' top: -9px; right: auto; left: 50%; transform: translateX(-50%); width: auto; height: auto; background: none; box-shadow: none;' : '')
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

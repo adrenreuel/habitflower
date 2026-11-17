@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>@mayac's HabitFlowers</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:#C9B9CF;text-decoration:none}a:hover{color:#F6EEF8}
+.hf-back:focus-visible,.hf-b:focus-visible{outline:2px solid #74D447;outline-offset:2px}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 990px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px; padding: 58px 20px 34px 20px; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between">
+  <a class="hf-back" href="Friends.dc.html" style="display: inline-flex; align-items: center; gap: 4px; height: 44px; padding-right: 8px; font-size: 16px; font-weight: 600">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+      Friends
+    </a>
+    <button class="hf-b" onClick="{{more}}" aria-haspopup="dialog" aria-label="More options for @mayac" style="width: 44px; height: 44px; border-radius: 22px; border: none; background: #2A1C2F; color: #E4D7E9; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="18.5" cy="12" r="1.8"></circle></svg></button>
+  </div>
+
+  <section style="display: flex; align-items: center; gap: 14px">
+    <span style="width: 64px; height: 64px; flex-shrink: 0; border-radius: 32px; background: #FFC93C; color: #3A2600; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800">M</span>
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.3px">@mayac</h1>
+    </div>
+    <span style="height: 30px; padding: 0 12px; border-radius: 15px; background: rgba(255,210,74,0.16); color: #FFD24A; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"></path></svg>
+      Close friend
+    </span>
+  </section>
+
+  <sc-if value="{{sharesSome}}" hint-placeholder-val="{{true}}">
+  <section aria-label="@mayac's HabitFlowers" style="display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">HabitFlowers</h2>
+      <span style="font-size: 13px; font-weight: 600; color: #A895AE">3 of 6 today</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <sc-for list="{{flowers}}" as="h" hint-placeholder-count="6">
+        <button class="hf-b" onClick="{{h.open}}" aria-haspopup="dialog" aria-label="{{h.name}} history" style="display: flex; flex-direction: column; gap: 10px; padding: 14px; width: 100%; border: none; color: inherit; font: inherit; text-align: left; cursor: pointer; background: #2A1C2F; border-radius: 20px; min-height: 160px; box-sizing: border-box">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start">
+            <div style="position: relative; width: 52px; height: 52px; border-radius: 16px; background: {{h.tint}}; display: flex; align-items: center; justify-content: center">
+              <dc-import name="Flower" kind="{{h.kind}}" stage="{{h.stage}}" size="44" hint-size="44px,44px"></dc-import>
+              <sc-if value="{{h.hasCount}}" hint-placeholder-val="{{false}}"><span style="position: absolute; right: -10px; bottom: -6px; min-width: 24px; height: 22px; padding: 0 7px; box-sizing: border-box; border-radius: 11px; background: #3D2D43; box-shadow: 0 0 0 3px #2A1C2F; color: #F6EEF8; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{h.count}}</span></sc-if>
+            </div>
+            <span style="{{h.chipStyle}}">
+              <sc-if value="{{h.isDone}}" hint-placeholder-val="{{false}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+              {{h.chip}}
+            </span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <p style="margin: 0; font-size: 16px; font-weight: 700; line-height: 1.25">{{h.name}}</p>
+            <p style="margin: 0; font-size: 13px; font-weight: 600; color: #B9A8C0">{{h.meta}}</p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto" aria-hidden="true">
+            <sc-for list="{{h.week}}" as="d" hint-placeholder-count="7"><span style="{{d.style}}"></span></sc-for>
+          </div>
+        </button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section aria-label="Recent check-ins" style="display: flex; flex-direction: column; gap: 10px">
+    <h2 style="margin: 0; font-size: 18px; font-weight: 700">Recent check-ins</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <sc-for list="{{photos}}" as="ph" hint-placeholder-count="3">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <div role="img" aria-label="{{ph.alt}}" style="aspect-ratio: 1; border-radius: 14px; background: repeating-linear-gradient(135deg, #34243B 0 10px, #2E2035 10px 20px); display: flex; align-items: center; justify-content: center; color: #6E5B74">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>
+          </div>
+          <span style="font-size: 12px; font-weight: 600; color: #B9A8C0; text-align: center">{{ph.label}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+  </sc-if>
+  <sc-if value="{{sharesNone}}" hint-placeholder-val="{{false}}">
+    <div style="border-radius: 24px; background: #2A1C2F; padding: 28px 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+      <span aria-hidden="true" style="width: 96px; height: 96px; border-radius: 30px; background: rgba(255,201,60,0.10); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; box-sizing: border-box"><dc-import name="Flower" kind="sunflower" stage="seed" size="70" hint-size="70px,70px"></dc-import></span>
+      <p style="margin: 0; font-size: 17px; font-weight: 800">Nothing shared yet</p>
+      <p style="margin: 0; font-size: 14px; font-weight: 500; color: #B9A8C0">@mayac hasn’t shared any HabitFlowers with you.</p>
+    </div>
+  </sc-if>
+  <sc-if value="{{sOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 9; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{sClose}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="{{sTitle}}" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 4px 2px 0 2px">
+          <span style="{{sAvatar}}">{{sInitial}}</span>
+          <h2 style="margin: 0; font-size: 20px; font-weight: 800">{{sTitle}}</h2>
+        </div>
+        <sc-if value="{{sMain}}" hint-placeholder-val="{{true}}">
+          <div style="border-radius: 18px; background: #2A1C2F; display: flex; flex-direction: column; overflow: hidden">
+            <sc-if value="{{sCanRemove}}" hint-placeholder-val="{{false}}">
+              <button class="hf-b" onClick="{{sClose}}" style="display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; border: none; background: none; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer; border-bottom: 1px solid #3D2D43; color: #F6EEF8">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3.5"></circle><path d="M2.5 19.5c0-3.4 2.9-5.8 6.5-5.8s6.5 2.4 6.5 5.8M16 11h6"></path></svg>
+                Remove friend
+              </button>
+            </sc-if>
+            <button class="hf-b" onClick="{{sReport}}" style="display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; border: none; background: none; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer; border-bottom: 1px solid #3D2D43; color: #F6EEF8">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"></path></svg>
+              {{sReportLabel}}
+            </button>
+            <button class="hf-b" onClick="{{sAskBlock}}" style="display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; border: none; background: none; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer; color: #FF7B7B">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M6 6l12 12"></path></svg>
+              {{sBlockLabel}}
+            </button>
+          </div>
+        </sc-if>
+        <sc-if value="{{sBlock}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; padding: 0 2px; font-size: 14.5px; font-weight: 500; line-height: 1.45; color: #B9A8C0">They won't be able to find you, add you or see your HabitFlowers. We won't tell them.</p>
+          <button class="hf-b" onClick="{{sClose}}" style="height: 52px; border-radius: 26px; border: none; background: #FF7B7B; color: #2A0808; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Block</button>
+          <button class="hf-b" onClick="{{sClose}}" style="height: 52px; border-radius: 26px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Cancel</button>
+        </sc-if>
+        <sc-if value="{{sReported}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; padding: 0 2px; font-size: 14.5px; font-weight: 500; line-height: 1.45; color: #B9A8C0">{{sReportedText}}</p>
+          <button class="hf-b" onClick="{{sClose}}" style="height: 52px; border-radius: 26px; border: none; background: #F6EEF8; color: #1F1023; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Done</button>
+          <button class="hf-b" onClick="{{sAskBlock}}" style="height: 52px; border-radius: 26px; border: none; background: #3A2A40; color: #FF7B7B; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">{{sBlockLabel}}</button>
+        </sc-if>
+      </section>
+    </div>
+  </sc-if>
+  <sc-if value="{{hOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 9; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{hClose}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="{{hName}} history" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 16px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <span aria-hidden="true" style="width: 48px; height: 48px; border-radius: 15px; background: {{hTint}}; display: flex; align-items: center; justify-content: center"><dc-import name="Flower" kind="{{hKind}}" stage="{{hStage}}" size="40" hint-size="40px,40px"></dc-import></span>
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <h2 style="margin: 0; font-size: 21px; font-weight: 800">{{hName}}</h2>
+            <p style="margin: 0; font-size: 13px; font-weight: 600; color: #B9A8C0">@mayac</p>
+          </div>
+        </div>
+        <sc-if value="{{hFull}}" hint-placeholder-val="{{true}}">
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+            <div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 22px; font-weight: 800">{{hStreak}}<span style="font-size: 14px; font-weight: 700; color: #C9B9CF"> days</span></p><p style="margin: 0; font-size: 13px; font-weight: 600; color: #B9A8C0">Current streak</p></div>
+            <div style="background: #2A1C2F; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 22px; font-weight: 800">{{hRate}}</p><p style="margin: 0; font-size: 13px; font-weight: 600; color: #B9A8C0">Completion</p></div>
+          </div>
+          <div style="background: #2A1C2F; border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <button aria-label="Previous month" style="width: 36px; height: 36px; border-radius: 18px; border: none; background: #3A2A40; color: #E4D7E9; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
+              <span style="font-size: 16px; font-weight: 700">November 2026</span>
+              <button aria-label="Next month" disabled="{{true}}" style="width: 36px; height: 36px; border-radius: 18px; border: none; background: #3A2A40; color: #6E5C75; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></button>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+              <sc-for list="{{dows}}" as="w" hint-placeholder-count="7"><span style="text-align: center; font-size: 11px; font-weight: 600; color: #A895AE">{{w}}</span></sc-for>
+              <sc-for list="{{hMonth}}" as="c" hint-placeholder-count="30"><span style="{{c.style}}">{{c.num}}</span></sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{hWeekOnly}}" hint-placeholder-val="{{false}}">
+          <div style="background: #2A1C2F; border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+            <p style="margin: 0; font-size: 15px; font-weight: 700">This week</p>
+            <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+              <sc-for list="{{hWeek}}" as="c" hint-placeholder-count="7"><span style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="font-size: 11px; font-weight: 600; color: #A895AE">{{c.dow}}</span><span style="{{c.style}}">{{c.num}}</span></span></sc-for>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 18px; background: #2A1C2F">
+            <span aria-hidden="true" style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 18px; background: #3A2A40; color: #C9B9CF; display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2.5"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg></span>
+            <p style="margin: 0; font-size: 14px; font-weight: 500; color: #B9A8C0">@mayac only shares this week for this habit.</p>
+          </div>
+        </sc-if>
+        <button class="hf-b" onClick="{{hClose}}" style="height: 52px; border-radius: 26px; border: none; background: #F6EEF8; color: #1F1023; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Done</button>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":990},"shares":{"type":"enum","options":["some","none"],"default":"some"},"sheet":{"type":"enum","options":["closed","full","week"],"default":"closed"}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { safety: null, hab: null };
+  }
+  renderVals() {
+    var self = this;
+    var sm = this.state.safety;
+    function avS(c) { return 'width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; background: ' + c[0] + '; color: ' + c[1] + '; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800;'; }
+    var safety = {
+      sOpen: !!sm, sMain: !!sm && sm.step === 'main', sBlock: !!sm && sm.step === 'block', sReported: !!sm && sm.step === 'reported',
+      sTitle: !sm ? '' : sm.step === 'block' ? 'Block ' + sm.name + '?' : sm.step === 'reported' ? 'Thanks for telling us' : sm.name,
+      sInitial: sm ? sm.initial : '', sAvatar: sm ? avS(sm.colors) : '',
+      sCanRemove: !!sm && sm.ctx === 'user',
+      sReportLabel: sm && sm.ctx === 'post' ? 'Report post' : 'Report ' + (sm ? sm.name : ''),
+      sBlockLabel: 'Block ' + (sm ? sm.name : ''),
+      sReportedText: sm && sm.ctx === 'post' ? 'We\u2019ll review it. You won\u2019t see this post again.' : 'We\u2019ll take a look.',
+      sClose: function () { self.setState({ safety: null }); },
+      sReport: function () { self.setState({ safety: Object.assign({}, self.state.safety, { step: 'reported' }) }); },
+      sAskBlock: function () { self.setState({ safety: Object.assign({}, self.state.safety, { step: 'block' }) }); }
+    };
+    function openSafety(name, initial, colors, ctx) { return function () { self.setState({ safety: { name: name, initial: initial, colors: colors, ctx: ctx, step: 'main' } }); }; }
+
+    function hexA(hex, a) {
+      var n = parseInt(hex.slice(1), 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+    }
+    function dot(state, color) {
+      var base = 'width: 12px; height: 12px; border-radius: 6px; box-sizing: border-box; display: block;';
+      if (state === 'done') return base + 'background: ' + color + ';';
+      if (state === 'miss') return base + 'background: rgba(255,158,107,0.55);';
+      if (state === 'todayDone') return base + 'background: ' + color + '; box-shadow: 0 0 0 2px #2A1C2F, 0 0 0 4px ' + color + ';';
+      if (state === 'today') return base + 'background: ' + hexA(color, 0.4) + '; box-shadow: 0 0 0 2px #2A1C2F, 0 0 0 4px ' + color + ';';
+      return 'width: 12px; height: 4px; border-radius: 2px; display: block; background: #3D2D43;';
+    }
+    var chipBase = 'display: inline-flex; align-items: center; gap: 4px; height: 26px; padding: 0 10px; border-radius: 13px; font-size: 12px; font-weight: 700; box-sizing: border-box;';
+    var data = [
+      ['Morning run', 'sunflower', 'bloom', 21, '#FFC93C', 'Done', 'done', 'Every day', ['done','done','done','done','done','done','todayDone'], 'full'],
+      ['Check mail', 'daisy', 'bloom', 14, '#F7F2EA', 'Done', 'done', 'Every day', ['done','done','done','done','done','done','todayDone'], 'week'],
+      ['Cook dinner', 'tulip', 'bloom', 5, '#FF6B8A', 'To do', 'todo', 'Mon to Fri', ['off','done','done','miss','done','done','off'], 'full'],
+      ['Stretch', 'lavender', 'bloom', 2, '#A98BEA', 'Done', 'done', 'Every day', ['miss','miss','miss','miss','done','done','todayDone'], 'week'],
+      ['Piano practice', 'rose', 'bud', 0, '#E8455A', '0/2', 'progress', '2 times a day', ['off','miss','off','miss','off','done','today'], 'week'],
+      ['Journal', 'blossom', 'seed', 0, '#FFB7C9', 'To do', 'todo', 'Every day', ['off','off','off','off','off','off','today'], 'week']
+    ];
+    var none = (this.props.shares || 'some') === 'none';
+    var tw = this.props.sheet || 'closed';
+    var hi = this.state.hab === null ? (tw === 'full' ? 0 : tw === 'week' ? 1 : -1) : this.state.hab;
+    var hf = hi >= 0 ? data[hi] : null;
+    var cb = 'height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; box-sizing: border-box; width: 100%;';
+    function cellF(st, col) {
+      if (st === 'done' || st === 'todayDone') return cb + 'background: ' + col + '; color: #1F1023;' + (st === 'todayDone' ? ' box-shadow: 0 0 0 2px #2A1C2F, 0 0 0 4px ' + col + ';' : '');
+      if (st === 'miss') return cb + 'background: rgba(255,158,107,0.24); color: #FFB894;';
+      if (st === 'today') return cb + 'background: ' + hexA(col, 0.4) + '; color: #F6EEF8; box-shadow: 0 0 0 2px #2A1C2F, 0 0 0 4px ' + col + ';';
+      return cb + 'background: #3A2A40; color: #8C7992;';
+    }
+    var hMonth = [];
+    if (hf) {
+      var missD = { 3: 1 };
+      for (var d = 1; d <= 30; d++) {
+        var st = d > 14 ? 'off' : d >= 8 ? hf[8][d - 8] : (missD[d] ? 'miss' : 'done');
+        hMonth.push({ num: String(d), style: cellF(st, hf[4]) });
+      }
+    }
+    return Object.assign(safety, {
+      sharesSome: !none, sharesNone: none,
+      hOpen: !!hf, hClose: function () { self.setState({ hab: -1 }); },
+      hName: hf ? hf[0] : '', hKind: hf ? hf[1] : 'sunflower', hStage: hf ? hf[2] : 'bloom', hTint: hf ? hexA(hf[4], 0.14) : 'none',
+      hFull: !!hf && hf[9] === 'full', hWeekOnly: !!hf && hf[9] !== 'full',
+      hStreak: hf ? String(hf[3]) : '0', hRate: hf ? (hf[3] > 10 ? '93%' : '78%') : '',
+      dows: ['S','M','T','W','T','F','S'], hMonth: hMonth,
+      hWeek: hf ? hf[8].map(function (w, i) { return { dow: ['S','M','T','W','T','F','S'][i], num: String(8 + i), style: cellF(w, hf[4]) }; }) : [],
+      more: openSafety('@mayac', 'M', ['#FFC93C', '#3A2600'], 'user'),
+      flowers: data.map(function (f, fi) {
+        var chip = f[6] === 'done' ? chipBase + 'background: ' + f[4] + '; color: #1F1023;' : f[6] === 'progress' ? chipBase + 'background: ' + hexA(f[4], 0.2) + '; color: ' + f[4] + ';' : chipBase + 'background: #3D2D43; color: #C9B9CF;';
+        return {
+          name: f[0], kind: f[1], stage: f[2], hasCount: f[3] > 0, count: String(f[3]), tint: hexA(f[4], 0.14),
+          chip: f[5], isDone: f[6] === 'done', chipStyle: chip, meta: f[7],
+          week: f[8].map(function (w) { return { style: dot(w, f[4]) }; }),
+          open: (function (ix) { return function () { self.setState({ hab: ix }); }; })(fi)
+        };
+      }),
+      photos: [
+        { label: 'Today', alt: '@mayac’s check-in photo from today' },
+        { label: 'Yesterday', alt: '@mayac’s check-in photo from yesterday' },
+        { label: 'Thu', alt: '@mayac’s check-in photo from Thursday' }
+      ]
+    });
+  }
+}
+</script>
+</body>
+</html>

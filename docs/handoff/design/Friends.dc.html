@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Friends</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1A0E1E}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.hf-b:focus-visible,.hf-tab:focus-visible{outline:2px solid #74D447;outline-offset:2px}
+h1,.hf-display,div[role="status"]>h2{font-family:'Young Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-0.3px!important}
+x-dc>div{position:relative}div[style*="border-radius"],section[style*="border-radius"],article[style*="border-radius"]{corner-shape:squircle}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 1470px; box-sizing: border-box; background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.07%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E') 0 0 / 140px 140px, #1A0C1D; color: #F6EEF8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="padding: 62px 20px 0 20px; display: flex; align-items: flex-end; justify-content: space-between">
+    <div style="display: flex; flex-direction: column; gap: 2px"><p style="margin: 0; font-size: 14px; font-weight: 600; color: #B9A8C0">Saturday, Nov 14</p><h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px">Friends</h1></div>
+    <div style="display: flex; gap: 8px">
+    <a class="hf-b" href="ManageFriends.dc.html" style="height: 44px; padding: 0 16px; border-radius: 22px; background: #2A1C2F; color: #F6EEF8; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"></path><circle cx="16" cy="7" r="2"></circle><circle cx="10" cy="17" r="2"></circle></svg>
+      Manage
+    </a>
+    </div>
+  </header>
+
+  <main style="flex: 1; padding: 16px 20px 0 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+    <section aria-label="Friends' HabitFlowers" style="margin: 0 -20px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; gap: 10px; overflow-x: auto; padding: 0 20px 2px 20px">
+        <sc-for list="{{gardens}}" as="g" hint-placeholder-count="3">
+          <a class="hf-b" href="FriendFlowers.dc.html" aria-label="{{g.aria}}" style="width: 150px; height: 168px; flex-shrink: 0; box-sizing: border-box; padding: 10px 8px 8px 8px; border-radius: 22px; background: #2A1C2F; color: #F6EEF8; display: flex; flex-direction: column; gap: 2px">
+            <div style="display: flex; align-items: center; gap: 8px; padding: 0 4px">
+              <span style="{{g.avatarStyle}}">{{g.initials}}</span>
+              <span style="display: flex; flex-direction: column; min-width: 0">
+                <span style="font-size: 14px; font-weight: 800; line-height: 1.15">{{g.name}}</span>
+                <span style="font-size: 11.5px; font-weight: 600; color: {{g.todayColor}}">{{g.today}}</span>
+              </span>
+            </div>
+            <div style="flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); align-items: end; justify-items: center">
+              <sc-for list="{{g.flowers}}" as="f" hint-placeholder-count="6">
+                <div style="position: relative; width: 42px; height: 42px">
+                  <dc-import name="Flower" kind="{{f.kind}}" stage="{{f.stage}}" health="{{f.health}}" size="42" hint-size="42px,42px"></dc-import>
+                  <sc-if value="{{f.hasCount}}" hint-placeholder-val="{{false}}"><span style="{{f.countStyle}}">{{f.count}}</span></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </a>
+        </sc-for>
+        <a class="hf-b" href="AddFriend.dc.html" style="width: 110px; height: 168px; flex-shrink: 0; box-sizing: border-box; border-radius: 22px; background: #241628; border: none; color: #B8EE98; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 700">
+          <span style="width: 44px; height: 44px; border-radius: 22px; background: rgba(116,212,71,0.18); display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span>
+          Add friend
+        </a>
+      </div>
+    </section>
+
+    <h2 style="margin: 6px 0 0 0; font-size: 18px; font-weight: 700">Updates</h2>
+    <sc-for list="{{posts}}" as="p" hint-placeholder-count="4">
+      <sc-if value="{{p.isNotice}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 14px; border-radius: 18px; background: #241628">
+          <span style="position: relative; flex-shrink: 0">
+            <span style="{{p.avatarStyle}}">{{p.initials}}</span>
+            <span style="position: absolute; right: -4px; bottom: -4px; width: 20px; height: 20px; border-radius: 10px; background: #F28FB8; color: #2A0E1A; box-shadow: 0 0 0 2px #241628; display: flex; align-items: center; justify-content: center"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg></span>
+          </span>
+          <div style="flex: 1; min-width: 0">
+            <p style="margin: 0; font-size: 14px; font-weight: 500; line-height: 1.35"><span style="font-weight: 700">{{p.name}}</span> {{p.text}}</p>
+            <p style="margin: 2px 0 0 0; font-size: 12px; font-weight: 500; color: #8C7992">{{p.when}}</p>
+          </div>
+          <span aria-hidden="true" style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; background: repeating-linear-gradient(135deg, #34243B 0 7px, #2E2035 7px 14px)"></span>
+        </div>
+      </sc-if>
+      <sc-if value="{{p.isPost}}" hint-placeholder-val="{{true}}">
+      <article aria-label="{{p.aria}}" style="background: #2A1C2F; border-radius: 24px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <span style="{{p.avatarStyle}}">{{p.initials}}</span>
+          <p style="flex: 1; min-width: 0; margin: 0; font-size: 15px; font-weight: 700">{{p.name}}</p>
+          <p style="margin: 0; flex-shrink: 0; font-size: 12.5px; font-weight: 500; color: #8C7992">{{p.when}}</p>
+          <button class="hf-b" onClick="{{p.more}}" aria-haspopup="dialog" aria-label="{{p.moreAria}}" style="width: 32px; height: 32px; margin: -6px -6px -6px -2px; flex-shrink: 0; border-radius: 16px; border: none; background: none; color: #8C7992; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="18.5" cy="12" r="1.8"></circle></svg></button>
+        </div>
+        <p style="margin: 0; font-size: 15.5px; font-weight: 600; line-height: 1.35">{{p.text}}</p>
+
+        <sc-if value="{{p.isFlower}}" hint-placeholder-val="{{true}}">
+          <div style="position: relative; height: 200px; border-radius: 18px; background: {{p.tint}}; display: flex; align-items: center; justify-content: center">
+            <dc-import name="Flower" kind="{{p.kind}}" stage="{{p.stage}}" size="150" hint-size="150px,150px"></dc-import>
+            <sc-if value="{{p.hasCount}}" hint-placeholder-val="{{false}}">
+              <span style="position: absolute; right: 14px; bottom: 14px; height: 36px; padding: 0 14px; border-radius: 18px; background: #1F1023; color: #F6EEF8; font-size: 16px; font-weight: 800; display: flex; align-items: center">{{p.countLabel}}</span>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{p.isPhoto}}" hint-placeholder-val="{{false}}">
+          <div role="img" aria-label="{{p.photoAlt}}" style="position: relative; height: 240px; border-radius: 18px; background: repeating-linear-gradient(135deg, #34243B 0 14px, #2E2035 14px 28px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #8C7992">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>
+            <span style="font-size: 13px; font-weight: 600">Check-in photo</span>
+            <span style="position: absolute; left: 12px; bottom: 12px; width: 52px; height: 52px; border-radius: 16px; background: #241628; display: flex; align-items: center; justify-content: center">
+              <dc-import name="Flower" kind="{{p.kind}}" stage="{{p.stage}}" size="44" hint-size="44px,44px"></dc-import>
+            </span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{p.isTask}}" hint-placeholder-val="{{false}}">
+          <a href="SharedTask.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 16px; background: #3A2A40">
+            <span style="width: 32px; height: 32px; flex-shrink: 0; border-radius: 10px; background: #74D447; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#142008" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+            <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+              <span style="font-size: 15.5px; font-weight: 700; color: #8C7992; text-decoration: line-through">{{p.taskTitle}}</span>
+              <span style="font-size: 12.5px; font-weight: 600; color: #B9A8C0">{{p.taskMeta}}</span>
+            </span>
+          </a>
+        </sc-if>
+
+        <div style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #A895AE">
+            <span style="display: inline-flex; padding-left: 6px">
+              <sc-for list="{{p.top}}" as="t" hint-placeholder-count="2"><span style="{{t.style}}"><sc-if value="{{t.is_love}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg></sc-if><sc-if value="{{t.is_fire}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.2 2.2-5.3 3.6-7.1.4 1.8 1.4 2.9 2.4 3.2-.3-2.9.9-5.6 3-7.4.2 2.6 1.4 4.1 2.6 5.6 1.1 1.4 1.4 2.6 1.4 4.1C18.5 17.9 15.9 21 12 21z"></path></svg></sc-if><sc-if value="{{t.is_spark}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"></path><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"></path></svg></sc-if><sc-if value="{{t.is_drop}}" hint-placeholder-val="{{false}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C9 7.5 6.5 10.6 6.5 14a5.5 5.5 0 0 0 11 0C17.5 10.6 15 7.5 12 3z"></path></svg></sc-if></span></sc-for>
+            </span>
+            {{p.total}}
+          </span>
+          <button class="hf-b" onClick="{{p.toggle}}" aria-expanded="{{p.openAttr}}" aria-haspopup="true" style="{{p.btnStyle}}">
+            <sc-if value="{{p.noMine}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5A8.5 8.5 0 1 1 12.5 3.05"></path><path d="M8.5 14.5c.9 1.2 2.1 1.8 3.5 1.8s2.6-.6 3.5-1.8"></path><path d="M9 9.5h.01M15 9.5h.01"></path><path d="M19 2.5v5M16.5 5h5"></path></svg></sc-if>
+            <sc-if value="{{p.hasMine}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex"><sc-if value="{{p.mine.is_love}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg></sc-if><sc-if value="{{p.mine.is_fire}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.2 2.2-5.3 3.6-7.1.4 1.8 1.4 2.9 2.4 3.2-.3-2.9.9-5.6 3-7.4.2 2.6 1.4 4.1 2.6 5.6 1.1 1.4 1.4 2.6 1.4 4.1C18.5 17.9 15.9 21 12 21z"></path></svg></sc-if><sc-if value="{{p.mine.is_spark}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"></path><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"></path></svg></sc-if><sc-if value="{{p.mine.is_drop}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C9 7.5 6.5 10.6 6.5 14a5.5 5.5 0 0 0 11 0C17.5 10.6 15 7.5 12 3z"></path></svg></sc-if></span></sc-if>
+            <span>{{p.btnLabel}}</span>
+          </button>
+          <sc-if value="{{p.isOpen}}" hint-placeholder-val="{{false}}">
+            <div role="menu" aria-label="Reactions" style="position: absolute; right: 0; bottom: 50px; z-index: 2; display: flex; gap: 4px; padding: 6px; border-radius: 26px; background: #3D2D43; box-shadow: 0 10px 30px rgba(0,0,0,0.45)">
+              <sc-for list="{{p.reactions}}" as="r" hint-placeholder-count="4">
+                <button class="hf-b" role="menuitemradio" aria-checked="{{r.pressed}}" aria-label="{{r.label}}" onClick="{{r.pick}}" style="{{r.style}}"><sc-if value="{{r.is_love}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="{{r.fill}}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg></sc-if><sc-if value="{{r.is_fire}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="{{r.fill}}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.2 2.2-5.3 3.6-7.1.4 1.8 1.4 2.9 2.4 3.2-.3-2.9.9-5.6 3-7.4.2 2.6 1.4 4.1 2.6 5.6 1.1 1.4 1.4 2.6 1.4 4.1C18.5 17.9 15.9 21 12 21z"></path></svg></sc-if><sc-if value="{{r.is_spark}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="{{r.fill}}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"></path><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"></path></svg></sc-if><sc-if value="{{r.is_drop}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="{{r.fill}}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C9 7.5 6.5 10.6 6.5 14a5.5 5.5 0 0 0 11 0C17.5 10.6 15 7.5 12 3z"></path></svg></sc-if></button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </article>
+      </sc-if>
+    </sc-for>
+  </main>
+
+  <nav aria-label="Main" style="position: relative; z-index: 2; height: 84px; flex-shrink: 0; box-sizing: border-box; padding: 8px 12px 26px 12px; background: #2F1F36; box-shadow: 0 -10px 28px rgba(0,0,0,0.38); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+    <a class="hf-tab" href="Main.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-8"></path><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5z"></path><path d="M12 15c0-2.5-1.8-4.5-4.5-4.5 0 2.5 1.8 4.5 4.5 4.5z"></path><circle cx="12" cy="6" r="3"></circle></svg>
+      Habits
+    </a>
+    <a class="hf-tab" href="Tasks.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"></rect><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg><span aria-label="3 tasks need attention, 1 overdue" style="position: absolute; top: -5px; right: -9px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #FF9E6B; color: #2A1206; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #180B1B">3</span></span>
+      Tasks
+    </a>
+    <a class="hf-tab" href="CreateChooser.dc.html" aria-label="Add a habit, task or friend" style="display: flex; align-items: center; margin-top: -4px; justify-content: center">
+      <span style="width: 52px; height: 40px; border-radius: 20px; background: #74D447; color: #142008; display: flex; align-items: center; justify-content: center">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+      </span>
+    </a>
+    <a class="hf-tab" href="Friends.dc.html" aria-current="page" style="color: #74D447; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 700">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3.5"></circle><circle cx="17" cy="10" r="2.5"></circle><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"></path><path d="M15.5 14.2c2.8 0 5 1.8 5 4.8"></path></svg>
+      Friends
+    </a>
+    <a class="hf-tab" href="Notifications.dc.html" style="color: #A895AE; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600">
+      <span style="position: relative; display: inline-flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 21h4"></path></svg><span aria-label="3 new" style="position: absolute; top: -5px; right: -9px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #FF9E6B; color: #2A1206; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #180B1B">3</span></span>
+      Activity
+    </a>
+  </nav>
+  <sc-if value="{{sOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; inset: 0; z-index: 9; background: rgba(10,4,12,0.72); display: flex; flex-direction: column; justify-content: flex-end">
+      <button aria-label="Close" onClick="{{sClose}}" style="flex: 1; border: none; background: none; cursor: pointer"></button>
+      <section role="dialog" aria-label="{{sTitle}}" style="background: #241628; border-radius: 28px 28px 0 0; padding: 10px 20px 34px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #4A3950"></div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 4px 2px 0 2px">
+          <span style="{{sAvatar}}">{{sInitial}}</span>
+          <h2 style="margin: 0; font-size: 20px; font-weight: 800">{{sTitle}}</h2>
+        </div>
+        <sc-if value="{{sMain}}" hint-placeholder-val="{{true}}">
+          <div style="border-radius: 18px; background: #2A1C2F; display: flex; flex-direction: column; overflow: hidden">
+            <sc-if value="{{sCanRemove}}" hint-placeholder-val="{{false}}">
+              <button class="hf-b" onClick="{{sClose}}" style="display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; border: none; background: none; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer; border-bottom: 1px solid #3D2D43; color: #F6EEF8">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3.5"></circle><path d="M2.5 19.5c0-3.4 2.9-5.8 6.5-5.8s6.5 2.4 6.5 5.8M16 11h6"></path></svg>
+                Remove friend
+              </button>
+            </sc-if>
+            <button class="hf-b" onClick="{{sReport}}" style="display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; border: none; background: none; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer; border-bottom: 1px solid #3D2D43; color: #F6EEF8">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"></path></svg>
+              {{sReportLabel}}
+            </button>
+            <button class="hf-b" onClick="{{sAskBlock}}" style="display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 16px; border: none; background: none; font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer; color: #FF7B7B">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M6 6l12 12"></path></svg>
+              {{sBlockLabel}}
+            </button>
+          </div>
+        </sc-if>
+        <sc-if value="{{sBlock}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; padding: 0 2px; font-size: 14.5px; font-weight: 500; line-height: 1.45; color: #B9A8C0">They won't be able to find you, add you or see your HabitFlowers. We won't tell them.</p>
+          <button class="hf-b" onClick="{{sClose}}" style="height: 52px; border-radius: 26px; border: none; background: #FF7B7B; color: #2A0808; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Block</button>
+          <button class="hf-b" onClick="{{sClose}}" style="height: 52px; border-radius: 26px; border: none; background: #3A2A40; color: #F6EEF8; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Cancel</button>
+        </sc-if>
+        <sc-if value="{{sReported}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; padding: 0 2px; font-size: 14.5px; font-weight: 500; line-height: 1.45; color: #B9A8C0">{{sReportedText}}</p>
+          <button class="hf-b" onClick="{{sClose}}" style="height: 52px; border-radius: 26px; border: none; background: #F6EEF8; color: #1F1023; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Done</button>
+          <button class="hf-b" onClick="{{sAskBlock}}" style="height: 52px; border-radius: 26px; border: none; background: #3A2A40; color: #FF7B7B; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">{{sBlockLabel}}</button>
+        </sc-if>
+      </section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1470}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { safety: null, invite: 'pending', request: 'pending', reacted: {}, open: null };
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state;
+    function solid(hex) {
+      var n = parseInt(hex.slice(1), 16), t = 0.22;
+      var r = Math.round(((n >> 16) & 255) * t + 0x2A * (1 - t)), g = Math.round(((n >> 8) & 255) * t + 0x1C * (1 - t)), b = Math.round((n & 255) * t + 0x2F * (1 - t));
+      return 'rgb(' + r + ',' + g + ',' + b + ')';
+    }
+    function hexA(hex, a) {
+      var n = parseInt(hex.slice(1), 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+    }
+    var data = [
+      { id: 'p1', name: '@sampatel', initials: 'S', bg: '#A98BEA', fg: '#1F1023', when: '2 hours ago', text: 'Hit the gym', type: 'photo', kind: 'lavender', stage: 'bloom', counts: { love: 1, fire: 4, spark: 0, drop: 1 } }
+      ,{ id: 'p2', name: '@priya.n', initials: 'P', bg: '#FF9F1C', fg: '#2A1206', when: '4 hours ago', text: 'Finished a task', type: 'task', taskTitle: 'Submit lab report', taskMeta: 'Shared with you', counts: { love: 2, fire: 1, spark: 0, drop: 0 } }
+    ];
+    var kinds = [['love','Love','#F28FB8'],['fire','Fire','#FF9F1C'],['spark','Sparkle','#FFD24A'],['drop','Watered','#9CCBFF']];
+
+    var sm = this.state.safety;
+    function avS(c) { return 'width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; background: ' + c[0] + '; color: ' + c[1] + '; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800;'; }
+    var safety = {
+      sOpen: !!sm, sMain: !!sm && sm.step === 'main', sBlock: !!sm && sm.step === 'block', sReported: !!sm && sm.step === 'reported',
+      sTitle: !sm ? '' : sm.step === 'block' ? 'Block ' + sm.name + '?' : sm.step === 'reported' ? 'Thanks for telling us' : sm.name,
+      sInitial: sm ? sm.initial : '', sAvatar: sm ? avS(sm.colors) : '',
+      sCanRemove: !!sm && sm.ctx === 'user',
+      sReportLabel: sm && sm.ctx === 'post' ? 'Report post' : 'Report ' + (sm ? sm.name : ''),
+      sBlockLabel: 'Block ' + (sm ? sm.name : ''),
+      sReportedText: sm && sm.ctx === 'post' ? 'We\u2019ll review it. You won\u2019t see this post again.' : 'We\u2019ll take a look.',
+      sClose: function () { self.setState({ safety: null }); },
+      sReport: function () { self.setState({ safety: Object.assign({}, self.state.safety, { step: 'reported' }) }); },
+      sAskBlock: function () { self.setState({ safety: Object.assign({}, self.state.safety, { step: 'block' }) }); }
+    };
+    function openSafety(name, initial, colors, ctx) { return function () { self.setState({ safety: { name: name, initial: initial, colors: colors, ctx: ctx, step: 'main' } }); }; }
+    var posts = data.map(function (p) {
+      var mineKind = kinds.filter(function (k) { return st.reacted[p.id] === k[0]; })[0];
+      var counts = {}; kinds.forEach(function (k) { counts[k[0]] = p.counts[k[0]] + (mineKind && mineKind[0] === k[0] ? 1 : 0); });
+            return {
+        more: openSafety(p.name, p.initials, [p.bg || '#7AA7FF', p.fg || '#0F1E3A'], 'post'), moreAria: 'More options for ' + p.name + '\u2019s post',
+        name: p.name, initials: p.initials, when: p.when, text: p.text, kind: p.kind, stage: p.stage,
+        aria: p.name + ': ' + p.text,
+        avatarStyle: 'width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; background: ' + p.bg + '; color: ' + p.fg + '; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800;',
+        isNotice: p.type === 'notice', isPost: p.type !== 'notice',
+        isFlower: p.type === 'flower', isPhoto: p.type === 'photo', isTask: p.type === 'task', taskTitle: p.taskTitle || '', taskMeta: p.taskMeta || '',
+        tint: p.color ? hexA(p.color, 0.12) : '#3A2A40',
+        hasCount: !!p.count, countLabel: p.count ? p.count + ' days' : '',
+        photoAlt: p.name + '\u2019s check-in photo',
+        isOpen: st.open === p.id, openAttr: st.open === p.id ? 'true' : 'false',
+        toggle: function () { self.setState({ open: self.state.open === p.id ? null : p.id }); },
+        hasMine: !!mineKind, noMine: !mineKind,
+        mine: mineKind ? (function () { var o = {}; o['is_' + mineKind[0]] = true; return o; })() : {},
+        btnLabel: mineKind ? mineKind[1] : 'React',
+        btnStyle: 'height: 40px; padding: 0 16px; border-radius: 20px; border: none; font: inherit; font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;' + (mineKind ? ' background: ' + hexA(mineKind[2], 0.2) + '; color: ' + mineKind[2] + ';' : ' background: #3A2A40; color: #E4D7E9;'),
+        top: kinds.filter(function (k) { return counts[k[0]] > 0; }).sort(function (a, b) { return counts[b[0]] - counts[a[0]]; }).slice(0, 3).map(function (k) {
+          var o = { style: 'width: 26px; height: 26px; margin-left: -6px; border-radius: 13px; background: ' + solid(k[2]) + '; color: ' + k[2] + '; box-shadow: 0 0 0 2px #2A1C2F; display: inline-flex; align-items: center; justify-content: center;' };
+          o['is_' + k[0]] = true; return o;
+        }),
+        total: String(Object.keys(counts).reduce(function (a, key) { return a + counts[key]; }, 0)),
+        reactions: kinds.map(function (k) {
+          var mine = st.reacted[p.id] === k[0];
+          var r = { pressed: mine ? 'true' : 'false', label: k[1], fill: mine ? 'currentColor' : 'none',
+            pick: function () { var x = Object.assign({}, self.state.reacted); x[p.id] = mine ? null : k[0]; self.setState({ reacted: x, open: null }); },
+            style: 'width: 48px; height: 48px; border-radius: 24px; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: ' + k[2] + ';' + (mine ? ' background: ' + hexA(k[2], 0.22) + ';' : ' background: none;') };
+          r['is_' + k[0]] = true;
+          return r;
+        })
+      };
+    });
+    var gardenData = [
+      ['@mayac', 'M', '#FFC93C', '#3A2600', 3, 6, [['sunflower','bloom','ok',21],['tulip','bloom','ok',5],['rose','bud','ok',0],['blossom','seed','ok',0],['daisy','bloom','ok',14],['lavender','bloom','ok',2]]],
+      ['@sampatel', 'S', '#A98BEA', '#1F1023', 4, 4, [['lavender','bloom','ok',12],['daisy','bloom','ok',30],['marigold','bloom','wilt',4],['spider','bud','ok',0]]],
+      ['@priya.n', 'P', '#FF9F1C', '#2A1206', 1, 5, [['rose','bloom','ok',8],['daisy','bud','dormant',0],['sunflower','bloom','ok',3],['tulip','bud','ok',0],['marigold','bloom','ok',17]]],
+      ['@alexk', 'A', '#7AA7FF', '#0F1E3A', 0, 2, [['tulip','bloom','ok',9],['lavender','bud','ok',0]]]
+    ];
+    var gardens = gardenData.slice().sort(function (a, b) { return (b[4] / b[5]) - (a[4] / a[5]); }).map(function (g) {
+      return {
+        name: g[0], initials: g[1],
+        avatarStyle: 'width: 24px; height: 24px; flex-shrink: 0; border-radius: 12px; background: ' + g[2] + '; color: ' + g[3] + '; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800;',
+        aria: g[0] + '\u2019s HabitFlowers, ' + g[4] + ' of ' + g[5] + ' done today',
+        today: g[4] === g[5] ? 'All done today' : g[4] + ' of ' + g[5] + ' today',
+        todayColor: g[4] === g[5] ? '#9BE36F' : '#A895AE',
+        flowers: g[6].slice().sort(function (a, b) {
+          function rank(f) { return f[2] === 'dormant' ? -1000 : f[3] > 0 ? 100 + f[3] : f[1] === 'bud' ? 2 : 1; }
+          return rank(b) - rank(a);
+        }).slice(0, 6).map(function (f) {
+          return { kind: f[0], stage: f[1], health: f[2], hasCount: f[3] > 0, count: String(f[3]),
+            countStyle: 'position: absolute; right: -4px; bottom: 2px; min-width: 20px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #3D2D43; box-shadow: 0 0 0 2px #2A1C2F; font-size: 10.5px; font-weight: 800; display: flex; align-items: center; justify-content: center;' + (f[2] === 'wilt' ? ' color: #FFB894;' : ' color: #F6EEF8;') };
+        })
+      };
+    });
+    return Object.assign(safety, {
+      gardens: gardens,
+      reqMore: openSafety('@jordanlee', 'J', ['#4FD1C5', '#0F2A27'], 'request'),
+      showRequest: st.request === 'pending',
+      showInvite: st.invite === 'pending',
+      declineInvite: function () { self.setState({ invite: 'declined' }); },
+      accept: function () { self.setState({ request: 'accepted' }); },
+      decline: function () { self.setState({ request: 'declined' }); },
+      posts: posts
+    });
+  }
+}
+</script>
+</body>
+</html>
